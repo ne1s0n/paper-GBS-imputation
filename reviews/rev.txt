@@ -1,0 +1,45 @@
+COMMENTS TO THE AUTHOR:
+
+Reviewer #1: In the MS entitled "Marker imputation efficiency for Genotyping-By-Sequencing data of crop species with and without a reference genome" Authors used different tools to impute missing SNP data in Medicago sativa, and rice. The MS demonstrated very good approach to impute SNP data even independent of whole genome sequence. No doubt the efforts made by authors are valuable. I have some major concern with the MS presentation, flow of information and regarding the novelty. Here are my point-wise comments:
+
+General Comments:
+The four methods used for imputation are now very common. Even software tool like Tassel host imputations methods like FILLIN, FSFHap, Numerical, and Beagle. There are several methods and tools available for imputation and many studies demonstrating comparisons have been published.
+
+More particularly, in species without availability of whole genome sequence methods for the imputation of SNP data have been published. For instance, Ward, et al. (Saturated linkage map construction in Rubus idaeus using genotyping by sequencing and genome-independent imputation. 2013. BMC genomics, 14(1), 2).
+
+Even in Alfaalfa (Medicago sativa) Rocher et al. (Validation of Genotyping-By-Sequencing Analysis in Populations of Tetraploid Alfalfa by 454 Sequencing. 2015. PloS one, 10(6), e0131918.) demonstrated imputation at missing rate 0.5.
+
+Specific comments:
+
+In title "crop species with and without" is miss leading since authors have used two species so better to be specific "medicago and rice".
+
+Abstract need to be more concise and informative
+Introduction:
+Line 38-39, GWAS can not handle missing data- need citation and reframe the sentence. Better to verify the fact.
+ Line 43-44 - alternative to SNP-chip- need to improve
+Line 48 - '52% or up to 52%' need to verify the fact
+Line 55 -57 - imputation method has been developed for SNP-Chips. I am not sure about the accuracy of statement
+Line 85- rice genome recently assemble - not true
+
+Material methods:
+Since the MS specifically focused on imputation of SNP data, the details like salt tolerance or high dry matter yield is unnecessary. So better to concise portion from 96-114 in single sentence.
+Similarly details about imputation methods can be concise (page 7 to 12) and more details can be provided as supplementary.
+
+Results:
+Need to avoid words like close to 100% better to be very precise.
+Maximum missing allowed and maximum percentage of missing actually present are two different things and it need to be very clear.
+
+Discussion
+
+Subtitles are not good - for instance "Role of crop species" and "Size of the problem".
+Previous publication demonstrating imputation in alfalfa, and other species without genome need to be discuss.
+Also it will be better to highlight importance of percent study while discussing previous paper comparing different imputation methods.
+
+Fig 2. and 3 - Y axis need to be zoomed to make difference visible.
+
+I suggest to reframe the MS to make it pursuable  for readers of Molecular Breeding
+
+
+
+
+Reviewer #2: The study is very interesting, however, the authors should explore the results in more depth and with more creativity. the current results are shallow.
