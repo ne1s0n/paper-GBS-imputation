@@ -1,0 +1,86 @@
+\section{Materials and methods}
+
+\subsection{Plant material}
+\label{sec:plant_material}
+
+Samples from two autotetraploid alfalfa (\emph{Medicago sativa L.}) and one diploid rice (\emph{Oryza sativa L.}) populations were available (see Table~\ref{tab:descriptive_statistics}).\\
+Alfalfa populations included elite germplasm from the Po Valley (Alfalfa-PV, \cite{annicchiarico_alfalfa_2015}) and elite germplasm adapted to Mediterranean-climate environments (Alfalfa-Med, \cite{annicchiarico_adaptation_2011}). For Alfalfa-PV, 124 parent genotypes were chosen by stratified mass selection for dry matter yield over three harvests among 4,480 densely planted genotypes grown in Lodi (northern Italy) under field conditions in 2002 and 2003. The Alfalfa-Med population comprised a sample of 154 parent genotypes derived from two cycles of free intercrossing among three outstanding populations in a multi-environment study: (i) the drought-tolerant Sardinian landrace Mamuntanas; (ii) the salt-tolerant Moroccan landrace Erfoud 1; (iii) the Australian variety SARDI 10, widely adapted across moisture-favorable and drought-prone environments. \\
+The Rice dataset included 437 plants belonging to 391 accessions from the Rice Germplasm Collection maintained at CRA-Rice Research Unit (Vercelli, Italy). The sampled collection comprised accessions from the five main sub-populations of \emph{O. sativa} (274 temperate japonica, 108 tropical japonica, 28 indica, 16 aus and 11 aromatic). All accessions were purified through single seed descent, and were genotypically essentially 100\% homozygous.
+
+\subsection{Genotyping by sequencing}
+\label{sec:overview}
+
+The 715 samples from alfalfa (Alfalfa-Med and Alfalfa-PV) and rice (Rice) populations were genotyped using the genotyping-by-sequencing (GBS) approach \cite{elshire_robust_2011}. Different GBS protocols were used to genotype the alfalfa and rice samples, since genotyping was carried out under different projects.\\
+In alfalfa, DNA was isolated from fresh leaf tissues by the Wizard~\textregistered~Genomic DNA Purification Kit (Promega, A1125) and quantified with a Quant-iT PicoGreen dsDNA assay kit (Life Technologies, P7589). Two libraries were constructed for the two populations, where 100 ng of each DNA was digested with ApeKI (NEB, R0643L) and then ligated to a unique barcoded adapter and a common adapter. For the reference population Alfalfa-Med, 5 nmoles each of the primers and NEB 2X Taq Master Mix (NEB Cat \# M0270S) were included in the PCR reaction according to \cite{elshire_robust_2011} original protocol, while for Alfalfa-PV the KAPA library amplification readymix (Kapa Biosystems Cat \# KK2611) was used instead. Each library was sequenced in two lanes on Illumina HiSeq 2000 at the Genomic Sequencing and Analysis Facility at the University of Texas at Austin, Texas, USA. For both populations post sequencing analysis and SNP calling was carried out using Tassel UNEAK pipeline \cite{lu_switchgrass_2013}. A further quality filter, implemented through ad-hoc Python scripts, removed heterozygous loci with less than 4 and homozygous loci with less than 11 aligned reads. Alfalfa is an autotetraploid plant species and can therefore present three different heterozygous genotypes: AAAB, AABB and ABBB. Following \cite{li_saturated_2014} and \cite{li_genomic_2015}, these were all considered diploid heterozygotes (i.e. AB), while the two homozygous genotypes (AAAA and BBBB) were considered diploid homozygotes (i.e., AA or BB).\\
+In rice, DNA was isolated from three-weeks old leaves using the DNeasy Plant Mini Kit (QIAGEN) with a TECAN Freedom EVO150 liquid handling robot (TECAN Group Ltd, Switzerland). DNA digestion was performed on 100 ng samples in 96-well plates using ApeKI, which was shown to cut every 1 kb on average in a in-silico digestion of the Nipponbare reference genome, and 96-plex libraries constructed according to the GBS protocol. The libraries were loaded into Genome Analyzer II (Illumina, Inc., San Diego, CA) for sequencing. Raw sequence data filtering, sequence alignment to the rice reference genome (Os-Nipponbare-Reference-IRGSP-1.0, \cite{kawahara_improvement_2013}), and SNP calling from GBS genotyping were carried out using the Tassel GBS pipeline \cite{glaubitz_tassel-gbs:_2014}.\\
+In total, 32\,706, 40\,734 and 166\,418 SNP markers were called by GBS in Alfalfa-PV, Alfalfa-Med and Rice, respectively (see Table~\ref{tab:descriptive_statistics}). In both datasets SNP variants were renamed so that AA represented the most common homozygote, and BB the least common homozygote.
+
+\input{inputs/table_descriptive_statistics}
+
+\subsection{Imputation methods}
+\label{sec:imputation_methods}
+We considered five imputation methods: Mean Value Imputation (MNI), K-Nearest Neighbour Imputation (KNNI), Random Forest Imputation (RFI), Singular Value Decomposition Imputation (SVDI), and Localized Haplotype Clustering Imputation (``Beagle''). For all algorithms, we imputed a $m\times n$ matrix of m individuals and n markers whose data points, defined in the set \{0,1,2,NA\}, represented the three possible genotypes (AA, AB, and BB) and the missing value, respectively. 
+\paragraph{MNI}
+\label{par:MNI}
+: in Mean Value Imputation each missing data point was simply replaced by the mean of the non-missing values for that marker, which was then discretized to the closest value in \{0,1,2\}. 
+\paragraph{KNNI}
+\label{par:KNNI}
+: in K-Nearest Neighbors Imputation, missing data points were imputed based on the weighted average of the K closest markers \cite{troyanskaya_missing_2001}. This K-neighbourhood was defined by the Simple Matching Coefficient distance function \cite{schwender_statistical_2007}, specifically designed for categorical data. K=4 was used in KNNI, and neighbour values were weighted by the reciprocal of their distance from the data point to be imputed.
+\paragraph{SVDI}
+\label{par:SVDI}
+: Singular Value Decomposition (SVD) imputation was based on the following factorization of the genotype matrix M (m markers, n individuals):
+
+\begin{equation}
+\label{eq:SVDI_general}
+M = U\Sigma V^{T}
+\end{equation}
+
+where U is a $m \times m$ unitary matrix (i.e. $UU^{T}=I$), $\Sigma$ is a $m \times n$ rectangular diagonal matrix of singular values and $V^{T}$ is the $n \times n$ conjugate transpose of the unitary matrix V. Matrix U and V contain the eigenvectors of $M^{T}M$ and $MM^{T}$, respectively, and the corresponding non-zero singular values in $\Sigma$ are equivalent to the square-root of the eigenvalues of $M^{T}M$ and $MM^{T}$. The first k eigenvectors - ordered by decreasing eigenvalue - capture most of the information in the marker genotype matrix, and were used to generate linear combinations (principal components) of the original m markers for the imputation of missing data points. The imputation procedure comprised: (i) initial imputation of missing genotypes using MNI, since SVD can only be performed on complete matrices; (ii) SVD to select the most informative k eigenvectors of the marker genotype matrix; (iii) these k eigenvectors were used as predictors in a linear regression model for marker genotypes:
+
+\begin{equation}
+\label{eq:SVDI_regression}
+Y = \hat{U}\beta +\varepsilon 
+\end{equation}
+
+with Y as vector of genotypes at marker j; $\hat{U}$ matrix of k eigenvectors; $\beta$ vector of regression coefficients; $\varepsilon$ random errors terms; (iv) all eigenvectors (matrix U) and $\beta$ were used to estimate missing values at marker j. The procedure was repeated (steps (ii) to (iv)) until convergence. The final imputed data points were then discretized to the closer genotype in \{0,1,2\}. Additional details on SVDI can be found in \cite{troyanskaya_missing_2001}
+
+\paragraph{RFI}
+\label{par:RFI}
+: in Random Forest (RF) imputation, missing genotypes at marker j were imputed by means of RF multiple regression trees \cite{breiman_random_2001} where all markers other than j were used for the prediction. At each marker j, 100 RF regression trees $\Theta_{1} \ldots \Theta_{100}$ were grown from a bootstrapped sample of the individuals in Y and a random subset of $\sqrt{m-1}$ markers. Missing genotypes were imputed averaging predictions over the 100 RF trees
+
+\begin{equation}
+\label{eq:RFI_regression}
+\hat{Y} = \frac{1}{100}\sum_{i=1}^{100} h(x,\Theta_i)
+\end{equation}
+
+where $h(x,\Theta_i)$ is a function of the $i_{th}$ tree and subset of markers. RFI was repeated until convergence or for maximum 10 iterations. After regression, the imputed data were then discretized to the closer genotype in \{0,1,2\}. 
+
+\paragraph{Beagle}
+\label{par:Beagle}
+: ``localized haplotype clustering imputation'' is a method implemented in the software ``Beagle'' \cite{browning_rapid_2007}. Originally developed for human genetics, Beagle has since found wide application also in animal and plant genetics. Beagle has become so popular that the name of the software is commonly used  to refer metonymically to the method it implements, making the two hardly distinguishable. Beagle infers haplotypes and imputes sporadic missing alleles both with known and unknown phase, using a localized haplotype cluster model; this is a class of directed acyclic graphs which empirically models haplotype frequencies on a local scale and therefore adapts to local structure in the data. Beagle makes use of a hidden Markov model to find the most likely haplotype pair for each individual, given the genotype data for that individual and the graphical haplotype frequency model. The method works iteratively using an expectation-maximization (EM) approach. The imputed missing data, probabilities of missing genotypes and inferred haplotypes are calculated from the model that is fitted in the last iteration. For the imputation of missing genotypes in the completely homozygous rice accessions, a likelihood file was defined to specifically exclude the imputation of non-possible heterozygous genotypes.
+
+\subsection{Imputation procedure}
+\label{sec:imputation_procedure}
+In order to assess the imputation performance of the different methods, we introduced increasing proportions of artificial missing genotypes in the data sets. These were then imputed with the various algorithms, measuring the resulting imputation accuracy and computation time. Unlike imputation experiments with SNP-chips (e.g., \cite{hickey_factors_2012}), GBS data intrinsically present a much larger proportion of missing genotypes, and a certain amount of naturally missing genotypes has to be allowed along with artificially introduced ones (see for instance \cite{rutkoski_imputation_2013}). We extracted four datasets from the overall data that had a maximum of 10\%, 20\%, 40\% or 70\% missing data per marker. For each of these datasets, we randomly introduced an additional 1\%, 5\%, 10\% or 20\% missing genotypes, on which imputation accuracy could be measured. Table~\ref{tab:missing_rates} reports the number of markers and average missing rate (before introducing artificial missing genotypes) for the four call-rate thresholds. This procedure produced 16 combinations for each population: 4 call rate datasets $\times$ 4 levels of artificial missing markers. On each combination, we applied the 5 described imputation methods. Rice data were analysed as a whole and by each of the 12 chromosomes separately. \\
+For rice data only, the position of the SNPs on the genome was known. It was therefore possible to test the imputation performance with and without this information. Among the proposed imputation methods, only Beagle can use SNP position in the imputation process. We therefore applied Beagle both to SNP ordered per chromosome and along the entire genome and to SNP that were randomly reshuffled (so as to break the linkage between them). \\
+All of the above led to a total of 1408 (1200 + 208 for reshuffled rice data with Beagle) imputation analyses.
+
+\input{inputs/table_missing_rates}
+
+\subsection{Imputation accuracy and efficiency assessment}
+\label{sec:imputation_accuracy_and_efficiency_assessment}
+We used the artificial missing genotypes to measure the performance of the five imputation methods. The rice dataset contained only two genotype classes: AA (homozygous for the major allele) and BB (homozygous for the minor allele). Both alfalfa datasets contained also the third genotype classes AB (heterozygous, pooling the three possible heterozygotes AAAB, AABB, ABBB).\\
+For each experiment we measured the overall imputation accuracy and the imputation accuracy within each genotype class. The imputation accuracy was computed as the number of missing data correctly imputed divided by the total number of missing data (proportion of correct imputations):
+
+\begin{equation}
+\label{eq:accuracy}
+accuracy = \frac{1}{n} \sum_{i=1}^{n}{I(y_i = \hat{y_i})}
+\end{equation}
+
+where $I()$ is an indicator function that returns 1 if the imputed ($\hat{y}$) and true ($y$) genotypes are equal, 0 otherwise. We obtained four accuracy measures for alfalfa (three genotype classes plus total accuracy) and three for rice (two genotype classes plus total accuracy).\\
+Imputation methods were also compared in terms of computation efficiency, measured as the total computation time needed to complete the analyses. The measured time equals the total dedicated CPU time in case of single thread execution, and corresponds to a fraction of it in case of algorithm supporting multi thread execution. In our experiments only RFI implemented parallel execution, and it was configured to use 10 CPUs, thus all the reported times are to be considered as time elapsed while employing ten times more computational resources than the other algorithms.\\
+To ensure consistency in the experimental conditions, all analysis were run on the same computing platform: a multi-node cluster with 64 CPUs AMD Opteron(tm) 2400 MHz and 256GB RAM for each node.
+ 
+\subsection{Software}
+\label{sec:software}
+Data handling, editing and preparation, summary of results and plots were all performed using the open-source environment for statistical programming R \cite{r_core_team_r:_2014}. All imputation methods, except Beagle, were implemented in R: MNI directly in base R; KNNI using the function \emph{knncatimpute()} from the Scrime package \cite{schwender_scrime:_2013}; SVDI with the R package ``bcv'' \cite{perry_bcv:_2009}; RFI using the ``MissForest'' \cite{stekhoven_missforestnon-parametric_2012} R package (with parameters: ntree=100, maxiter=10, parallelize='variables'). The ``Beagle'' localized haplotype clustering imputation method was implemented with the Beagle software version 3.3.2 \cite{browning_rapid_2007}.

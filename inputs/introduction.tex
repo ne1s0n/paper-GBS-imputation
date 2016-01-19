@@ -1,0 +1,66 @@
+\section{Introduction}
+\label{intro}
+
+Imputation of missing alleles and genotypes is usually a preliminary step for
+a wide range of genetic analyses: in fact, most models and software for 
+population genetics, genomic selection (GS) and genome-wide association 
+studies (GWAS) can not handle missing data and require complete datasets. 
+SNP-chips represent one of the leading genotyping technologies, and produce 
+datasets that, after markers and individuals with low call-rate are edited out, 
+usually still contain a small proportion of uncalled genotypes (e.g., $<$5\%) 
+randomly distributed along the genome. Genotyping-by-sequencing (GBS) is a 
+relatively recent genotyping technique alternative to SNP-chips that can 
+be used to produce SNP genotype data~\cite{elshire_robust_2011}.
+GBS is platform-independent and is conveniently 
+used in species that lack commercial SNP-chips or even lack a reference 
+genome sequence. GBS data typically present a much larger proportion of 
+sporadic missing genotypes: e.g., $\sim$52\% average in maize \cite{crossa_genomic_2013},
+or up to 80\% for a fraction of SNPs in wheat \cite{poland_genomic_2012}. This 
+is due to both intrinsic properties of the technology - e.g., low coverage - 
+and to its application to species without a mature genome assembly \cite{glaubitz_tassel-gbs:_2014}.\\
+There are several methods that are routinely used for the imputation of 
+missing genotypes. Some rely solely on genotypic information, some make 
+use also of genealogies, most of them are based on reconstructing haplotypes 
+to be used in predictive models \cite{nicolazzi_software_2015}. Most methods for 
+genotype imputation have been developed for SNP-chip data, and typically 
+yield very high imputation accuracy: for instance, $>$95\% correctly imputed 
+genotypes were reported in maize \cite{hickey_factors_2012} and cattle \cite{vanraden_genomic_2011}. 
+Such methods can be applied to GBS data, too (see for instance 
+\cite{huang_efficient_2014} and \cite{swarts_novel_2014} 
+for applications in rice and maize). When a reference 
+genome is available, SNP loci can be aligned against its sequence and 
+are therefore ordered. However, GBS data may be generated 
+also for species lacking a reference genome assembly. In this case the 
+GBS output is a series of ``floating'' loci not linked to any chromosome: 
+alignment is not possible and SNPs are therefore unordered. Unordered 
+data add additional complexity to the task of imputing missing genotypes: 
+exploitation of linkage disequilibrium (LD) and haplotype reconstruction 
+are less straightforward, consecutive loci may lie on different chromosomes
+or scaffolds, and overall data are less homogeneous. Rutkoski et al.~\cite{rutkoski_imputation_2013}
+considered the application of general data imputation methods 
+to wheat, maize and barley populations, obtaining best case scenarios accuracies 
+as high as 0.84-0.94 (measured as $R^{2}$ between true and imputed genotypes).\\
+Compared to SNP-chip data, GBS data are more challenging: many more 
+missing genotypes, high variability between runs, intrinsically noisy data, 
+reads from different loci that can overlap. For all these reasons, imputation 
+of missing genotypes with GBS data is still a relatively immature technique, 
+not yet amenable to produce highly standardised and repeatable results. 
+There is therefore scientific and practical interest in gaining further 
+insights into how genotype imputation with GBS data works, and in 
+developing the best methods and strategies to accurately and efficiently 
+impute such missing data. This would be relevant not only for the scientific 
+community but also for the breeding industry, because of its direct 
+consequences on genomic applications.\\
+In this paper, we imputed missing genotypes from GBS data in two agronomically
+important crop species: the forage crop alfalfa (\emph{Medicago sativa}), for 
+which a reference genome is not available yet, and the 
+cereal crop rice (\emph{Oryza sativa}) whose reference genome has been 
+assembled \cite{international_rice_genome_sequencing_project_map-based_2005} and
+recently updated \cite{kawahara_improvement_2013}. We compared the imputation 
+efficiency of four general data-imputation methods (Mean Value Imputation, 
+K-Nearest Neighbour Imputation, Singular Value Decomposition Imputation 
+and Random Forest Imputation) with the performance of a method specific 
+for genotype imputation (localized haplotype clustering imputation, 
+implemented in the software package Beagle). The relative efficiency of 
+the different imputation methods was assessed in terms of the 
+accuracy achieved and the computation time required.\\
