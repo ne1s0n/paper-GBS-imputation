@@ -1,0 +1,123 @@
+
+1) raccogliere i risultati di FILLIN e TRUNCATULA e piazzare i file csv in qualche dove; NELSON
+
+2) stress novelty of our work (GBS data, alfalfa, rice, total accuracy + different classes ...): FILIPPO
+
+3) Cite Ward et al. 2013: More particularly, in species without availability of whole genome sequence methods for the imputation of SNP data have been published. For instance, Ward, et al. (Saturated linkage map construction in Rubus idaeus using genotyping by sequencing and genome-independent imputation. 2013. BMC genomics, 14(1), 2). FILIPPO
+
+4) cite Rocher et al. Even in Alfaalfa (Medicago sativa) Rocher et al. (Validation of Genotyping-By-Sequencing Analysis in Populations of Tetraploid Alfalfa by 454 Sequencing. 2015. PloS one, 10(6), e0131918.) demonstrated imputation at missing rate 0.5. FILIPPO
+
+5) In title "crop species with and without" is miss leading since authors have used two species so better to be specific "medicago and rice". [All right]: FILIPPO
+
+6) Line 38-39, GWAS can not handle missing data- need citation and reframe the sentence. Better to verify the fact. find citation for the fact that GWAS can generally not accept missing data (linear algebra methods, arithmetic methods, gradient descent vs MCMC, ML - neural networks?) : FILIPPO
+
+7) Line 43-44 - alternative to SNP-chip- need to improve USE SENTENCE FROM REVIEWER 2 [GBS is considered as a viable alternative to SNP array-based genotyping]: FILIPPO
+
+8) Line 48 - '52% or up to 52%' need to verify the fact [check]: FILIPPO
+
+9) Line 55 -57 - imputation method has been developed for SNP-Chips. I am not sure about the accuracy of statement: rephrase for SNP data other than GBS and applied mainly to SNP chips : FILIPPO
+
+10) Line 85- rice genome recently assemble - not true [?? recently updated]: FILIPPO
+
+11) Since the MS specifically focused on imputation of SNP data, the details like salt tolerance or high dry matter yield is unnecessary. So better to concise portion from 96-114 in single sentence.
+[all right] : NELSON
+
+12) Similarly details about imputation methods can be concise (page 7 to 12) and more details can be provided as supplementary. [maybe] : FILIPPO
+
+13) RESULTS: Need to avoid words like close to 100% better to be very precise. [try if possible: we are summarizing over methods and scenarios]: [use ranges?] : NELSON
+
+14) Maximum missing allowed and maximum percentage of missing actually present are two different things and it need to be very clear. [Explain more clear + refer to Table 2] : FILIPPO
+
+Discussion
+
+15) Subtitles are not good - for instance "Role of crop species" and "Size of the problem". [reshape these two subtitles; not very constructive comment though] : FILIPPO
+
+16) Previous publication demonstrating imputation in alfalfa, and other species without genome need to be discuss. [can be expanded] [cite Rocher et al in 4.4]: NELSON
+
+17) Also it will be better to highlight importance of percent (present) study while discussing previous paper comparing different imputation methods. : [emphasize our relevance] : NELSON
+
+18) Fig 2. and 3 - Y axis need to be zoomed to make difference visible. [when possible; contrasts with reviewer 2] [zoom + specify scale in the caption] : FILIPPO
+
+
+
+Reviewer 2
+
+19) 1. Why these two species? They have very different properties which makes it difficult to associate the differences in results to particular characteristics. For example, is ploidy level more critical than a reference genome?  It might have been more insightful when including an outbred diploid species with a reference genome and similar to the rice to assess imputation accuracy with and without reference genome information. [available from our pojects, but strength point: different species allow to explore the range of applicability of imputation methods/strategies] : NELSON
+
+20) 2. A missed opportunity to study the utilization of a reference genome of a related species, as is available for alfalfa. [DONE] : add results to plots and the results section: FILIPPO
+
+21) 3. The choice of the five imputation methods. Why these? [easy for the general imputation method, more tricky to justify Beagle over something else e.g. Tassel: literature to show it works well] : [FILLIN added for rice (explain why it did not work for alfalfa)] : NELSON
+
+22) 4. Why performs Beagle still well with the unordered SNPs in the rice dataset. How severe was the re-ordering? [Beagle is cool!] : FILIPPO
+
+23) 5. Too much attention for computational issues while this was not the main objective of the study (there was no effort to optimize implementation of the various methods, except for RF). [this can be reduced a little, though it is still interesting information; we may specify the limitation of not having optimized the code] : FILIPPO
+
+24) 6. No attention to results on individual rice chromosomes. In case there were no clear differences between chromosomes, then that should be stated more clearly. [we have all these results, will be easy to reply] : NELSON
+
+
+Specific comments
+
+25) Line 52: It would be nice if you could provide a list of associated packages, AND explain why Beagle was selected out of these methods. [refer to our review] : NELSON
+
+26) Line 78: There is no development of the best method in this study, nevertheless the results of this study may identify the essential properties of such a method. Was this discussed? [add to conclusions] : NELSON
+
+27) Line 83: For alfalfa one could use the assembly of Medicago Trancatula – was this considered? [DONE] [DISCUSS THIS - in section 4.4?] : NELSON
+
+28) Line 86: Why these four general methods? [ample representation of general classification/imputation methods + rutkoski] : NELSON
+
+29) Line 109: How to interpret the 437 plants from 391 accessions as these accessions are supposed to be fully homozygous? Were there duplicates? [yes, they're duplicates: irrelevant for this study] : FILIPPO
+
+30) Line 134: Why were these values (4 and 11) were chosen? I do not see the rational of taking 4 for a heterozygote and 11 for homozygote - shouldn’t these be the reverse? NELSON
+
+31) Line 135-139: The reduction from 5 genotypic classes to 3 genotypic classes in alfalfa is a critical simplification step. There is no justification why this step was executed. My assumption is that this is because of the (software) methods that were used. The explanation and justification should be provided here. I am wondering whether the four general methods could be applied to the 5 genotypic classes – was this considered/studied? [this is very specific to alfalfa and clearly a major discriminant as to research directions] : NELSON
+
+32) Line 166:  How to interpret the ‘K closest markers’ in case there is no map or assembly information (as here for alfalfa)? [rigore a porta vuota] : FILIPPO
+
+33) Line 169: How was distance specified, i.e., in bp or cM?  Did you try both and if so, where there differences? [altro rigore a porta vuota :-)] FILIPPO
+
+34) Line 173-181: I wonder whether this explanation is appropriate for this audience. [it is] : FILIPPO
+
+35) Line 175: Were the eigenvectors of M’M and MM’ merged to arrive at the ‘first k eigenvectors’? [no, ordered by corresponding eigenvalues] : FILIPPO
+
+36) Line 178: Which value for k was used, was there a decision criteria used?  [questo me l'aspettavo :-)] : FILIPPO
+
+37) Line 182: For the SVD, how critical is the initial imputation step by MNI?  Were other methods considered for this initial imputation? [I think this is just an initialization prior, and the least informative the better] : FILIPPO
+
+38) Line 185 – 198: Explain the ‘hat’ for U in equation 2. Also, why has Y no hat while there is a hat on the Y in equation 3. [can be explained with some careful going through the math] : FILIPPO
+
+39) Line 217: Elaborate on the content of this likelihood file or provide a reference (to the manual of Beagle)? [reference] : FILIPPO
+
+40) Line 229: What was the reason to not go beyond 20% artificially induced missing values? [amount of missing data, size of the problem, computation time] [70+20=90] : FILIPPO
+
+41) Line 254: It is not clear whether the ‘total number of missing data’ refers to the sum of ‘natural’ and ‘artificial’ missing data or only to the latter part. Please improve description. [artificially missing] : FILIPPO
+
+42) Line 255: It may be confusing to use y in equation 4 as a discrete variable since Y is continuous in equations  [2] and [3]. It seems more intuitive to use g instead of y. [all right, notation can be changed] : FILIPPO
+
+43) Line 281/Table 1 & Table 2:  Why not merge the content of these two tables?  Transpose Table 1 to have the same columns. Then ADD the genotype frequencies for the four call-rate scenarios (10,20,40,70%).  In that way the table may reveal shifts in frequencies when imposing stronger thresholds, which may invoke further inferences on results of imputation accuracies. [can be done, but for shifts in frequencies there is already figure 1] : NELSON
+
+44) Line 282: Why not present these rates as percentages as that is probably easier to read and more consistent (with e.g., line 286). FILIPPO
+ 
+45) Line 284: Figure S1 does not contain information at the ‘per individual’ level [check density plots in Supplementary Figure 1] : NELSON
+
+46) Line 304: How sensitive are the results to the imposed quality filters? [see answer to points 30 and 31] : NELSON
+
+47) Line 313/Figure 3: Suggest to maintain consistency in y-axis scale, i.e., the plots for Minor homozygous accuracy should range from 0 to 100% as well. [do not agree: trade-off between consistency and visibility, we opt for the second] : [no consistency] : FILIPPO
+
+48) Line 324: the flat response seems to hold for the studied range (0.01 – 0.20). Were higher values of missing rates studied?  It will be interesting to study whether there will be a critical point and whether these are different for the different genotypic classes. [not possible: diplomatic answer] : FILIPPO
+
+49) Line 347: Rather extensive reporting on computation time which seems not justified as the used methods were used as these were available to the authors, i.e.., there was not dedicated efforts to speed up the implemented methods. [shorten results and stress limitations] : FILIPPO
+
+50) Line 379-381: Where was this negative impact shown?  In this study or other studies – please include references. [sheer numbers: it is reasonable] : FILIPPO
+
+51) Line 401-407: This is still rather descriptive without any postulation whether any of the methods are less or more sensitive to MAF and/or balance.  The superior results of Beagle in rice are mostly driven by utilizing map/assembly information which is ignored by other methods. [I think we say this + MAF/balance are two sides of the same coin + conclusions - section 4.1] : NELSON
+ 
+52) Line 440: The reasoning on factor iii) is not clear – would the results for rice be less accurate when analysing the genome at once? Also, why would it simplify the imputation process? [simplify calculations; more robust to reshuffling or when position is not known] : FILIPPO
+
+53) Line 443: Did you explore the population structure of the three datasets? Would presence/absence of (severe) population structure affect imputation accuracy? : [no structure in Alfalfa (cite work by Nelson); there is structure in rice (mostly temperate japonica, but also other taxonomic groups): however, population structure is implicitly used by most imputation method + accuracy in rice is already ~ 100%] : NELSON
+
+54) Line 450: It is too easy to state that there is additional complexity to make use of a reference genome of a related species. It would be of HIGH relevance to explore this as it may be applied in many species that lack a reference genome themselves. [done] : NELSON
+
+55) Line 535-540: Too general/vague and thus not clear why this paragraph is included in the conclusion section (or even in the manuscript)! [keep or not to keep?] : FILIPPO
+
+56) Figure 1: Be consistent in using rates versus percentages, i.e., this Figure uses rates while on Line 311 you refer to percentages. [check this] : FILIPPO
+
