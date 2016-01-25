@@ -68,7 +68,7 @@ Specific comments
 
 30) Line 134: Why were these values (4 and 11) were chosen? I do not see the rational of taking 4 for a heterozygote and 11 for homozygote - shouldn’t these be the reverse? NELSON DONE
 
-31) Line 135-139: The reduction from 5 genotypic classes to 3 genotypic classes in alfalfa is a critical simplification step. There is no justification why this step was executed. My assumption is that this is because of the (software) methods that were used. The explanation and justification should be provided here. I am wondering whether the four general methods could be applied to the 5 genotypic classes – was this considered/studied? [this is very specific to alfalfa and clearly a major discriminant as to research directions] : NELSON
+31) Line 135-139: The reduction from 5 genotypic classes to 3 genotypic classes in alfalfa is a critical simplification step. There is no justification why this step was executed. My assumption is that this is because of the (software) methods that were used. The explanation and justification should be provided here. I am wondering whether the four general methods could be applied to the 5 genotypic classes – was this considered/studied? [this is very specific to alfalfa and clearly a major discriminant as to research directions] : NELSON DONE 
 
 32) Line 166:  How to interpret the ‘K closest markers’ in case there is no map or assembly information (as here for alfalfa)? [rigore a porta vuota] : FILIPPO
 
