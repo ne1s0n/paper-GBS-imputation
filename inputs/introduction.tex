@@ -59,8 +59,9 @@ assembled \cite{international_rice_genome_sequencing_project_map-based_2005} and
 recently updated \cite{kawahara_improvement_2013}. We compared the imputation 
 efficiency of four general data-imputation methods (Mean Value Imputation, 
 K-Nearest Neighbour Imputation, Singular Value Decomposition Imputation 
-and Random Forest Imputation) with the performance of a method specific 
+and Random Forest Imputation) with the performance of two methods specific 
 for genotype imputation (localized haplotype clustering imputation, 
-implemented in the software package Beagle). The relative efficiency of 
+implemented in the software package Beagle, %and haplotype reconstruction around the recombination site
+and the FILLIN algorithm implemented in the programming suite Tassel). The relative efficiency of 
 the different imputation methods was assessed in terms of the 
-accuracy achieved and the computation time required.\\
+accuracy achieved and the computation time required. Not only the total imputation accuracy was measured, but also the accuracy of imputing the different genotype classes (major and minor homozygotes, heterozygotes).\\
