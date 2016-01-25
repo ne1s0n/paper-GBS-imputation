@@ -92,13 +92,13 @@ Specific comments
 
 42) Line 255: It may be confusing to use y in equation 4 as a discrete variable since Y is continuous in equations  [2] and [3]. It seems more intuitive to use g instead of y. [all right, notation can be changed] : FILIPPO
 
-43) Line 281/Table 1 & Table 2:  Why not merge the content of these two tables?  Transpose Table 1 to have the same columns. Then ADD the genotype frequencies for the four call-rate scenarios (10,20,40,70%).  In that way the table may reveal shifts in frequencies when imposing stronger thresholds, which may invoke further inferences on results of imputation accuracies. [can be done, but for shifts in frequencies there is already figure 1] : NELSON
+43) Line 281/Table 1 & Table 2:  Why not merge the content of these two tables?  Transpose Table 1 to have the same columns. Then ADD the genotype frequencies for the four call-rate scenarios (10,20,40,70%).  In that way the table may reveal shifts in frequencies when imposing stronger thresholds, which may invoke further inferences on results of imputation accuracies. [can be done, but for shifts in frequencies there is already figure 1] : NELSON 
 
 44) Line 282: Why not present these rates as percentages as that is probably easier to read and more consistent (with e.g., line 286). FILIPPO
  
-45) Line 284: Figure S1 does not contain information at the ‘per individual’ level [check density plots in Supplementary Figure 1] : NELSON
+45) Line 284: Figure S1 does not contain information at the ‘per individual’ level [check density plots in Supplementary Figure 1] : NELSON Corrected reference in section 3.1, the "per individual" figure was discarded as not informative.
 
-46) Line 304: How sensitive are the results to the imposed quality filters? [see answer to points 30 and 31] : NELSON
+46) Line 304: How sensitive are the results to the imposed quality filters? [see answer to points 30 and 31] : NELSON While this is an interesting question, exploring the effect of quality filters on imputation precision would require redoing the complete analysis (possibly several times). It would also change the current focus of the paper. Moreover, the applied quality filters are quite standard (we added bibliographic references) and commonly applied to GBS pipelines. As such, we decided to leave the suggested exploration to future works.  
 
 47) Line 313/Figure 3: Suggest to maintain consistency in y-axis scale, i.e., the plots for Minor homozygous accuracy should range from 0 to 100% as well. [do not agree: trade-off between consistency and visibility, we opt for the second] : [no consistency] : FILIPPO
 
@@ -108,11 +108,11 @@ Specific comments
 
 50) Line 379-381: Where was this negative impact shown?  In this study or other studies – please include references. [sheer numbers: it is reasonable] : FILIPPO
 
-51) Line 401-407: This is still rather descriptive without any postulation whether any of the methods are less or more sensitive to MAF and/or balance.  The superior results of Beagle in rice are mostly driven by utilizing map/assembly information which is ignored by other methods. [I think we say this + MAF/balance are two sides of the same coin + conclusions - section 4.1] : NELSON
+51) Line 401-407: This is still rather descriptive without any postulation whether any of the methods are less or more sensitive to MAF and/or balance.  The superior results of Beagle in rice are mostly driven by utilizing map/assembly information which is ignored by other methods. [I think we say this + MAF/balance are two sides of the same coin + conclusions - section 4.1] : NELSON The cited section highlights how KNNI and RFI are the two algorithms showing least sensitivity to MAF unbalancedness. We reformulated the section to better explain the link.  
  
 52) Line 440: The reasoning on factor iii) is not clear – would the results for rice be less accurate when analysing the genome at once? Also, why would it simplify the imputation process? [simplify calculations; more robust to reshuffling or when position is not known] : FILIPPO
 
-53) Line 443: Did you explore the population structure of the three datasets? Would presence/absence of (severe) population structure affect imputation accuracy? : [no structure in Alfalfa (cite work by Nelson); there is structure in rice (mostly temperate japonica, but also other taxonomic groups): however, population structure is implicitly used by most imputation method + accuracy in rice is already ~ 100%] : NELSON
+53) Line 443: Did you explore the population structure of the three datasets? Would presence/absence of (severe) population structure affect imputation accuracy? : [no structure in Alfalfa (cite work by Nelson); there is structure in rice (mostly temperate japonica, but also other taxonomic groups): however, population structure is implicitly used by most imputation method + accuracy in rice is already ~ 100%] : NELSON The issue has been addressed in the discussion sections.
 
 54) Line 450: It is too easy to state that there is additional complexity to make use of a reference genome of a related species. It would be of HIGH relevance to explore this as it may be applied in many species that lack a reference genome themselves. [done] : NELSON
 
