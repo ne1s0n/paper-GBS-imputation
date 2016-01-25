@@ -22,13 +22,13 @@ In total, 32\,706, 40\,734 and 166\,418 SNP markers were called by GBS in Alfalf
 
 \subsection{Imputation methods}
 \label{sec:imputation_methods}
-We considered five imputation methods: Mean Value Imputation (MNI), K-Nearest Neighbour Imputation (KNNI), Random Forest Imputation (RFI), Singular Value Decomposition Imputation (SVDI), and Localized Haplotype Clustering Imputation (``Beagle''). For all algorithms, we imputed a $m\times n$ matrix of m individuals and n markers whose data points, defined in the set \{0,1,2,NA\}, represented the three possible genotypes (AA, AB, and BB) and the missing value, respectively. 
+We considered six imputation methods: Mean Value Imputation (MNI), K-Nearest Neighbour Imputation (KNNI), Random Forest Imputation (RFI), Singular Value Decomposition Imputation (SVDI), Localized Haplotype Clustering Imputation (``Beagle'') and the ``FILLIN'' algorithm from the ``Tassel'' programming suite \cite{swarts_novel_2014}. For all algorithms, we imputed a $m\times n$ matrix of m individuals and n markers whose data points, defined in the set \{0,1,2,NA\}, represented the three possible genotypes (AA, AB, and BB) and the missing value, respectively. 
 \paragraph{MNI}
 \label{par:MNI}
 : in Mean Value Imputation each missing data point was simply replaced by the mean of the non-missing values for that marker, which was then discretized to the closest value in \{0,1,2\}. 
 \paragraph{KNNI}
 \label{par:KNNI}
-: in K-Nearest Neighbors Imputation, missing data points were imputed based on the weighted average of the K closest markers \cite{troyanskaya_missing_2001}. This K-neighbourhood was defined by the Simple Matching Coefficient distance function \cite{schwender_statistical_2007}, specifically designed for categorical data. K=4 was used in KNNI, and neighbour values were weighted by the reciprocal of their distance from the data point to be imputed.
+: in K-Nearest Neighbors Imputation, missing data points were imputed based on the weighted average of the K closest markers \cite{troyanskaya_missing_2001}. This K-neighbourhood was defined by the Simple Matching Coefficient distance function \cite{schwender_statistical_2007}, specifically designed for categorical data. $K=4$ was used in KNNI, and neighbour values were weighted by the reciprocal of their distance from the data point to be imputed.
 \paragraph{SVDI}
 \label{par:SVDI}
 : Singular Value Decomposition (SVD) imputation was based on the following factorization of the genotype matrix M (m markers, n individuals):
@@ -42,7 +42,7 @@ where U is a $m \times m$ unitary matrix (i.e. $UU^{T}=I$), $\Sigma$ is a $m \ti
 
 \begin{equation}
 \label{eq:SVDI_regression}
-Y = \hat{U}\beta +\varepsilon 
+Y = U\beta +\varepsilon 
 \end{equation}
 
 with Y as vector of genotypes at marker j; $\hat{U}$ matrix of k eigenvectors; $\beta$ vector of regression coefficients; $\varepsilon$ random errors terms; (iv) all eigenvectors (matrix U) and $\beta$ were used to estimate missing values at marker j. The procedure was repeated (steps (ii) to (iv)) until convergence. The final imputed data points were then discretized to the closer genotype in \{0,1,2\}. Additional details on SVDI can be found in \cite{troyanskaya_missing_2001}
@@ -60,7 +60,10 @@ where $h(x,\Theta_i)$ is a function of the $i_{th}$ tree and subset of markers. 
 
 \paragraph{Beagle}
 \label{par:Beagle}
-: ``localized haplotype clustering imputation'' is a method implemented in the software ``Beagle'' \cite{browning_rapid_2007}. Originally developed for human genetics, Beagle has since found wide application also in animal and plant genetics. Beagle has become so popular that the name of the software is commonly used  to refer metonymically to the method it implements, making the two hardly distinguishable. Beagle infers haplotypes and imputes sporadic missing alleles both with known and unknown phase, using a localized haplotype cluster model; this is a class of directed acyclic graphs which empirically models haplotype frequencies on a local scale and therefore adapts to local structure in the data. Beagle makes use of a hidden Markov model to find the most likely haplotype pair for each individual, given the genotype data for that individual and the graphical haplotype frequency model. The method works iteratively using an expectation-maximization (EM) approach. The imputed missing data, probabilities of missing genotypes and inferred haplotypes are calculated from the model that is fitted in the last iteration. For the imputation of missing genotypes in the completely homozygous rice accessions, a likelihood file was defined to specifically exclude the imputation of non-possible heterozygous genotypes.
+: ``localized haplotype clustering imputation'' is a method implemented in the software ``Beagle'' \cite{browning_rapid_2007}. Originally developed for human genetics, Beagle has since found wide application also in animal and plant genetics. Beagle has become so popular that the name of the software is commonly used  to refer metonymically to the method it implements, making the two hardly distinguishable. Beagle infers haplotypes and imputes sporadic missing alleles both with known and unknown phase, using a localized haplotype cluster model; this is a class of directed acyclic graphs which empirically models haplotype frequencies on a local scale and therefore adapts to local structure in the data. Beagle makes use of a hidden Markov model to find the most likely haplotype pair for each individual, given the genotype data for that individual and the graphical haplotype frequency model. The method works iteratively using an expectation-maximization (EM) approach. The imputed missing data, probabilities of missing genotypes and inferred haplotypes are calculated from the model that is fitted in the last iteration. For the imputation of missing genotypes in the completely homozygous rice accessions, a likelihood file (with the prior likelihood of each of the three possible SNP genotypes) was defined to specifically exclude the imputation of non-possible heterozygous genotypes (details in \cite{beagle3_manual}).
+
+\paragraph{FILLIN}
+The ``Fast Inbred Line Library ImputatioN'' (``FILLIN'') is an imputation method optimised for inbred populations implemented in the ``Tassel'' programming suite \cite{swarts_novel_2014}. ``FILLIN'' is based on haplotype reconstruction around recombination break points; haplotypes are then clustered per genotype similarity using the Hamming distance function. This information is eventually used to impute the target locus in an iterative approach that attemps, through a Markov Chain MonteCarlo (MCMC) process, to maximise the likelihood of the observed SNP calls given the unobserved imputed genotypes.
 
 \subsection{Imputation procedure}
 \label{sec:imputation_procedure}
@@ -73,15 +76,15 @@ All of the above led to a total of 1408 (1200 + 208 for reshuffled rice data wit
 \subsection{Imputation accuracy and efficiency assessment}
 \label{sec:imputation_accuracy_and_efficiency_assessment}
 We used the artificial missing genotypes to measure the performance of the five imputation methods. The rice dataset contained only two genotype classes: AA (homozygous for the major allele) and BB (homozygous for the minor allele). Both alfalfa datasets contained also the third genotype classes AB (heterozygous, pooling the three possible heterozygotes AAAB, AABB, ABBB).\\
-For each experiment we measured the overall imputation accuracy and the imputation accuracy within each genotype class. The imputation accuracy was computed as the number of missing data correctly imputed divided by the total number of missing data (proportion of correct imputations):
+For each experiment we measured the overall imputation accuracy and the imputation accuracy within each genotype class. The imputation accuracy was computed as the number of missing data correctly imputed divided by the total number of artificially missing data (proportion of correct imputations):
 
 \begin{equation}
 \label{eq:accuracy}
-accuracy = \frac{1}{n} \sum_{i=1}^{n}{I(y_i = \hat{y_i})}
+accuracy = \frac{1}{n} \sum_{i=1}^{n}{I(g_i = \hat{g_i})}
 \end{equation}
 
-where $I()$ is an indicator function that returns 1 if the imputed ($\hat{y}$) and true ($y$) genotypes are equal, 0 otherwise. We obtained four accuracy measures for alfalfa (three genotype classes plus total accuracy) and three for rice (two genotype classes plus total accuracy).\\
-Imputation methods were also compared in terms of computation efficiency, measured as the total computation time needed to complete the analyses. The measured time equals the total dedicated CPU time in case of single thread execution, and corresponds to a fraction of it in case of algorithm supporting multi thread execution. In our experiments only RFI implemented parallel execution, and it was configured to use 10 CPUs, thus all the reported times are to be considered as time elapsed while employing ten times more computational resources than the other algorithms.\\
+where $I()$ is an indicator function that returns 1 if the imputed ($\hat{g}$) and true ($g$) genotypes are equal, 0 otherwise. We obtained four accuracy measures for alfalfa (three genotype classes plus total accuracy) and three for rice (two genotype classes plus total accuracy).\\
+For each imputation method, also the total computation time needed to complete the analyses was measured, in order to get an idea of their relative performance. The measured time equals the total dedicated CPU time in case of single thread execution, and corresponds to a fraction of it in case of algorithm supporting multi thread execution. In our experiments only RFI implemented parallel execution, and it was configured to use 10 CPUs, thus all the reported times are to be considered as time elapsed while employing ten times more computational resources than the other algorithms.\\
 To ensure consistency in the experimental conditions, all analysis were run on the same computing platform: a multi-node cluster with 64 CPUs AMD Opteron(tm) 2400 MHz and 256GB RAM for each node.
  
 \subsection{Software}
