@@ -42,10 +42,10 @@ where U is a $m \times m$ unitary matrix (i.e. $UU^{T}=I$), $\Sigma$ is a $m \ti
 
 \begin{equation}
 \label{eq:SVDI_regression}
-Y = U\beta +\varepsilon 
+Y = U^*\beta +\varepsilon 
 \end{equation}
 
-with Y as vector of genotypes at marker j; $\hat{U}$ matrix of k eigenvectors; $\beta$ vector of regression coefficients; $\varepsilon$ random errors terms; (iv) all eigenvectors (matrix U) and $\beta$ were used to estimate missing values at marker j. The procedure was repeated (steps (ii) to (iv)) until convergence. The final imputed data points were then discretized to the closer genotype in \{0,1,2\}. Additional details on SVDI can be found in \cite{troyanskaya_missing_2001}
+with Y as vector of genotypes at marker j; $U^*$ matrix of the first k eigenvectors; $\beta$ vector of regression coefficients; $\varepsilon$ random errors terms; (iv) all eigenvectors (matrix U) and $\beta$ were used to estimate missing values at marker j. The procedure was repeated (steps (ii) to (iv)) until convergence. The final imputed data points were then discretized to the closer genotype in \{0,1,2\}. Additional details on SVDI can be found in \cite{troyanskaya_missing_2001}
 
 \paragraph{RFI}
 \label{par:RFI}
