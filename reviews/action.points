@@ -108,7 +108,7 @@ Specific comments
 
 50) Line 379-381: Where was this negative impact shown?  In this study or other studies – please include references. [sheer numbers: it is reasonable] : FILIPPO
 
-51) Line 401-407: This is still rather descriptive without any postulation whether any of the methods are less or more sensitive to MAF and/or balance.  The superior results of Beagle in rice are mostly driven by utilizing map/assembly information which is ignored by other methods. [I think we say this + MAF/balance are two sides of the same coin + conclusions - section 4.1] : NELSON The cited section highlights how KNNI and RFI are the two algorithms showing least sensitivity to MAF unbalancedness. We reformulated the section to better explain the link.  
+51) Line 401-407: This is still rather descriptive without any postulation whether any of the methods are less or more sensitive to MAF and/or balance.  The superior results of Beagle in rice are mostly driven by utilizing map/assembly information which is ignored by other methods. [I think we say this + MAF/balance are two sides of the same coin + conclusions - section 4.1] : NELSON The cited section did already highligh how KNNI and RFI are the two algorithms showing least sensitivity to MAF unbalancedness. We reformulated the section to better explain the link.  
  
 52) Line 440: The reasoning on factor iii) is not clear – would the results for rice be less accurate when analysing the genome at once? Also, why would it simplify the imputation process? [simplify calculations; more robust to reshuffling or when position is not known] : FILIPPO
 
