@@ -6,12 +6,12 @@ large amounts of missing marker genotypes, whose imputation becomes therefore
 both challenging and critical to ensure reliability of later analyses.\\
 In this work, the performance of four general imputation methods (K-Nearest 
 Neighbors, Random Forest, Singular Value Decomposition, and Mean Value)
-and one genotype-specific method (``Beagle'' and \textcolor{red}{FILLIN}) were measured 
+and two genotype-specific method (``Beagle'' and FILLIN) were measured 
 on GBS data from alfalfa (\emph{Medicago sativa}, autotetraploid, heterozygous, 
 without reference genome) and 
-rice (\emph{Oryza sativa}, with reference genome, 100\% homozygous). Benchmarks 
+rice (\emph{Oryza sativa}, diploid, 100\% homozygous, with reference genome). Benchmarks 
 consisted in progressive data filtering for marker call-rate (up to 70\%) and increasing 
-proportions (up to 20\%) of known genotypes “masked” for imputation. The 
+proportions (up to 20\%) of known genotypes masked for imputation. The 
 relative performance was measured as the total proportion of correctly imputed 
 genotypes, globally and within each genotype class (two homozygotes in rice, 
 two homozygotes and one heterozygote in alfalfa). Imputation efficiency was 
@@ -21,13 +21,13 @@ missing rates, and consistently higher in rice than in alfalfa. Accuracy
 was as high as 90-100\% for the major (most frequent) homozygous genotype, but dropped 
 to 80-90\% (rice) and below 30\% (alfalfa) on the minor homozygous genotype. 
 Beagle was the best performing method, both accuracy- 
-and time-wise, when using a reference genome; when no reference 
+and time-wise, when using a reference genome. When no reference 
 genome was available, KNNI and RFI gave the highest accuracies, with KNNI 
 being much faster.
 
 \keywords{SNP, Genotyping by Sequencing (GBS), K-Nearest Neighbors Imputation 
 (KNNI), Random Forest Imputation (RFI), Singular Value Decomposition Imputation 
-(SVDI), Beagle, alfalfa, rice, imputation, reference genome}
+(SVDI), Beagle, FILLIN, alfalfa, rice, imputation, reference genome}
 \end{abstract}
 
 
