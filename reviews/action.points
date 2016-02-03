@@ -23,7 +23,7 @@
 
 12) Similarly details about imputation methods can be concise (page 7 to 12) and more details can be provided as supplementary. [maybe] : FILIPPO
 
-13) RESULTS: Need to avoid words like close to 100% better to be very precise. [try if possible: we are summarizing over methods and scenarios]: [use ranges?] : NELSON
+13) RESULTS: Need to avoid words like close to 100% better to be very precise. [try if possible: we are summarizing over methods and scenarios]: [use ranges?] : NELSON, DONE
 
 14) Maximum missing allowed and maximum percentage of missing actually present are two different things and it need to be very clear. [Explain more clear + refer to Table 2] : FILIPPO
 
@@ -41,28 +41,28 @@ Discussion
 
 Reviewer 2
 
-19) 1. Why these two species? They have very different properties which makes it difficult to associate the differences in results to particular characteristics. For example, is ploidy level more critical than a reference genome?  It might have been more insightful when including an outbred diploid species with a reference genome and similar to the rice to assess imputation accuracy with and without reference genome information. [available from our pojects, but strength point: different species allow to explore the range of applicability of imputation methods/strategies] : NELSON
+19) 1. Why these two species? They have very different properties which makes it difficult to associate the differences in results to particular characteristics. For example, is ploidy level more critical than a reference genome?  It might have been more insightful when including an outbred diploid species with a reference genome and similar to the rice to assess imputation accuracy with and without reference genome information. [available from our pojects, but strength point: different species allow to explore the range of applicability of imputation methods/strategies] : NELSON DONE
 
 20) 2. A missed opportunity to study the utilization of a reference genome of a related species, as is available for alfalfa. [DONE] : add results to plots and the results section: FILIPPO
 
-21) 3. The choice of the five imputation methods. Why these? [easy for the general imputation method, more tricky to justify Beagle over something else e.g. Tassel: literature to show it works well] : [FILLIN added for rice (explain why it did not work for alfalfa)] : NELSON
+21) 3. The choice of the five imputation methods. Why these? [easy for the general imputation method, more tricky to justify Beagle over something else e.g. Tassel: literature to show it works well] : [FILLIN added for rice (explain why it did not work for alfalfa)] : NELSON DONE
 
 22) 4. Why performs Beagle still well with the unordered SNPs in the rice dataset. How severe was the re-ordering? [Beagle is cool!] : FILIPPO
 
 23) 5. Too much attention for computational issues while this was not the main objective of the study (there was no effort to optimize implementation of the various methods, except for RF). [this can be reduced a little, though it is still interesting information; we may specify the limitation of not having optimized the code] : FILIPPO
 
-24) 6. No attention to results on individual rice chromosomes. In case there were no clear differences between chromosomes, then that should be stated more clearly. [we have all these results, will be easy to reply] : NELSON
+24) 6. No attention to results on individual rice chromosomes. In case there were no clear differences between chromosomes, then that should be stated more clearly. [we have all these results, will be easy to reply] : NELSON DONE
 
 
 Specific comments
 
-25) Line 52: It would be nice if you could provide a list of associated packages, AND explain why Beagle was selected out of these methods. [refer to our review] : NELSON
+25) Line 52: It would be nice if you could provide a list of associated packages, AND explain why Beagle was selected out of these methods. [refer to our review] : NELSON DONE (?)
 
 26) Line 78: There is no development of the best method in this study, nevertheless the results of this study may identify the essential properties of such a method. Was this discussed? [add to conclusions] : NELSON
 
-27) Line 83: For alfalfa one could use the assembly of Medicago Trancatula – was this considered? [DONE] [DISCUSS THIS - in section 4.4?] : NELSON
+27) Line 83: For alfalfa one could use the assembly of Medicago Trancatula – was this considered? [DONE] [DISCUSS THIS - in section 4.4?] : NELSON DONE
 
-28) Line 86: Why these four general methods? [ample representation of general classification/imputation methods + rutkoski] : NELSON
+28) Line 86: Why these four general methods? [ample representation of general classification/imputation methods + rutkoski] : NELSON DONE
 
 29) Line 109: How to interpret the 437 plants from 391 accessions as these accessions are supposed to be fully homozygous? Were there duplicates? [yes, they're duplicates: irrelevant for this study] : FILIPPO
 
