@@ -22,14 +22,15 @@ In total, 32\,706, 40\,734 and 166\,418 SNP markers were called by GBS in Alfalf
 
 \subsection{Imputation methods}
 \label{sec:imputation_methods}
-We considered six imputation methods: Mean Value Imputation (MNI), K-Nearest Neighbour Imputation (KNNI), Random Forest Imputation (RFI), Singular Value Decomposition Imputation (SVDI), Localized Haplotype Clustering Imputation (``Beagle'') and \textcolor{red}{haplotype reconstruction around the recombination site}
+We considered six imputation methods: Mean Value Imputation (MNI), K-Nearest Neighbors Imputation (KNNI), Random Forest Imputation (RFI), Singular Value Decomposition Imputation (SVDI), Localized Haplotype Clustering Imputation (``Beagle'') and \textcolor{red}{haplotype reconstruction around the recombination site}
 (``FILLIN'' from Tassel framework). For all algorithms we imputed a $m\times n$ matrix of m individuals and n markers whose data points, defined in the set \{0,1,2,NA\}, represented the three possible genotypes (AA, AB, and BB) and the missing value, respectively. 
 \paragraph{MNI}
 \label{par:MNI}
 : in Mean Value Imputation each missing data point was replaced by the mean of the non-missing values for that marker, then discretized to the closest value in \{0,1,2\}.
 \paragraph{KNNI}
 \label{par:KNNI}
-: in K-Nearest Neighbors Imputation missing data points were imputed based on the weighted average of the K closest markers \cite{troyanskaya_missing_2001} defined by the Simple Matching Coefficient distance function \cite{schwender_statistical_2007}, specifically designed for categorical data. $K=4$ was used in KNNI, and neighbour values were weighted by the reciprocal of their distance from the data point to be imputed.
+: in K-Nearest Neighbors Imputation missing data points were imputed based on the weighted average of the K closest markers \cite{troyanskaya_missing_2001} defined by the Simple Matching Coefficient distance function \cite{schwender_statistical_2007}, specifically designed for categorical data. $K=4$ was used in KNNI, and neighbo
+rs values were weighted by the reciprocal of their distance from the data point to be imputed.
 \paragraph{SVDI}
 \label{par:SVDI}
 : Singular Value Decomposition (SVD) imputation was based on the following factorization of the genotype matrix M (m markers, n individuals):
