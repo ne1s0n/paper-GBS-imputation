@@ -1,7 +1,7 @@
 \section{Introduction}
 \label{intro}
 
-Imputation of missing alleles and genotypes is usually a preliminary step for
+Imputation of missing alleles and genotypes is a preliminary step for
 a wide range of genetic analyses. In fact most models and software for 
 population genetics, genomic selection (GS) and genome-wide association 
 studies (GWAS) can not handle missing data and require complete datasets (e.g. \cite{hayes2009invited,aulchenko2007genabel,endelman2011rrblup,perez2014genome}). 
@@ -31,18 +31,25 @@ However, GBS data may be generated
 also for species lacking a reference genome assembly. In this case the 
 GBS output is a series of ``floating'' loci not linked to any chromosome:
 alignment is not possible and SNPs are therefore considered unordered. Unordered 
-data add additional complexity to the task of imputing missing genotypes: 
-exploitation of linkage disequilibrium and haplotype reconstruction 
+data add additional complexity to genotype imputation. Exploitation of linkage 
+disequilibrium and haplotype reconstruction 
 are less straightforward, consecutive loci may lie on different chromosomes
-or scaffolds, and overall data are less homogeneous. Rutkoski et al.~\cite{rutkoski_imputation_2013}
+or scaffolds, and overall data are less homogeneous.
+Rutkoski et al.~\cite{rutkoski_imputation_2013}
 considered the application of general data imputation methods 
 to wheat, maize and barley populations, obtaining best case scenarios accuracies 
-as high as 0.84-0.94 (measured as $R^{2}$ between true and imputed genotypes). Imputation of missing GBS data without alignment to the reference genome has been reported in alfalfa (``Medicago sativa'', \cite{Rocher_validation_2015}) and red raspberry (``Rubus idaeus'', \cite{ward_saturated_2013}).\\
-Compared to SNP-array data, GBS is more challenging: many more 
-missing genotypes, high variability between runs, intrinsically noisy data, 
-reads from different loci that can overlap. For all these reasons, imputation 
-of missing genotypes with GBS data is still a relatively immature technique, 
-not yet amenable to produce highly standardised and repeatable results. 
+as high as 0.84-0.94 (measured as $R^{2}$ between true and imputed genotypes).
+Imputation of missing GBS data without alignment to the reference genome has
+been reported in alfalfa (``Medicago sativa'', \cite{Rocher_validation_2015})
+and red raspberry (``Rubus idaeus'', \cite{ward_saturated_2013}). These studies
+however do not focus on measuring imputation efficiency and do not compare
+alternative imputation models.\\
+	%un po' una ripetizione. Togliere?
+	Compared to SNP-array data, GBS is more challenging: many more 
+	missing genotypes, high variability between runs, intrinsically noisy data, 
+	reads from different loci that can overlap. For all these reasons, imputation 
+	of missing genotypes with GBS data is still a relatively immature technique, 
+	not yet amenable to produce highly standardised and repeatable results. 
 There is therefore scientific and practical interest in gaining further 
 insights into how genotype imputation with GBS data works, and in 
 developing the best methods and strategies to accurately and efficiently 
@@ -52,7 +59,8 @@ consequences on genomic applications.\\
 In this paper, we imputed missing genotypes from GBS data in two agronomically
 important crop species:
 the cereal crop rice (\emph{Oryza sativa L.}) whose reference genome has been 
-assembled in 2005 \cite{international_rice_genome_sequencing_project_map-based_2005}, and updated in 2013 \cite{kawahara_improvement_2013},
+assembled in 2005 \cite{international_rice_genome_sequencing_project_map-based_2005},
+and updated in 2013 \cite{kawahara_improvement_2013},
 and
 the forage crop alfalfa (\emph{Medicago sativa L.}), for 
 which a reference genome is not available yet. When necessary, alfalfa genotypes
@@ -68,7 +76,10 @@ Imputation and Random Forest Imputation) with the performance of two methods spe
 for genotype imputation (localized haplotype clustering imputation, 
 implemented in the software package Beagle, \textcolor{red}{and haplotype
 reconstruction around the recombination site}, implemented in the FILLIN algorithm
-as part of Tassel suite). The four general algorithms were chosen as well known imputation strategies implemented in several freely available software libraries and frameworks. The two genotype-specific methods represent the state of the art for genotypes lacking pedigree information.\\
+as part of Tassel suite). The four general algorithms were chosen as well known 
+imputation strategies implemented in several freely available software libraries
+and frameworks. The two genotype-specific methods represent the state of the art 
+for genotypes lacking pedigree information.\\
 The relative efficiency of the different imputation methods was assessed in terms of 
 accuracy and computation time. Accuracy was measured as fraction of 
 correctly imputed genotypes, and within genotype classes 
