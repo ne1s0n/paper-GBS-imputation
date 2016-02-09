@@ -4,7 +4,7 @@
 Imputation of missing alleles and genotypes is a preliminary step for
 a wide range of genetic analyses. In fact most models and software for 
 population genetics, genomic selection (GS) and genome-wide association 
-studies (GWAS) can not handle missing data and require complete datasets (e.g. \cite{hayes2009invited,aulchenko2007genabel,endelman2011rrblup,perez2014genome}). 
+studies (GWAS) can not easily handle missing data and require complete datasets (e.g. \cite{hayes2009invited,aulchenko2007genabel,endelman2011rrblup,perez2014genome}). 
 SNP-array represent one of the leading genotyping technologies and produce 
 datasets that, after low call-rate filtering, 
 usually still contain a small proportion of uncalled genotypes (e.g., $<$5\%) 
@@ -42,7 +42,7 @@ as high as 0.84-0.94 (measured as $R^{2}$ between true and imputed genotypes).
 Imputation of missing GBS data without alignment to the reference genome has
 been reported in alfalfa (``Medicago sativa'', \cite{Rocher_validation_2015})
 and red raspberry (``Rubus idaeus'', \cite{ward_saturated_2013}). These studies
-however do not focus on measuring imputation efficiency and do not compare
+however do not focus on measuring imputation accuracy and do not compare
 alternative imputation models.\\
 	%un po' una ripetizione. Togliere?
 	Compared to SNP-array data, GBS is more challenging: many more 
@@ -63,25 +63,24 @@ assembled in 2005 \cite{international_rice_genome_sequencing_project_map-based_2
 and updated in 2013 \cite{kawahara_improvement_2013},
 and
 the forage crop alfalfa (\emph{Medicago sativa L.}), for 
-which a reference genome is not available yet. When necessary, alfalfa genotypes
+which a reference genome is not available yet. Alfalfa genotypes
 were mapped on the close relative \emph{Medicago truncatula L.}, a model species
 for legumes, whose genome is available \cite{young_medicago_2011}.
-The species were chosen 
-as representative of very different scenarios, alfalfa being autotetraploid
+The species were chosen as representative of very different scenarios, alfalfa being autotetraploid
 with high heterozygosity and rice being diploid with essentially 100\% homozygozity.
-The presented study thus encompasses a wide span of real application cases.\\
-We compared the imputation efficiency of four general imputation methods (Mean
+The present study thus encompasses a wide span of real application cases.\\
+We compared the imputation accuracy of four general imputation methods (Mean
 Value Imputation, K-Nearest Neighbor Imputation, Singular Value Decomposition
 Imputation and Random Forest Imputation) with the performance of two methods specific 
 for genotype imputation (localized haplotype clustering imputation, 
-implemented in the software package Beagle, \textcolor{red}{and haplotype
-reconstruction around the recombination site}, implemented in the FILLIN algorithm
+implemented in the software package Beagle, and a method of haplotype
+reconstruction around recombination sites, implemented in the FILLIN algorithm
 as part of Tassel suite). The four general algorithms were chosen as well known 
-imputation strategies implemented in several freely available software libraries
-and frameworks. The two genotype-specific methods represent the state of the art 
+imputation strategies implemented in several freely available software libraries.
+The two genotype-specific methods represent the state of the art 
 for genotypes lacking pedigree information.\\
 The relative efficiency of the different imputation methods was assessed in terms of 
 accuracy and computation time. Accuracy was measured as fraction of 
-correctly imputed genotypes, and within genotype classes 
+correctly imputed genotypes, both as a total and within genotype classes 
 (major/minor homozigotes, and heterozigotes, when present).
 
