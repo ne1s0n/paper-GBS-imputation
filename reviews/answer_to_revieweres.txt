@@ -1,95 +1,92 @@
 COMMENTS TO THE AUTHOR:
 
-Reviewer #1: In the MS entitled "Marker imputation efficiency for Genotyping-By-Sequencing data of crop species with and without a reference genome" Authors used different tools to impute missing SNP data in Medicago sativa, and rice. The MS demonstrated very good approach to impute SNP data even independent of whole genome sequence. No doubt the efforts made by authors are valuable. I have some major concern with the MS presentation, flow of information and regarding the novelty. Here are my point-wise comments:
+> Reviewer #1: In the MS entitled "Marker imputation efficiency for Genotyping-By-Sequencing data of crop species with and without a reference genome" Authors used different tools to impute missing SNP data in Medicago sativa, and rice. The MS demonstrated very good approach to impute SNP data even independent of whole genome sequence. No doubt the efforts made by authors are valuable. I have some major concern with the MS presentation, flow of information and regarding the novelty. Here are my point-wise comments:
 
 General Comments:
-The four methods used for imputation are now very common. Even software tool like Tassel host imputations methods like FILLIN, FSFHap, Numerical, and Beagle. There are several methods and tools available for imputation and many studies demonstrating comparisons have been published.
+> The four methods used for imputation are now very common. Even software tool like Tassel host imputations methods like FILLIN, FSFHap, Numerical, and Beagle. There are several methods and tools available for imputation and many studies demonstrating comparisons have been published.
 
-ANSWER: the main interest in our work was to assess the imputation efficiency in two important plant species, rice (major crop species) and alfalfa (forage species). We wanted to evaluate the effects of increasing missing rates, of aligning markers along the genome, and of the size of the dataset. We were also interested in checking how different imputation methods responded to different conditions. The main points that we think are novel and of interest in our owrk are: i) the imputation of missing data from GBS experiments in alfalfa (M. sativa) and rice (O. sativa); ii) the breakdown of the imputation accuracy into the different genotype classes (major and minor homozygotes, heterozygotes); iii) the effect of aligning markers to the reference genome of the species or to that of a closely related species
+ANSWER: the main interest in our work was to assess the imputation efficiency in two important plant species, rice (major crop species) and alfalfa (forage species). We wanted to evaluate the effects of increasing missing rates, of aligning markers along the genome, and of the size of the dataset. We were also interested in checking how different imputation methods responded to different conditions. The main points that we think are novel and of interest in our owrk are: i) the imputation of missing data from GBS experiments in alfalfa (M. sativa) and rice (O. sativa); ii) the breakdown of the imputation accuracy into the different genotype classes (major and minor homozygotes, heterozygotes), never done in other comparable papers; iii) the effect of aligning markers to the reference genome of the species or to that of a closely related species; iv) the effect of shuffling marker position, that allows to quantify the importance of having (good) alignments.
 
-More particularly, in species without availability of whole genome sequence methods for the imputation of SNP data have been published. For instance, Ward, et al. (Saturated linkage map construction in Rubus idaeus using genotyping by sequencing and genome-independent imputation. 2013. BMC genomics, 14(1), 2).
+> More particularly, in species without availability of whole genome sequence methods for the imputation of SNP data have been published. For instance, Ward, et al. (Saturated linkage map construction in Rubus idaeus using genotyping by sequencing and genome-independent imputation. 2013. BMC genomics, 14(1), 2).
+> Even in Alfaalfa (Medicago sativa) Rocher et al. (Validation of Genotyping-By-Sequencing Analysis in Populations of Tetraploid Alfalfa by 454 Sequencing. 2015. PloS one, 10(6), e0131918.) demonstrated imputation at missing rate 0.5.
 
-Even in Alfaalfa (Medicago sativa) Rocher et al. (Validation of Genotyping-By-Sequencing Analysis in Populations of Tetraploid Alfalfa by 454 Sequencing. 2015. PloS one, 10(6), e0131918.) demonstrated imputation at missing rate 0.5.
-
-ANSWER: the mentioned papers are indeed relevant, and were cited in the introduction of the paper
+ANSWER: the mentioned papers are indeed relevant, and were cited in the introduction of the paper. However, none of the cited papers focus on algorithm comparison, nor examine the effect of different levels of call rate.
 
 
 Specific comments:
 
-In title "crop species with and without" is miss leading since authors have used two species so better to be specific "medicago and rice".
+> In title "crop species with and without" is miss leading since authors have used two species so better to be specific "medicago and rice".
 
 ANSWER: the title was changed to "Marker imputation efficiency for Genotyping-By-Sequencing data in rice (Oryza sativa) and alfalfa (Medicago sativa)"
 
-
-Abstract need to be more concise and informative
-
-ANSWER:
-
+> Abstract need to be more concise and informative
+ANSWER: we rephrased parts of the abstract.
 
 Introduction:
 -------------
-Line 38-39, GWAS can not handle missing data- need citation and reframe the sentence. Better to verify the fact.
+> Line 38-39, GWAS can not handle missing data- need citation and reframe the sentence. Better to verify the fact.
 
-ANSWER: In the paper, we were actually saying that most models and software for GWAS etc can not handle missing data, which is quite true; GWAS and genomic predictions with missing genotypes is generally more difficult. We added a reference to a review paper by Ben Hayes et al, 2009, in animal genomics. Especially linear algebra and arithmetic methods methods suffer from missing data, whereas numerical methods like MCMC can better cope with them. In any case, using missing data, is not impossible: e.g. maximum likelihood (Handling missing data by maximum likelihood, by P.D. Allison, 2012; or Schafer, 1997: Analysis of incomplete multivariate data). We feel this is out of the scope of the present paper, though, and did not indulge in such speculations. We simply modified the sentence and added a reference.
+ANSWER: We added a reference to a review paper by Ben Hayes et al, 2009, in animal genomics, and cited other common GWAS and GS software libraries (BGLR, rrBLUP, GenABEL) that contain imputation functionalities or straightforward refuse input containing missing data points. Especially linear algebra and arithmetic methods methods suffer from missing data, whereas numerical methods like MCMC can better cope with them. In any case, using missing data, is not impossible: e.g. maximum likelihood (Handling missing data by maximum likelihood, by P.D. Allison, 2012; or Schafer, 1997: Analysis of incomplete multivariate data). We feel this is out of the scope of the present paper, though, and did not indulge in such speculations. We simply modified the sentence and added a reference.
+We rephrased the sentence to highlight that imputation is often a necessary step. 
 
-
-Line 43-44 - alternative to SNP-chip- need to improve 
+> Line 43-44 - alternative to SNP-chip- need to improve 
 
 ANSWER:  The sentence was modified to "Genotyping-by-sequencing (GBS) is a relatively recent technique which is considered a viable alternative to SNP array-based genotyping to produce SNP genotype data"
 
-Line 48 - '52% or up to 52%' need to verify the fact
+> Line 48 - '52% or up to 52%' need to verify the fact
 
 ANSWER: From Crossa et al: around 52% and 58% in two maize datasets; from Poland et al: quoting from the text "up to 80% missing data per marker" (Page 105)
 
-Line 55 -57 - imputation method has been developed for SNP-Chips. I am not sure about the accuracy of statement
+> Line 55 -57 - imputation method has been developed for SNP-Chips. I am not sure about the accuracy of statement
 
 ANSWER: sentence modified to "Most methods for genotype imputation have been applied to SNP array data, and typically yield very high imputation accuracy"
 
-Line 85- rice genome recently assemble - not true
+> Line 85- rice genome recently assemble - not true
 
-ANSWER: it was assembled in 2005, and then recently updated (2013). We made this clearer in the text
+ANSWER: it was assembled in 2005, and then recently updated (2013). We made this clearer in the text.
 
 
 Material methods:
 -----------------
-Since the MS specifically focused on imputation of SNP data, the details like salt tolerance or high dry matter yield is unnecessary. So better to concise portion from 96-114 in single sentence.
+> Since the MS specifically focused on imputation of SNP data, the details like salt tolerance or high dry matter yield is unnecessary. So better to concise portion from 96-114 in single sentence.
 
-ANSWER:
+ANSWER: the section has been reduced.
 
-Similarly details about imputation methods can be concise (page 7 to 12) and more details can be provided as supplementary.
+> Similarly details about imputation methods can be concise (page 7 to 12) and more details can be provided as supplementary.
 
-ANSWER: details on FILLIN were added; for the other method, we tried to make it more coincise, when possible
+ANSWER: details on FILLIN were added; for the other method, we tried to make it more concise, when possible
 
 Results:
 --------
-Need to avoid words like close to 100% better to be very precise.
+> Need to avoid words like close to 100% better to be very precise.
 
-ANSWER:
+ANSWER: we now always report precise values.
 
-Maximum missing allowed and maximum percentage of missing actually present are two different things and it need to be very clear.
+> Maximum missing allowed and maximum percentage of missing actually present are two different things and it need to be very clear.
 
-ANSWER: [do not know exactly what to do; leave for later on, once a new draft of the paper is complete]
+ANSWER: we clarified when necessary.
 
 
 Discussion
 ----------
-Subtitles are not good - for instance "Role of crop species" and "Size of the problem". 
+> Subtitles are not good - for instance "Role of crop species" and "Size of the problem". 
 
 ANSWER: some subtitles in the Discussion were changed
 
-Previous publication demonstrating imputation in alfalfa, and other species without genome need to be discuss. [can be expanded]
-Also it will be better to highlight importance of percent study while discussing previous paper comparing different imputation methods. [percent study??]
+> Previous publication demonstrating imputation in alfalfa, and other species without genome need to be discuss. Also it will be better to highlight importance of present study while discussing previous paper comparing different imputation methods.
 
-Fig 2. and 3 - Y axis need to be zoomed to make difference visible. [when possible; contrasts with reviewer 2]
+ANSWER: we added several publications and highlighted our position when compared to the cited studies.
 
-ANSWER: Figures 2 and 3 were modified. One reviewer was asking to keep the y-axis constant over all comparisons, at the expense of visualizing differences between methods. The other reviewer asked to zoom on the y-axis to make such differences visible. We decide to follow the suggestion of the latter reviewer, and zommed on the y-axis; this was specified in the text and in the Figure captions, to help the reader not get confused.
+> Fig 2. and 3 - Y axis need to be zoomed to make difference visible. 
 
-I suggest to reframe the MS to make it pursuable  for readers of Molecular Breeding
+ANSWER: Figures 2 and 3 were modified. One reviewer was asking to keep the y-axis constant over all comparisons, at the expense of visualizing differences between methods. The other reviewer asked to zoom on the y-axis to make such differences visible. We decide to follow the suggestion of the latter reviewer, and zoomed on the y-axis; this was specified in the text and in the Figure captions, to help the reader not get confused.
+
+> I suggest to reframe the MS to make it pursuable  for readers of Molecular Breeding
 
 ANSWER: we made an effort in that direction
 
-
-Reviewer 2
+===========================
+Reviewer #2
 
 Manuscript: Marker imputation efficiency for Genotyping-By- Sequencing data of crop species with and without a reference genome
 Authors: Nelson Nazzicari, Filippo Biscarini, Paolo Cozzi, E. Charles Brummer, Paolo Annicchiarico
@@ -98,120 +95,127 @@ General comments
 This manuscript deals with an important and emerging topic in plant (and animal) breeding as GBS is considered as a viable alternative to SNP array-based genotyping. These GBS data come with major challenges, also on the imputation of missing values. This manuscript describes the application of six algorithmic approaches to data on two plant crops that are on the edges of the wide range of genotype complexity in plants. Not surprisingly, the Beagle software performs very well (superior over all other methods) when map information is available, and much worse, when map information is absent. 
 My main concerns on the paper are:
 
-1. Why these two species? They have very different properties which makes it difficult to associate the differences in results to particular characteristics. For example, is ploidy level more critical than a reference genome?  It might have been more insightful when including an outbred diploid species with a reference genome and similar to the rice to assess imputation accuracy with and without reference genome information. [can we include other data?]
+> 1. Why these two species? They have very different properties which makes it difficult to associate the differences in results to particular characteristics. For example, is ploidy level more critical than a reference genome?  It might have been more insightful when including an outbred diploid species with a reference genome and similar to the rice to assess imputation accuracy with and without reference genome information.
 
+ANSWER: we decided to use two very different species to cover a wide range of possible outcomes. The core idea is to follow the well known practice of having an easy benchmark and a difficult one, as it is often done in machine learning community. Moreover, while a general study with several species and datasets would be desirable, it was out of the scope of the current work (and effort). The paper results are consistent both internally and with the cited literature, and we think shine some light on the examined topic, even without the use of many different datasets.
 
-2. A missed opportunity to study the utilization of a reference genome of a related species, as is available for alfalfa
+> 2. A missed opportunity to study the utilization of a reference genome of a related species, as is available for alfalfa
 
-ANSWER: In alfalfa (Medicago sativa), where no reference genome is available yet, SNP markers were aligned to the genome of a closely related species, Medicago truncatula. Results have been added to the plots. [results in the text: Nelson? Io?]
+ANSWER: We followed the reviewer advice and added the results aligning on Medicago truncatula genome.
 
+> 3. The choice of the five imputation methods. Why these?
 
-3. The choice of the five imputation methods. Why these?
+ANSWER: the (now six) imputation methods selected cover a good part of the current practice for imputation method that do not require genealogy information (like Fimpute or IMPUTE2). The genotype oriented ones (Beagle and FILLIN) are very well known and typically used in plant community. The general ones (KNNI, RFI, SVDI and MNI) are general methods easily implemented in different software platforms and libraries and hardly require any coding to be used.
+We understand that no list of algorithms could be complete, but following the steps of similar papers (e.g. Rutkoski et al, G3: Genes| Genomes| Genetics, 2013) we think to have embraced a good compromise between inclusiveness, representation, and feasibility. 
 
-ANSWER:
-
-4. Why performs Beagle still well with the unordered SNPs in the rice dataset. How severe was the re-ordering?
+> 4. Why performs Beagle still well with the unordered SNPs in the rice dataset. How severe was the re-ordering?
 
 ANSWER: Beagle performs still relatively well in rice even when reshuffling (changing the order) the SNPs. However, imputation accuracy was 0.99 with Beagle, and 0.94-0.96 when reshuffling markers. In the minority class, it was 0.96-0.98 with ordered data, and 0.60-0.80 with reshuffled data. Reshuffling was completely random, in order to break the order of SNP along the genome. The fact that imputation was not complete mayhem, is probably due to the fact that reshuffling was performed within-chromosome, thereby preserving some LD structure. As a matter of fact, results from the entire rice dataset were worse: 0.92-0.94 total imputation accuracy and 0.43-0.64 accuracy in the minority class, with reshuffled data.
 
+> 5. Too much attention for computational issues while this was not the main objective of the study (there was no effort to optimize implementation of the various methods, except for RF). 
 
-5. Too much attention for computational issues while this was not the main objective of the study (there was no effort to optimize implementation of the various methods, except for RF). 
+ANSWER: This section has been re-written, shortened where possible, and a statement, in the discussion, on the limitations of the information on computation time was added.
 
-ANSWER: This section has been re-written, shortened where possible, and a statement, in the discussion, on the limitations of the information on computation time was added. [Need to add results for FILLIN --> Nelson made the plot]
+> 6. No attention to results on individual rice chromosomes. In case there were no clear differences between chromosomes, then that should be stated more clearly.
 
-
-
-6. No attention to results on individual rice chromosomes. In case there were no clear differences between chromosomes, then that should be stated more clearly.
-
-ANSWER:
-
-In addition, various specific comments are provided below that may be of help to further strengthen the manuscript.­
+ANSWER: we made this aspect more clear (in short: no big differences between chromosomes).
 
 Specific comments
-Line 52: It would be nice if you could provide a list of associated packages, AND explain why Beagle was selected out of these methods. 
+> Line 52: It would be nice if you could provide a list of associated packages, AND explain why Beagle was selected out of these methods. 
 
-ANSWER
+ANSWER: we added several references to software sources.
 
-Line 78: There is no development of the best method in this study, nevertheless the results of this study may identify the essential properties of such a method. Was this discussed?
+> Line 78: There is no development of the best method in this study, nevertheless the results of this study may identify the essential properties of such a method. Was this discussed?
 
-ANSWER:
+ANSWER: given the very different mathematical models underlying the examined algorithms (or all algorithms, for what it's worth) we think that the essential properties of a good imputation algorithm are discussed ones, namely: accuracy (total and per class); resilience to growing missing level; computation times.
+All these aspects have been thoroughly discussed.
 
-Line 83: For alfalfa one could use the assembly of Medicago Trancatula – was this considered?
+> Line 83: For alfalfa one could use the assembly of Medicago Trancatula – was this considered?
 
-ANSWER:
+ANSWER: it is now :)
 
-Line 86: Why these four general methods?
+> Line 86: Why these four general methods?
 
-ANSWER:
+ANSWER: as answered above, those are very well known, available in many software libraries, and already proven to bear good performances (except MNI, included as reference).
 
-Line 109: How to interpret the 437 plants from 391 accessions as these accessions are supposed to be fully homozygous? Were there duplicates? 
+> Line 109: How to interpret the 437 plants from 391 accessions as these accessions are supposed to be fully homozygous? Were there duplicates? 
 
-ANSWER: yes, they're duplicates
+ANSWER: yes, they're duplicates. We state it more clearly now.
 
-Line 134: Why were these values (4 and 11) were chosen? I do not see the rational of taking 4 for a heterozygote and 11 for homozygote - shouldn’t these be the reverse? 
+> Line 134: Why were these values (4 and 11) were chosen? I do not see the rational of taking 4 for a heterozygote and 11 for homozygote - shouldn’t these be the reverse? 
 
-ANSWER:
+ANSWER: this is a common practice in GBS SNP calling. We updated the text, added references to other works doing the same, and added a section in supplementary material explaining a bit of the related math. The short answer is that no, it's in general more difficult to call a homozygote, so you want to have more reads.
 
-Line 135-139: The reduction from 5 genotypic classes to 3 genotypic classes in alfalfa is a critical simplification step. There is no justification why this step was executed. My assumption is that this is because of the (software) methods that were used. The explanation and justification should be provided here. I am wondering whether the four general methods could be applied to the 5 genotypic classes – was this considered/studied?
+> Line 135-139: The reduction from 5 genotypic classes to 3 genotypic classes in alfalfa is a critical simplification step. There is no justification why this step was executed. My assumption is that this is because of the (software) methods that were used. The explanation and justification should be provided here. I am wondering whether the four general methods could be applied to the 5 genotypic classes – was this considered/studied?
 
-ANSWER:
+ANSWER: the 5-to-3 reduction is not related to algorithms (the general ones would work without a blink) but to GBS read depth of the available data. To be able to call the heterozygote dosage it is required a high number of reads per locus, and accepting only the markers with enough reads highly reduces their number. We explained the choice in the proper M&M section and added reference to papers addressing it.
 
-Line 166:  How to interpret the ‘K closest markers’ in case there is no map or assembly information (as here for alfalfa)? 
+> Line 166:  How to interpret the ‘K closest markers’ in case there is no map or assembly information (as here for alfalfa)? 
 
 ANSWER: the distance in KNN is not the physical distance between markers along the genome, but the distance between samples (plants) based on some function of the predictors (SNP genotypes, in this case). The Simple Matching Coefficient distance (Schwender, 2007) was used in this implementation of KNN.
 
-Line 169: How was distance specified, i.e., in bp or cM?  Did you try both and if so, where there differences? 
+> Line 169: How was distance specified, i.e., in bp or cM?  Did you try both and if so, where there differences? 
 
-ANSWER: again, this is not the phyisical distance between markers, but the distance between observations based on a function of the SNPs (see above)
+ANSWER: again, this is not the physical distance between markers, but the distance between observations based on a function of the SNPs (see above)
 
-Line 173-181: I wonder whether this explanation is appropriate for this audience.
+> Line 173-181: I wonder whether this explanation is appropriate for this audience.
 
 ANSWER: we made it a bit shorter, but not too much so; we think it is helpful for the reader to be reminded at least of the basic steps of a method
 
-Line 175: Were the eigenvectors of M’M and MM’ merged to arrive at the ‘first k eigenvectors’?
+> Line 175: Were the eigenvectors of M’M and MM’ merged to arrive at the ‘first k eigenvectors’?
 
 ANSWER: the first k eigenvectors were determined based on the ordered corresponding eigenvalues. The matrix U* contained these k eigenvector
 
-Line 178: Which value for k was used, was there a decision criteria used? 
+> Line 178: Which value for k was used, was there a decision criteria used? 
 
-ANSWER: [che diciamo qui? Seguiamo Rutkoski (o che per lei)?]
+ANSWER: we used K = 4. After some trials (data not shown) we found that no big difference are found in the 3-20 range. Also, K = 4 is the same used by Rutkoski et al.
 
-Line 182: For the SVD, how critical is the initial imputation step by MNI?  Were other methods considered for this initial imputation? [I think this is just an initialization prior, and the least informative the better]
+> Line 182: For the SVD, how critical is the initial imputation step by MNI?  Were other methods considered for this initial imputation?
 
 ANSWER: the initial imputation step in SVD is just aimed at providing a sort of initialization "prior", since singular value decomposition can not be performed with missing values in the matrixes. The least informative this "prior" (e.g. MNI), the better. No other methods to initialize the marker matrix for SVD were tried.
 
-Line 185 – 198: Explain the ‘hat’ for U in equation 2. Also, why has Y no hat while there is a hat on the Y in equation 3.
+> Line 185 – 198: Explain the ‘hat’ for U in equation 2. Also, why has Y no hat while there is a hat on the Y in equation 3.
 
 ANSWER: the hat on U was a mistake and therefore removed; it is not a matrix of estimated values. However, we used the superscript U*, since this is the matrix of the first k eigenvectors of U, and therefore it is not equal to U. In equation [2], Y is the vector of observations (no hat); in equation [3] Y is the vector of predicted values (hat).
 
-Line 217: Elaborate on the content of this likelihood file or provide a reference (to the manual of Beagle)?
+> Line 217: Elaborate on the content of this likelihood file or provide a reference (to the manual of Beagle)?
 
 ANSWER: more details were added to the text, plus a reference to the Beagle Manual
 
-Line 229: What was the reason to not go beyond 20% artificially induced missing values?
+> Line 229: What was the reason to not go beyond 20% artificially induced missing values?
 
 ANSWER: we allowed maximum 70% missing genotypes per marker; in addition, we added up to 20% artificially missing genotypes. In this way, for some markers we may arrive to 90% missing data, which we considered to be the limit we didn't want to break in this study.
 
-
-Line 254: It is not clear whether the ‘total number of missing data’ refers to the sum of ‘natural’ and ‘artificial’ missing data or only to the latter part. Please improve description.
+> Line 254: It is not clear whether the ‘total number of missing data’ refers to the sum of ‘natural’ and ‘artificial’ missing data or only to the latter part. Please improve description.
 
 ANSWER: it refers to the total number of artificially (introduced) missing genotypes. This was specified in the text.
 
-Line 255: It may be confusing to use y in equation 4 as a discrete variable since Y is continuous in equations  [2] and [3]. It seems more intuitive to use g instead of y. 
+> Line 255: It may be confusing to use y in equation 4 as a discrete variable since Y is continuous in equations  [2] and [3]. It seems more intuitive to use g instead of y. 
 
 ANSWER: changed to g
 
-Line 281/Table 1 & Table 2:  Why not merge the content of these two tables?  Transpose Table 1 to have the same columns. Then ADD the genotype frequencies for the four call-rate scenarios (10,20,40,70%).  In that way the table may reveal shifts in frequencies when imposing stronger thresholds, which may invoke further inferences on results of imputation accuracies.
+> Line 281/Table 1 & Table 2:  Why not merge the content of these two tables?  Transpose Table 1 to have the same columns. Then ADD the genotype frequencies for the four call-rate scenarios (10,20,40,70%).  In that way the table may reveal shifts in frequencies when imposing stronger thresholds, which may invoke further inferences on results of imputation accuracies.
 
-ANSWER:
+ANSWER: we tried to follow the reviewer suggestion, but ended up with a table that is, in our opinion, harder to read. We consider the two small tables are handier and more to the point.
 
-Line 282: Why not present these rates as percentages as that is probably easier to read and more consistent (with e.g., line 286). 
+> Line 282: Why not present these rates as percentages as that is probably easier to read and more consistent (with e.g., line 286). 
 
 ANSWER: this was done, and modified in the text
 
-Line 284: Figure S1 does not contain information at the ‘per individual’ level 
+> Line 284: Figure S1 does not contain information at the ‘per individual’ level 
 
-ANSWER
+ANSWER: updated the text.
+
+===================================================================
+===================================================================
+===================================================================
+                           FINO A QUI
+===================================================================
+===================================================================
+===================================================================
+
+
+
 
 Line 304: How sensitive are the results to the imposed quality filters? 
 
