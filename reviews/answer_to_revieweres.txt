@@ -221,7 +221,7 @@ Line 304: How sensitive are the results to the imposed quality filters?
 
 ANSWER:
 
-Line 313/Figure 3: Suggest to maintain consistency in y-axis scale, i.e., the plots for Minor homozygous accuracy should range from 0 to 100% 
+> Line 313/Figure 3: Suggest to maintain consistency in y-axis scale, i.e., the plots for Minor homozygous accuracy should range from 0 to 100% 
 as well. 
 
 ANSWER: Reviewer 1 had the opposite suggestion, which we followed. See answer above.
@@ -261,4 +261,4 @@ ANSWER: To be checked when the new draft is ready.
 
 Figure 1: Be consistent in using rates versus percentages, i.e., this Figure uses rates while on Line 311 you refer to percentages. 
 
-ANSWER : to be checked
+ANSWER : 

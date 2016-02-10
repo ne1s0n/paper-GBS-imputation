@@ -6,10 +6,8 @@
 GBS detected 32\,706, 40\,734 and 166\,418 SNP loci in Alfalfa-PV, Alfalfa-Med and Rice, respectively (Table~\ref{tab:descriptive_statistics}). The overall missing rate was $66.6\%$, $59.6\%$ and $53.4\%$ in the three datasets. Supplementary Figure S1 shows the density distribution of missing rate per markers in the complete datasets. The amount of missing marker genotypes varied with the threshold of maximum per-marker missing-rate allowed in the data (10\%, 20\%, 40\% and 70\%) and the proportion of artificial missing genotypes that were introduced (1\%, 5\%, 10\% and 20\%). Missing data point counts ranged from a minimum of 3\,878 in Alfalfa-PV with 10\% allowed and 1\% artificial missing genotypes, to a maximum of 5\,580\,616 in Rice with 70\% allowed and 20\% artificial missing genotypes. Over all datasets and allowed/artificial missing genotypes thresholds, the amount of missing data points to be imputed averaged 249\,405.\\
 Minor Allele Frequency (MAF) was 0.172, 0.170 and 0.140 in Alfalfa-PV, Alfalfa-Med and Rice, respectively. The three datasets were therefore unbalanced with respect to genotype classes: Rice had the lowest MAF, while Alfalfa-PV and Alfalfa-Med had the smallest minor classes (minor homozygotes 3.5\% and 3.2\% of the total genotypes). Figure~\ref{fig:genotype_classes} reports the proportion of genotypes in each class in the complete datasets (100\%) and as a function of the maximum allowed missing rate per marker. The relative proportion of genotype classes remained approximately stable in rice. In contrast, the heterozygous class in alfalfa tended to become smaller with increasing proportion of allowed genotypes. This reflected the different GBS calling criteria for homozygous and heterozygous SNP: heterozygous SNPs required fewer overlapping reads to be called, while the implemented quality filters on alfalfa required a larger number of reads to call a homozygous loci. Therefore homozygous loci tended to have higher missing rates, and to
 be included progressively more with more relaxed thresholds on allowed missing level.
-The average missing-rate and MAF in the 12 rice chromosomes were comparable to the whole-rice dataset.
-\textcolor{red}{
-Alignment on reference genome assigned a position to 88.66\%, xxx\%, and xxx\% of Rice, Alfalfa-Med and Alfalfa-PV markers, respectively.
-}
+The average missing-rate and MAF in the 12 rice chromosomes were comparable to the whole-rice dataset.\\
+Alignment on reference genome assigned a position to 88.66\%, 57.54\% and 57.86\% of Rice, Alfalfa-Med and Alfalfa-PV markers, respectively.
 
 \begin{figure}
 \includegraphics[width=0.95\textwidth]{Fig01_class_breakdown_all.pdf}
@@ -19,13 +17,7 @@ Alignment on reference genome assigned a position to 88.66\%, xxx\%, and xxx\% o
 
 \subsection{Imputation accuracy}
 \label{sec:imputation_accuracy}  
-\textcolor{red}{
-\begin{itemize}
-  \item all rice chromosome gave the same results, as in Suppl figures
-  \item all numbers in this section need to be checked
-  \item what about supplementary figures? still valid?
-\end{itemize}
-}
+
 In rice, the average imputation accuracy over all genotypic classes was above 80\% for all methods. No significant difference was found between chromosomes. Thus average accuracy over all chromosomes is therefore presented (Figure~\ref{fig:accuracy_rice}). \\
 The overall accuracy for alfalfa, averaged across the two datasets, was 12-25\% lower than rice, ranging between 66\% and 84\%. No significant difference were found between the two datasets. Thus average accuracy over the Alfalfa-Med and Alfalfa-PV is presented (Figure~\ref{fig:accuracy_alfalfa}).
 
