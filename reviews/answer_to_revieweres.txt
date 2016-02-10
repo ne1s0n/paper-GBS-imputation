@@ -206,54 +206,43 @@ ANSWER: this was done, and modified in the text
 
 ANSWER: updated the text.
 
-===================================================================
-===================================================================
-===================================================================
-                           FINO A QUI
-===================================================================
-===================================================================
-===================================================================
+> Line 304: How sensitive are the results to the imposed quality filters? 
 
-
-
-
-Line 304: How sensitive are the results to the imposed quality filters? 
-
-ANSWER:
+ANSWER: not very sensitive. Quality filters have a direct effect on the elaboration steps following imputation (GWAS in particular) but little impact on imputation itself. Only very relaxed filtering would change imputation performances, since a lot of noisy data point would be included. This scenario is however very far from standard practice and of little interest for the current work.
 
 > Line 313/Figure 3: Suggest to maintain consistency in y-axis scale, i.e., the plots for Minor homozygous accuracy should range from 0 to 100% 
 as well. 
 
 ANSWER: Reviewer 1 had the opposite suggestion, which we followed. See answer above.
 
-Line 324: the flat response seems to hold for the studied range (0.01 – 0.20). Were higher values of missing rates studied?  It will be interesting to study whether there will be a critical point and whether these are different for the different genotypic classes. 
+> Line 324: the flat response seems to hold for the studied range (0.01 – 0.20). Were higher values of missing rates studied?  It will be interesting to study whether there will be a critical point and whether these are different for the different genotypic classes. 
 
-ANSWER: [diplomatic answer to be added]
+ANSWER: the cited range (0.01 - 0.20) is of injected missing data points, and it overlaps the other range (0.10 - 0.70) of naturally occurring missing data points. This brings the maximum accepted level (worst case scenario) to 0.2 + 0.7 = 0.9, which seems a good place where to stop. Please keep in mind that published works using GBS data usually filter on the 0.3-0.5 range, so we think that our choice abundantly covers the current practice.
 
-Line 347: Rather extensive reporting on computation time which seems not justified as the used methods were used as these were available to the authors, i.e.., there was not dedicated efforts to speed up the implemented methods. 
+> Line 347: Rather extensive reporting on computation time which seems not justified as the used methods were used as these were available to the authors, i.e.., there was not dedicated efforts to speed up the implemented methods. 
 
-ANSWER: This section has been re-written, shortened where possible, and a statement, in the discussion, on the limitations of the information on computation time was added. [Need to add results for FILLIN --> Nelson made the plot]
+ANSWER: This section has been re-written, shortened where possible, and a statement, in the discussion, on the limitations of the information on computation time was added.
 
-Line 379-381: Where was this negative impact shown?  In this study or other studies – please include references.
+> Line 379-381: Where was this negative impact shown?  In this study or other studies – please include references.
 
-ANSWER: a reference to Rutkoski et al was added;we tried to explain better the difference between SNP array (~5% missing) and GBS data (~50% missing)
+ANSWER: a reference to Rutkoski et al was added. We tried to explain better the difference between SNP array (~5% missing) and GBS data (~50% missing)
 
-Line 401-407: This is still rather descriptive without any postulation whether any of the methods are less or more sensitive to MAF and/or balance.  The superior results of Beagle in rice are mostly driven by utilizing map/assembly information which is ignored by other methods. 
+> Line 401-407: This is still rather descriptive without any postulation whether any of the methods are less or more sensitive to MAF and/or balance.  The superior results of Beagle in rice are mostly driven by utilizing map/assembly information which is ignored by other methods. 
 
-ANSWER
+ANSWER We updated the section, improving the description and commenting the results of an extra method that uses marker information.
 
 
-Line 440: The reasoning on factor ii) is not clear – would the results for rice be less accurate when analysing the genome at once? Also, why would it simplify the imputation process?
+> Line 440: The reasoning on factor ii) is not clear – would the results for rice be less accurate when analysing the genome at once? Also, why would it simplify the imputation process?
 
-ANSWER: First, the per-chromosome analysis simplifies calculations, and allow for straightforward parallelization. Additionally, the results with rice as a whole are less accurate when markers are reshuffle [add numbers/supplementary Table/Figure?]; this is because the LD structure is better preserved when reshuffling markers.
+ANSWER: First, the per-chromosome analysis simplifies calculations, and allow for straightforward parallelization. Additionally, the results with rice as a whole are less accurate when markers are shuffled [add numbers/supplementary Table/Figure?]; this is because the LD structure is better preserved when reshuffling markers.
 
-Line 443: Did you explore the population structure of the three datasets? Would presence/absence of (severe) population structure affect imputation accuracy?
+> Line 443: Did you explore the population structure of the three datasets? Would presence/absence of (severe) population structure affect imputation accuracy?
 
-Answer: i) no structure in alfalfa, presence of structure in rice (indica/tropical/temperate); ii) implicitely exploited by most imputation methods (e.g. KNN --> distance based on genetic relatedness); iii) not likely to affect much imputation accuracy; iv) this is not GWAS: the interest is not in estimating the effect of the SNP (which may be inflated if other factors are not included in the model), but in "prediction/classification" of the missing genotype to be imputed; 
+Answer: i) no structure in alfalfa, presence of structure in rice (indica/tropical/temperate); ii) implicitly exploited by most imputation methods (e.g. KNN --> distance based on genetic relatedness); iii) not likely to affect much imputation accuracy; iv) this is not GWAS: the interest is not in estimating the effect of the SNP (which may be inflated if other factors are not included in the model), but in "prediction/classification" of the missing genotype to be imputed; 
 
-Line 450: It is too easy to state that there is additional complexity to make use of a reference genome of a related species. It would be of HIGH relevance to explore this as it may be applied in many species that lack a reference genome themselves.
+> Line 450: It is too easy to state that there is additional complexity to make use of a reference genome of a related species. It would be of HIGH relevance to explore this as it may be applied in many species that lack a reference genome themselves.
 
-ANSWER: 
+ANSWER: we added the study using Medicago Truncatula.
 
 Line 535-540: Too general/vague and thus not clear why this paragraph is included in the conclusion section (or even in the manuscript)! [
 
