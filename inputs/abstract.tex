@@ -9,20 +9,19 @@ Neighbors, Random Forest, Singular Value Decomposition, and Mean Value)
 and two genotype-specific methods (``Beagle'' and FILLIN) were measured 
 on GBS data from alfalfa (\emph{Medicago sativa L.}, autotetraploid, heterozygous, 
 without reference genome) and 
-rice (\emph{Oryza sativa L.}, diploid, 100\% homozygous, with reference genome). Benchmarks 
+rice (\emph{Oryza sativa L.}, diploid, 100\% homozygous, with reference genome). Alfalfa SNP were aligned on the genome of the closely related species \emph{Medicago truncatula L.}. Benchmarks 
 consisted in progressive data filtering for marker call-rate (up to 70\%) and increasing 
 proportions (up to 20\%) of known genotypes masked for imputation. The 
 relative performance was measured as the total proportion of correctly imputed 
 genotypes, globally and within each genotype class (two homozygotes in rice, 
 two homozygotes and one heterozygote in alfalfa).\\
-we found that imputation accuracy was robust to increasing 
+We found that imputation accuracy was robust to increasing 
 missing rates, and consistently higher in rice than in alfalfa. Accuracy 
 was as high as 90-100\% for the major (most frequent) homozygous genotype, but dropped 
 to 80-90\% (rice) and below 30\% (alfalfa) in the minor homozygous genotype. 
 Beagle was the best performing method, both accuracy- 
-and time-wise, when using a reference genome. When no reference 
-genome was available, KNNI and RFI gave the highest accuracies, with KNNI 
-being much faster.
+and time-wise, in rice. In alfalfa, KNNI and RFI gave the highest accuracies, but KNNI 
+was much faster.
 
 \keywords{SNP, Genotyping by Sequencing (GBS), K-Nearest Neighbors Imputation 
 (KNNI), Random Forest Imputation (RFI), Singular Value Decomposition Imputation 
