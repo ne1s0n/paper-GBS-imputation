@@ -166,7 +166,7 @@ ANSWER: we made it a bit shorter, but not too much so; we think it is helpful fo
 
 > Line 175: Were the eigenvectors of M’M and MM’ merged to arrive at the ‘first k eigenvectors’?
 
-ANSWER: the first k eigenvectors were determined based on the ordered corresponding eigenvalues. The matrix U* contained these k eigenvector
+ANSWER: the columns of matrix U contain the eigenvectors of MM' (n x n matrix), the columns of matrix V contain the eigenvectors of M'M (m x m matrix). The n diagonal elements of matrix Sigma (n x m) are the square root of the eigenvalues of matrix U (n x n) (which should correspond also to the non-zero eigenvalues of V' / M'M). The first k eigenvectors of U were then determined based on the ordered corresponding eigenvalues. The matrix U* (n x k) contains these k eigenvectors, which multiplied by the k regression coefficients in vector beta return the (n x 1) column vector of estimated genotypes at locus j.
 
 > Line 178: Which value for k was used, was there a decision criteria used? 
 
@@ -246,11 +246,7 @@ This happens because the LD structure is better preserved when reshuffling marke
 
 > Line 443: Did you explore the population structure of the three datasets? Would presence/absence of (severe) population structure affect imputation accuracy?
 
-ANSWER: we updated the manuscript to discuss the issue of population structure. In brief:
-
-i) there is no population structure in alfalfa, as reported by published study. Rice has structure, though, since the dataset is a collation of several subpopulations (indica/tropical/temperate)
-ii) population structure is implicitly exploited by most imputation methods, in particular those performing data clusterization (e.g. KNN --> distance based on genetic relatedness) 
-iii) it is however not likely to affect much imputation accuracy. This is not GWAS, and the interest is not in estimating the effect of the SNP (which may be inflated if other factors are not included in the model), but in "prediction/classification" of the missing genotype to be imputed.
+Answer: There was no population structure in alfalfa (see Annicchiarico et al. 2015). On the other hand, there was population structure in rice (indica, tropical and temperate japonica). Most imputation methods implicitly exploit population structure (e.g. KNN --> distance based on genetic relatedness; Beagle --> haplotype reconstructed based on genetic similarities), without explicitly modelling it.  Imputation of missing genotypes is not GWAS, where the significance and estimate of SNP effects may be inflated if population structure is not included in the model), and the impact on the accuracy of imputation is likely to be small. In cattle from Scandinavian countries, Brondum et al (2012) actually found higher imputation accuracy when combining populations (cattle breeds) in Beagle (without explicitly modelling the population structure), most likely as a result of the larger sample size. However, the influence of population structure on the accuracy of imputation was not formally tested in this work. Though interesting, we feel that this is outside of the scope of the present paper, which already contains a large amount of comparisons and results. These considerations were added to the discussion.
 
 > Line 450: It is too easy to state that there is additional complexity to make use of a reference genome of a related species. It would be of HIGH relevance to explore this as it may be applied in many species that lack a reference genome themselves.
 

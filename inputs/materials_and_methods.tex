@@ -32,21 +32,21 @@ We considered six imputation methods: Mean Value Imputation (MNI), K-Nearest Nei
 rs values were weighted by the reciprocal of their distance from the data point to be imputed.
 \paragraph{SVDI}
 \label{par:SVDI}
-: Singular Value Decomposition (SVD) imputation was based on the following factorization of the genotype matrix M (m markers, n individuals):
+: Singular Value Decomposition (SVD) imputation was based on the following factorization of the genotype matrix M (n individuals, m markers):
 
 \begin{equation}
 \label{eq:SVDI_general}
 M = U\Sigma V^{T}
 \end{equation}
 
-where U is a $m \times m$ unitary matrix (i.e. $UU^{T}=I$), $\Sigma$ is a $m \times n$ rectangular diagonal matrix of singular values and $V^{T}$ is the $n \times n$ conjugate transpose of the unitary matrix V. Matrix U and V contain the eigenvectors of $M^{T}M$ and $MM^{T}$, respectively, and the corresponding non-zero singular values in $\Sigma$ are equivalent to the square-root of the eigenvalues of $M^{T}M$ and $MM^{T}$. The first k eigenvectors - ordered by decreasing eigenvalue - capture most of the information in the marker genotype matrix, and were used to generate linear combinations (principal components) of the original m markers for the imputation of missing data points. The imputation procedure comprised: (i) initial imputation of missing genotypes using MNI, since SVD can only be performed on complete matrices; (ii) SVD to select the most informative k eigenvectors of the marker genotype matrix; (iii) these k eigenvectors were used as predictors in a linear regression model for marker genotypes:
+where U is a $n \times n$ unitary matrix (i.e. $UU^{T}=I$), $\Sigma$ is a $n \times m$ rectangular diagonal matrix of singular values and $V^{T}$ is the $m \times m$ conjugate transpose of the unitary matrix V. The columns of matrix U and matrix V contain the eigenvectors of $MM^{T}_{(n \times n)}$ and $M^{T}M_{(m \times m)}$, respectively, and the corresponding non-zero singular values in $\Sigma$ are equivalent to the square-root of the non-zero eigenvalues of $MM^{T}$ and $M^{T}M$. The first k eigenvectors in U - ordered by decreasing eigenvalue (from $\Sigma$) - capture most of the information in the marker genotype matrix M, and were used to generate linear combinations (principal components) of the original m markers for the imputation of missing data points. The imputation procedure comprised: (i) initial imputation of missing genotypes using MNI, since SVD can only be performed on complete matrices; (ii) SVD to select the most informative k eigenvectors of the marker genotype matrix; (iii) these k eigenvectors were used as predictors in a linear regression model for marker genotypes:
 
 \begin{equation}
 \label{eq:SVDI_regression}
 Y = U^*\beta +\varepsilon 
 \end{equation}
 
-with Y as vector of genotypes at marker j; $U^*$ matrix of the first k eigenvectors; $\beta$ vector of regression coefficients; $\varepsilon$ random errors terms; (iv) all eigenvectors (matrix U) and $\beta$ were used to estimate missing values at marker j. The procedure was repeated (steps (ii) to (iv)) until convergence. The final imputed data points were then discretized to the closer genotype in \{0,1,2\}. Additional details on SVDI can be found in \cite{troyanskaya_missing_2001}
+with Y as vector of n genotypes at marker j; $U^*$ the $n \times k$ matrix of the first k eigenvectors; $\beta$ the vector of $k$ regression coefficients; $\varepsilon$ the random error terms; (iv) all eigenvectors (matrix $U^*$) and $\beta$ were used to estimate missing values at marker j. The procedure was repeated (steps (ii) to (iv)) until convergence. The final imputed data points were then discretized to the closer genotype in \{0,1,2\}. Additional details on SVDI can be found in \cite{troyanskaya_missing_2001}
 
 \paragraph{RFI}
 \label{par:RFI}
