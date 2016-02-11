@@ -22,3 +22,10 @@ for (a in unique(df$algorithm)){
 }}
 
 mean(subset(df, population == 'rice_chrom')$majHom)
+mean(subset(df, population == 'rice')$majHom)
+
+mean(subset(df, population == 'rice_chrom')$minHom)
+mean(subset(df, population == 'rice')$minHom)
+
+mean(subset(df, population == 'rice_chrom')$totAccuracy)
+mean(subset(df, population == 'rice')$totAccuracy)
