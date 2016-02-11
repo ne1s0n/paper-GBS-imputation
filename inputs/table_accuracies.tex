@@ -1,6 +1,7 @@
 \begin{table}
 \centering
-\caption[Accuracy statistics]{some long caption}
+\caption[Accuracy statistics]{Imputation accuracies (as percentages) for the various
+datasets and methods, averaged over all allowed and injected missing thresholds. Rice data are reported averaged by chromosome and on the complete genotypes. Alfalfa data are reported averaged over the two Alfalfa-PV and Alfalfa-Med populations. FILLIN failed to impute alfalfa datasets.}
 \label{tab:accuracy_statistics}
 \begin{tabular}{llcccc}
 \hline\noalign{\smallskip}
@@ -11,10 +12,10 @@ alfalfa & Beagle & 73.14 & 14.27 & 99.37 & 20.77\\
 alfalfa & Beagle (shuffle) & 66.34 & 1.31 & 99.88 & 0.50\\
 alfalfa & kNNI & 82.20 & 14.68 & 90.82 & 66.03\\
 alfalfa & MNI & 78.38 & 0.00 & 88.69 & 58.88\\
-alfalfa & RFI  & 79.50 & 0.00 & 89.05 & 61.75\\
+alfalfa & RFI  & 79.50 & 0.01 & 89.05 & 61.75\\
 alfalfa & SVDI & 77.36 & 4.47 & 85.81 & 61.67\\
-alfalfa & FILLIN & * & * & * & *\\
-alfalfa & FILLIN (shuffle)  & * & * & * & *\\
+alfalfa & FILLIN & * & * & * & -\\
+alfalfa & FILLIN (shuffle)  & * & * & * & -\\
 rice (chr) & Beagle & 99.58 & 97.50 & 99.80 & -\\
 rice (chr) & Beagle (shuffle) & 96.09 & 74.73 & 98.42 & -\\
 rice (chr) & kNNI & 98.10 & 89.12 & 99.04 & -\\
