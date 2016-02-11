@@ -21,6 +21,8 @@ for (a in unique(df$algorithm)){
  ))
 }}
 
+write.csv(x = res, file='compact_res.csv', row.names = FALSE)
+
 mean(subset(df, population == 'rice_chrom')$majHom)
 mean(subset(df, population == 'rice')$majHom)
 

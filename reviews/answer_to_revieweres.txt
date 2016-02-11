@@ -10,7 +10,7 @@ ANSWER: the main interest in our work was to assess the imputation efficiency in
 > More particularly, in species without availability of whole genome sequence methods for the imputation of SNP data have been published. For instance, Ward, et al. (Saturated linkage map construction in Rubus idaeus using genotyping by sequencing and genome-independent imputation. 2013. BMC genomics, 14(1), 2).
 > Even in Alfaalfa (Medicago sativa) Rocher et al. (Validation of Genotyping-By-Sequencing Analysis in Populations of Tetraploid Alfalfa by 454 Sequencing. 2015. PloS one, 10(6), e0131918.) demonstrated imputation at missing rate 0.5.
 
-ANSWER: the mentioned papers are indeed relevant, and were cited in the introduction of the paper. However, none of the cited papers focus on algorithm comparison, nor examine the effect of different levels of call rate.
+ANSWER: the mentioned papers are indeed relevant, and were cited in the introduction of the paper. However, none of the cited papers focus on algorithm comparison, nor examine the effect of different levels of call rate and missing rate.
 
 
 Specific comments:
@@ -26,7 +26,7 @@ Introduction:
 -------------
 > Line 38-39, GWAS can not handle missing data- need citation and reframe the sentence. Better to verify the fact.
 
-ANSWER: We added a reference to a review paper by Ben Hayes et al, 2009, in animal genomics, and cited other common GWAS and GS software libraries (BGLR, rrBLUP, GenABEL) that contain imputation functionalities or straightforward refuse input containing missing data points. Especially linear algebra and arithmetic methods methods suffer from missing data, whereas numerical methods like MCMC can better cope with them. In any case, using missing data, is not impossible: e.g. maximum likelihood (Handling missing data by maximum likelihood, by P.D. Allison, 2012; or Schafer, 1997: Analysis of incomplete multivariate data). We feel this is out of the scope of the present paper, though, and did not indulge in such speculations. We simply modified the sentence and added a reference.
+ANSWER: We added a reference to a review paper by Ben Hayes et al, 2009, in animal genomics, and cited other common GWAS and GS software libraries (BGLR, rrBLUP, GenABEL) that refuse input containing missing data points or that contain imputation functionalities to prepare data for analysis. Especially linear algebra and arithmetic methods suffer from missing data, whereas numerical methods like MCMC can better cope with them. In any case, using missing data, is not impossible: e.g. maximum likelihood (Handling missing data by maximum likelihood, by P.D. Allison, 2012; or Schafer, 1997: Analysis of incomplete multivariate data). We feel this is out of the scope of the present paper, though, and did not indulge in such speculations. We simply modified the sentence and added a reference.
 We rephrased the sentence to highlight that imputation is often a necessary step. 
 
 > Line 43-44 - alternative to SNP-chip- need to improve 
@@ -98,6 +98,7 @@ My main concerns on the paper are:
 > 1. Why these two species? They have very different properties which makes it difficult to associate the differences in results to particular characteristics. For example, is ploidy level more critical than a reference genome?  It might have been more insightful when including an outbred diploid species with a reference genome and similar to the rice to assess imputation accuracy with and without reference genome information.
 
 ANSWER: we decided to use two very different species to cover a wide range of possible outcomes. The core idea is to follow the well known practice of having an easy benchmark and a difficult one, as it is often done in machine learning community. Moreover, while a general study with several species and datasets would be desirable, it was out of the scope of the current work (and effort). The paper results are consistent both internally and with the cited literature, and we think shine some light on the examined topic, even without the use of many different datasets.
+We however understand the reasoning in the reviewer's question, and decided to adjust the declared target of the paper to be less general and focus more on the studied species. The change of title goes in that direction, as much as a big part of the updated text.  
 
 > 2. A missed opportunity to study the utilization of a reference genome of a related species, as is available for alfalfa
 
@@ -127,7 +128,7 @@ ANSWER: we added several references to software sources.
 
 > Line 78: There is no development of the best method in this study, nevertheless the results of this study may identify the essential properties of such a method. Was this discussed?
 
-ANSWER: given the very different mathematical models underlying the examined algorithms (or all algorithms, for what it's worth) we think that the essential properties of a good imputation algorithm are discussed ones, namely: accuracy (total and per class); resilience to growing missing level; computation times.
+ANSWER: given the very different mathematical models underlying the examined algorithms (or all imputation algorithms, for what it's worth) we think that the essential properties of a good imputation algorithm are already discussed, namely: accuracy (total and per class); resilience to growing missing level; computation times.
 All these aspects have been thoroughly discussed.
 
 > Line 83: For alfalfa one could use the assembly of Medicago Trancatula – was this considered?
@@ -149,7 +150,7 @@ ANSWER: this is a common practice in GBS SNP calling. We updated the text, added
 > Line 135-139: The reduction from 5 genotypic classes to 3 genotypic classes in alfalfa is a critical simplification step. There is no justification why this step was executed. My assumption is that this is because of the (software) methods that were used. The explanation and justification should be provided here. I am wondering whether the four general methods could be applied to the 5 genotypic classes – was this considered/studied?
 
 ANSWER: the 5-to-3 reduction is not strictly related to algorithms. In fact, the general algorithms would work easily on any number of classes: MNI, SVDI and RFI would produce continuous values in the [0-4] range, and KNNI is naturally oriented toward a discrete outputs. Beagle and FILLIN, on the other hand, are less flexible, and using them on tetraploid genotypes is not straightforward.
-However, the main reason for the simplification of heterozygotes is the available GBS read depth. To be able to call the heterozygote dosage it is required a high number of reads per locus, and accepting only the markers with enough reads highly reduces their number. We explained the choice in the proper M&M section and added reference to papers following this (common) practice.
+However, the main reason for the simplification of heterozygotes is the available GBS read depth. To be able to call the heterozygote dosage a high number of reads per locus is required, and accepting only the markers with enough reads highly reduces their number. We explained the choice in the proper M&M section and added reference to papers following this (common) practice.
 
 > Line 166:  How to interpret the ‘K closest markers’ in case there is no map or assembly information (as here for alfalfa)? 
 
@@ -235,20 +236,30 @@ ANSWER We updated the section, improving the description and commenting the resu
 
 > Line 440: The reasoning on factor ii) is not clear – would the results for rice be less accurate when analysing the genome at once? Also, why would it simplify the imputation process?
 
-ANSWER: First, the per-chromosome analysis simplifies calculations, and allow for straightforward parallelization. Additionally, the results with rice as a whole are less accurate when markers are shuffled [add numbers/supplementary Table/Figure?]; this is because the LD structure is better preserved when reshuffling markers.
+ANSWER: First, the per-chromosome analysis simplifies calculations, and allows for straightforward parallelization. Additionally, the results with rice as a whole are less accurate when markers are shuffled. In fact, accuracy losses are:
+
+- total: -6% on total rice, -3% on chromosomes
+- major homozigote: -2% on total rice, -1% on chromosomes
+- minor homozigote: -41% on total rice, -22% on chromosomes
+
+This happens because the LD structure is better preserved when reshuffling markers within chromosomes.
 
 > Line 443: Did you explore the population structure of the three datasets? Would presence/absence of (severe) population structure affect imputation accuracy?
 
-Answer: i) no structure in alfalfa, presence of structure in rice (indica/tropical/temperate); ii) implicitly exploited by most imputation methods (e.g. KNN --> distance based on genetic relatedness); iii) not likely to affect much imputation accuracy; iv) this is not GWAS: the interest is not in estimating the effect of the SNP (which may be inflated if other factors are not included in the model), but in "prediction/classification" of the missing genotype to be imputed; 
+ANSWER: we updated the manuscript to discuss the issue of population structure. In brief:
+
+i) there is no population structure in alfalfa, as reported by published study. Rice has structure, though, since the dataset is a collation of several subpopulations (indica/tropical/temperate)
+ii) population structure is implicitly exploited by most imputation methods, in particular those performing data clusterization (e.g. KNN --> distance based on genetic relatedness) 
+iii) it is however not likely to affect much imputation accuracy. This is not GWAS, and the interest is not in estimating the effect of the SNP (which may be inflated if other factors are not included in the model), but in "prediction/classification" of the missing genotype to be imputed.
 
 > Line 450: It is too easy to state that there is additional complexity to make use of a reference genome of a related species. It would be of HIGH relevance to explore this as it may be applied in many species that lack a reference genome themselves.
 
 ANSWER: we added the study using Medicago Truncatula.
 
-Line 535-540: Too general/vague and thus not clear why this paragraph is included in the conclusion section (or even in the manuscript)! [
+> Line 535-540: Too general/vague and thus not clear why this paragraph is included in the conclusion section (or even in the manuscript)! 
 
-ANSWER: To be checked when the new draft is ready.
+ANSWER: We updated the section to provide a more incisive conclusion.
 
-Figure 1: Be consistent in using rates versus percentages, i.e., this Figure uses rates while on Line 311 you refer to percentages. 
+> Figure 1: Be consistent in using rates versus percentages, i.e., this Figure uses rates while on Line 311 you refer to percentages. 
 
 ANSWER : 
