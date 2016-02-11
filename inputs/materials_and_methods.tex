@@ -46,7 +46,7 @@ where U is a $n \times n$ unitary matrix (i.e. $UU^{T}=I$), $\Sigma$ is a $n \ti
 Y = U^*\beta +\varepsilon 
 \end{equation}
 
-with Y as vector of n genotypes at marker j; $U^*$ the $n \times k$ matrix of the first k eigenvectors; $\beta$ the vector of $k$ regression coefficients; $\varepsilon$ the random error terms; (iv) all eigenvectors (matrix $U^*$) and $\beta$ were used to estimate missing values at marker j. The procedure was repeated (steps (ii) to (iv)) until convergence. The final imputed data points were then discretized to the closer genotype in \{0,1,2\}. Additional details on SVDI can be found in \cite{troyanskaya_missing_2001}
+with Y as vector of n genotypes at marker j; $U^*$ the $n \times k$ matrix of the first k eigenvectors; $\beta$ the vector of $k$ regression coefficients; $\varepsilon$ the random error terms; (iv) all eigenvectors (matrix $U^*$) and $\beta$ were used to estimate missing values at marker j. The procedure was repeated (steps (ii) to (iv)) until convergence. The final imputed data points were then discretized to the closer genotype in \{0,1,2\}. A value of $k=4$ for the eigenvectors to be selected in $U^*$ was used in our implementation of SVDI, based on empirical results in the range $3--20$ (data not shown). Additional details on SVDI can be found in \cite{troyanskaya_missing_2001}
 
 \paragraph{RFI}
 \label{par:RFI}

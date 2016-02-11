@@ -39,11 +39,11 @@ ANSWER: From Crossa et al: around 52% and 58% in two maize datasets; from Poland
 
 > Line 55 -57 - imputation method has been developed for SNP-Chips. I am not sure about the accuracy of statement
 
-ANSWER: sentence modified to "Most methods for genotype imputation have been applied to SNP array data, and typically yield very high imputation accuracy"
+ANSWER: sentence modified to "Most methods for genotype imputation have been applied to SNP array data, and typically yield very high imputation accuracy". [see P3, L55-56]
 
 > Line 85- rice genome recently assemble - not true
 
-ANSWER: it was assembled in 2005, and then recently updated (2013). We made this clearer in the text.
+ANSWER: it was assembled in 2005, and then recently updated (2013). We made this clearer in the text. [P4, L88]
 
 
 Material methods:
@@ -102,7 +102,7 @@ We however understand the reasoning in the reviewer's question, and decided to a
 
 > 2. A missed opportunity to study the utilization of a reference genome of a related species, as is available for alfalfa
 
-ANSWER: We followed the reviewer advice and added the results aligning on Medicago truncatula genome.
+ANSWER: We followed the reviewer advice and added the results of aligning on Medicago truncatula genome.
 
 > 3. The choice of the five imputation methods. Why these?
 
@@ -124,7 +124,7 @@ ANSWER: we made this aspect more clear (in short: no big differences between chr
 Specific comments
 > Line 52: It would be nice if you could provide a list of associated packages, AND explain why Beagle was selected out of these methods. 
 
-ANSWER: we added several references to software sources.
+ANSWER: we added several references to software sources. [e.g. reference to a review on software for (animal) genomics, + reference to all software used in the paper: e.g. Beagle, Tassel, R packages]
 
 > Line 78: There is no development of the best method in this study, nevertheless the results of this study may identify the essential properties of such a method. Was this discussed?
 
@@ -166,11 +166,11 @@ ANSWER: we made it a bit shorter, but not too much so; we think it is helpful fo
 
 > Line 175: Were the eigenvectors of M’M and MM’ merged to arrive at the ‘first k eigenvectors’?
 
-ANSWER: the columns of matrix U contain the eigenvectors of MM' (n x n matrix), the columns of matrix V contain the eigenvectors of M'M (m x m matrix). The n diagonal elements of matrix Sigma (n x m) are the square root of the eigenvalues of matrix U (n x n) (which should correspond also to the non-zero eigenvalues of V' / M'M). The first k eigenvectors of U were then determined based on the ordered corresponding eigenvalues. The matrix U* (n x k) contains these k eigenvectors, which multiplied by the k regression coefficients in vector beta return the (n x 1) column vector of estimated genotypes at locus j.
+ANSWER: the columns of matrix U contain the eigenvectors of MM' (n x n matrix), the columns of matrix V contain the eigenvectors of M'M (m x m matrix). The n diagonal elements of matrix Sigma (n x m) are the square root of the eigenvalues of matrix U (n x n) (which should correspond also to the non-zero eigenvalues of V' / M'M). The first k eigenvectors of U were then determined based on the ordered corresponding eigenvalues. The matrix U* (n x k) contains these k eigenvectors, which multiplied by the k regression coefficients in vector beta return the (n x 1) column vector of estimated genotypes at locus j. This has been made clearer in the text [P8, L189-199]
 
 > Line 178: Which value for k was used, was there a decision criteria used? 
 
-ANSWER: we used K = 4. After some trials (data not shown) we found that no big difference are found in the 3-20 range. Also, K = 4 is the same used by Rutkoski et al.
+ANSWER: we used K = 4. After some trials (data not shown) we found that no big difference are found in the 3-20 range. Also, K = 4 is the same used by Rutkoski et al.. This was added to the text [P9, L209-211]
 
 > Line 182: For the SVD, how critical is the initial imputation step by MNI?  Were other methods considered for this initial imputation?
 
@@ -182,7 +182,7 @@ ANSWER: the hat on U was a mistake and therefore removed; it is not a matrix of 
 
 > Line 217: Elaborate on the content of this likelihood file or provide a reference (to the manual of Beagle)?
 
-ANSWER: more details were added to the text, plus a reference to the Beagle Manual
+ANSWER: more details were added to the text, plus a reference to the Beagle Manual [P10, L236-240]
 
 > Line 229: What was the reason to not go beyond 20% artificially induced missing values?
 
@@ -190,7 +190,7 @@ ANSWER: we allowed maximum 70% missing genotypes per marker; in addition, we add
 
 > Line 254: It is not clear whether the ‘total number of missing data’ refers to the sum of ‘natural’ and ‘artificial’ missing data or only to the latter part. Please improve description.
 
-ANSWER: it refers to the total number of artificially (introduced) missing genotypes. This was specified in the text.
+ANSWER: it refers to the total number of artificially (introduced) missing genotypes. This was specified in the text. [P12, L282]
 
 > Line 255: It may be confusing to use y in equation 4 as a discrete variable since Y is continuous in equations  [2] and [3]. It seems more intuitive to use g instead of y. 
 
@@ -206,7 +206,7 @@ ANSWER: this was done, and modified in the text
 
 > Line 284: Figure S1 does not contain information at the ‘per individual’ level 
 
-ANSWER: updated the text.
+ANSWER: updated the text. [P13, L317]
 
 > Line 304: How sensitive are the results to the imposed quality filters? 
 
@@ -227,7 +227,7 @@ ANSWER: This section has been re-written, shortened where possible, and a statem
 
 > Line 379-381: Where was this negative impact shown?  In this study or other studies – please include references.
 
-ANSWER: a reference to Rutkoski et al was added. We tried to explain better the difference between SNP array (~5% missing) and GBS data (~50% missing)
+ANSWER: references to Rutkoski et al  and to Annicchiarico et al were added. We tried to explain better the difference between SNP array (~5% missing) and GBS data (~50% missing) [P18, L432-435]
 
 > Line 401-407: This is still rather descriptive without any postulation whether any of the methods are less or more sensitive to MAF and/or balance.  The superior results of Beagle in rice are mostly driven by utilizing map/assembly information which is ignored by other methods. 
 
@@ -246,15 +246,15 @@ This happens because the LD structure is better preserved when reshuffling marke
 
 > Line 443: Did you explore the population structure of the three datasets? Would presence/absence of (severe) population structure affect imputation accuracy?
 
-Answer: There was no population structure in alfalfa (see Annicchiarico et al. 2015). On the other hand, there was population structure in rice (indica, tropical and temperate japonica). Most imputation methods implicitly exploit population structure (e.g. KNN --> distance based on genetic relatedness; Beagle --> haplotype reconstructed based on genetic similarities), without explicitly modelling it.  Imputation of missing genotypes is not GWAS, where the significance and estimate of SNP effects may be inflated if population structure is not included in the model), and the impact on the accuracy of imputation is likely to be small. In cattle from Scandinavian countries, Brondum et al (2012) actually found higher imputation accuracy when combining populations (cattle breeds) in Beagle (without explicitly modelling the population structure), most likely as a result of the larger sample size. However, the influence of population structure on the accuracy of imputation was not formally tested in this work. Though interesting, we feel that this is outside of the scope of the present paper, which already contains a large amount of comparisons and results. These considerations were added to the discussion.
+Answer: There was no population structure in alfalfa (see Annicchiarico et al. 2015). On the other hand, there was population structure in rice (indica, tropical and temperate japonica). Most imputation methods implicitly exploit population structure (e.g. KNN --> distance based on genetic relatedness; Beagle --> haplotype reconstructed based on genetic similarities), without explicitly modelling it.  Imputation of missing genotypes is not GWAS, where the significance and estimate of SNP effects may be inflated if population structure is not included in the model), and the impact on the accuracy of imputation is likely to be small. In cattle from Scandinavian countries, Brondum et al (2012) actually found higher imputation accuracy when combining populations (cattle breeds) in Beagle (without explicitly modelling the population structure), most likely as a result of the larger sample size. However, the influence of population structure on the accuracy of imputation was not formally tested in this work. Though interesting, we feel that this is outside of the scope of the present paper, which already contains a large amount of comparisons and results. These considerations were added to the discussion. [P20, L499-517]
 
 > Line 450: It is too easy to state that there is additional complexity to make use of a reference genome of a related species. It would be of HIGH relevance to explore this as it may be applied in many species that lack a reference genome themselves.
 
 ANSWER: we added the study using Medicago Truncatula.
 
-> Line 535-540: Too general/vague and thus not clear why this paragraph is included in the conclusion section (or even in the manuscript)! 
+> Line 535-540: Too general/vague and thus not clear why this paragraph is included in the conclusion section (or even in the manuscript)!  
 
-ANSWER: We updated the section to provide a more incisive conclusion.
+ANSWER: We updated the section to provide a more incisive conclusion. [P24, L603-613]
 
 > Figure 1: Be consistent in using rates versus percentages, i.e., this Figure uses rates while on Line 311 you refer to percentages. 
 
