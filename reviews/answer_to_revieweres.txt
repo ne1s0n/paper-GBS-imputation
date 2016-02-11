@@ -258,4 +258,4 @@ ANSWER: We updated the section to provide a more incisive conclusion.
 
 > Figure 1: Be consistent in using rates versus percentages, i.e., this Figure uses rates while on Line 311 you refer to percentages. 
 
-ANSWER : 
+ANSWER : figure and text had been updated accordingly.
