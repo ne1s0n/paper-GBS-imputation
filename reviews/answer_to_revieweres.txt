@@ -148,7 +148,8 @@ ANSWER: this is a common practice in GBS SNP calling. We updated the text, added
 
 > Line 135-139: The reduction from 5 genotypic classes to 3 genotypic classes in alfalfa is a critical simplification step. There is no justification why this step was executed. My assumption is that this is because of the (software) methods that were used. The explanation and justification should be provided here. I am wondering whether the four general methods could be applied to the 5 genotypic classes – was this considered/studied?
 
-ANSWER: the 5-to-3 reduction is not related to algorithms (the general ones would work without a blink) but to GBS read depth of the available data. To be able to call the heterozygote dosage it is required a high number of reads per locus, and accepting only the markers with enough reads highly reduces their number. We explained the choice in the proper M&M section and added reference to papers addressing it.
+ANSWER: the 5-to-3 reduction is not strictly related to algorithms. In fact, the general algorithms would work easily on any number of classes: MNI, SVDI and RFI would produce continuous values in the [0-4] range, and KNNI is naturally oriented toward a discrete outputs. Beagle and FILLIN, on the other hand, are less flexible, and using them on tetraploid genotypes is not straightforward.
+However, the main reason for the simplification of heterozygotes is the available GBS read depth. To be able to call the heterozygote dosage it is required a high number of reads per locus, and accepting only the markers with enough reads highly reduces their number. We explained the choice in the proper M&M section and added reference to papers following this (common) practice.
 
 > Line 166:  How to interpret the ‘K closest markers’ in case there is no map or assembly information (as here for alfalfa)? 
 

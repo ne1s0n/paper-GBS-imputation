@@ -21,3 +21,4 @@ for (a in unique(df$algorithm)){
  ))
 }}
 
+mean(subset(df, population == 'rice_chrom')$majHom)
