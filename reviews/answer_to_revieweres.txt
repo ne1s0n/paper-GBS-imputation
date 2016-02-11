@@ -165,7 +165,7 @@ ANSWER: we made it a bit shorter, but not too much so; we think it is helpful fo
 
 > Line 175: Were the eigenvectors of M’M and MM’ merged to arrive at the ‘first k eigenvectors’?
 
-ANSWER: the first k eigenvectors were determined based on the ordered corresponding eigenvalues. The matrix U* contained these k eigenvector
+ANSWER: the columns of matrix U contain the eigenvectors of MM' (n x n matrix), the columns of matrix V contain the eigenvectors of M'M (m x m matrix). The n diagonal elements of matrix Sigma (n x m) are the square root of the eigenvalues of matrix U (n x n) (which should correspond also to the non-zero eigenvalues of V' / M'M). The first k eigenvectors of U were then determined based on the ordered corresponding eigenvalues. The matrix U* (n x k) contains these k eigenvectors, which multiplied by the k regression coefficients in vector beta return the (n x 1) column vector of estimated genotypes at locus j.
 
 > Line 178: Which value for k was used, was there a decision criteria used? 
 
