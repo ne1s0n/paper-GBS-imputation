@@ -4,10 +4,10 @@ Molecular Breeding,
 Subject: Revision of the manuscript entitled "Marker imputation efficiency for Genotyping-By-Sequencing data in rice (Oryza sativa) and alfalfa (Medicago sativa)"
 
 I am pleased to submit an updated version of our paper, now including several improvements. 
-The document focuses on comparison of imputation methods on Genotyping By Sequencing (GBS) data coming from two different species (rice and alfalfa) of great agronomical importance. We perform a sistematic assessment of the performances of six imputation algorithms, and investigate the effect of presence (or absence) of a reference genome.
+The document focuses on comparison of imputation methods on Genotyping By Sequencing (GBS) data coming from two different species (rice and alfalfa) of great agronomical importance. We perform a systematic assessment of the performances of six imputation algorithms, and investigate the effect of presence (or absence) of a reference genome.
 The received critiques focused on the following two main points, now addressed in the new version:
 - lack of use of M. Truncatula genome: in the first version of the paper we did not align alfalfa markers to any genome. We now align on the close relative Medicago Truncatula, and discuss the consequences of using a reference genome of a species different from the genotyped one 
-- absence of justification about the choice of algorithms: we added a sixth algorithm (FILLIN) as indicated by one of the reviewer, and expanded the reasoning that bought to the choice of the current set of analyzed algorithms
+- absence of justification about the choice of algorithms: we added a sixth algorithm (FILLIN) as indicated by one of the reviewer, and expanded the reasoning that brought to the choice of the current set of analyzed algorithms
 
 Many other specific issues has been addressed and are detailed in our answer to the reviewers. Hoping that the new version will be found satisfying, I remain at your disposal for any inquiries.
 
@@ -15,5 +15,3 @@ Nelson Nazzicari, Ph.D.
 
 Council for Agricultural Research and Economics (CREA) Research Centre for Fodder Crops 
 and Dairy Productions, viale Piacenza 29, 26900 – Lodi (Italy)
-
-
