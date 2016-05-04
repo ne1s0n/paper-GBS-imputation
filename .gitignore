@@ -161,3 +161,6 @@ pythontex-files-*/
 
 # Latexian
 TSWLatexianTemp*
+
+# R stuff
+.Rhistory
