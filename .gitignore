@@ -164,3 +164,6 @@ TSWLatexianTemp*
 
 # R stuff
 .Rhistory
+
+# gedit backup files
+*~
