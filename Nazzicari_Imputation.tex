@@ -1,0 +1,514 @@
+\begin{filecontents*}{example.eps}
+gsave
+newpath
+  20 20 moveto
+  20 220 lineto
+  220 220 lineto
+  220 20 lineto
+closepath
+2 setlinewidth
+gsave
+  .4 setgray fill
+grestore
+stroke
+grestore
+\end{filecontents*}
+\RequirePackage{fix-cm}
+\documentclass[smallextended]{svjour3}       \smartqed  
+\usepackage{xfrac}   
+\usepackage{lineno}  
+\usepackage{graphicx}
+\usepackage{color}
+\usepackage{multirow}
+\usepackage{array}
+\usepackage{setspace} 
+\usepackage{makecell}
+\usepackage[nomarkers]{endfloat}
+
+\newcolumntype{C}[1]{>{\centering\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+
+\linenumbers
+\doublespacing 
+\journalname{Molecular Breeding}
+\begin{document}
+
+\title{
+Marker imputation efficiency for Genotyping-By-Sequencing data in rice (\emph{Oryza sativa}) and alfalfa (\emph{Medicago sativa})
+\thanks{Nelson Nazzicari and Filippo Biscarini contributed equally to the work \\
+Corresponding author: Nelson Nazzicari \email{nelson.nazzicari@crea.gov.it}}
+}
+
+\titlerunning{Imputation efficiency for GBS data with and without the reference genome}        
+
+\author{Nelson Nazzicari \and
+  Filippo Biscarini  \and
+  Paolo Cozzi \and
+  E. Charles Brummer \and
+  Paolo Annicchiarico
+}
+
+\authorrunning{Nazzicari, Biscarini et al.} 
+\institute{
+    N. Nazzicari, P. Annicchiarico \at Council for Agricultural Research and Economics (CREA) Research Centre for Fodder Crops and Dairy Productions, Lodi (Italy)
+\and
+    F. Biscarini, P. Cozzi \at Dipartimento di Bioinformatica, Fondazione Parco Tecnologico Padano, Lodi (Italy)
+\and
+    E.C. Brummer \at University of California, Plant Sciences Department, Davis, CA (USA)
+}
+
+
+\date{Received:  / Accepted:}
+
+\maketitle
+
+\graphicspath{{./figures/}}
+\makeatletter{}\begin{abstract}
+Genotyping-by-sequencing (GBS) is a rapid and cost-effective genome-wide 
+genotyping technique applicable whether a reference genome is available 
+or not. Due to the cost-coverage trade-off, however, GBS typically produces 
+large amounts of missing marker genotypes, whose imputation becomes therefore 
+both challenging and critical for later analyses.\\
+In this work, the performance of four general imputation methods (K-Nearest 
+Neighbors, Random Forest, Singular Value Decomposition, and Mean Value)
+and two genotype-specific methods (``Beagle'' and FILLIN) were measured 
+on GBS data from alfalfa (\emph{Medicago sativa L.}, autotetraploid, heterozygous, 
+without reference genome) and 
+rice (\emph{Oryza sativa L.}, diploid, 100\% homozygous, with reference genome). Alfalfa SNP were aligned on the genome of the closely related species \emph{Medicago truncatula L.}. Benchmarks 
+consisted in progressive data filtering for marker call-rate (up to 70\%) and increasing 
+proportions (up to 20\%) of known genotypes masked for imputation. The 
+relative performance was measured as the total proportion of correctly imputed 
+genotypes, globally and within each genotype class (two homozygotes in rice, 
+two homozygotes and one heterozygote in alfalfa).\\
+We found that imputation accuracy was robust to increasing 
+missing rates, and consistently higher in rice than in alfalfa. Accuracy 
+was as high as 90-100\% for the major (most frequent) homozygous genotype, but dropped 
+to 80-90\% (rice) and below 30\% (alfalfa) in the minor homozygous genotype. 
+Beagle was the best performing method, both accuracy- 
+and time-wise, in rice. In alfalfa, KNNI and RFI gave the highest accuracies, but KNNI 
+was much faster.
+
+\keywords{SNP, Genotyping by Sequencing (GBS), K-Nearest Neighbors Imputation 
+(KNNI), Random Forest Imputation (RFI), Singular Value Decomposition Imputation 
+(SVDI), Beagle, FILLIN, alfalfa, rice, imputation, reference genome}
+\end{abstract}
+
+
+
+ 
+\makeatletter{}\section{Introduction}
+\label{intro}
+
+Imputation of missing alleles and genotypes is a preliminary step for
+a wide range of genetic analyses. In fact most models and software for 
+population genetics, genomic selection (GS) and genome-wide association 
+studies (GWAS) can not easily handle missing data and require complete datasets (e.g. \cite{hayes2009invited,aulchenko2007genabel,endelman2011rrblup,perez2014genome}). 
+SNP-array represent one of the leading genotyping technologies and produce 
+datasets that, after low call-rate filtering, 
+usually still contain a small proportion of uncalled genotypes (e.g., $<$5\%) 
+randomly distributed along the genome. Genotyping-by-sequencing (GBS) is a 
+relatively recent technique which is considered a viable alternative to SNP array-based genotyping to produce SNP genotype data~\cite{elshire_robust_2011}.
+GBS is platform-independent and is conveniently 
+used in species that lack commercial SNP-chips or even lack a reference 
+genome sequence. GBS data typically present a much larger proportion of 
+sporadic missing genotypes: e.g., $\sim$52\% and $\sim 58\%$ average in two maize experimental populations \cite{crossa_genomic_2013},
+or ``up to 80\% missing data per marker'' in wheat \cite{poland_genomic_2012}. This 
+is due to both intrinsic properties of the technology
+and to its application to species without a mature genome assembly \cite{glaubitz_tassel-gbs:_2014}.\\
+There are several methods that are routinely used for the imputation of 
+missing genotypes. Some rely solely on genotypic information, some make 
+use also of genealogies, most of them are based on reconstructing haplotypes 
+to be used in predictive models \cite{nicolazzi_software_2015}. Most methods for 
+genotype imputation have been applied to SNP array data, and typically 
+yield very high imputation accuracy. For instance, $>$95\% correctly imputed 
+genotypes were reported in maize \cite{hickey_factors_2012} and cattle \cite{vanraden_genomic_2011}. 
+The same imputation methods can also be applied to GBS data (see \cite{huang_efficient_2014} and \cite{swarts_novel_2014} for applications in rice and maize). When a reference 
+genome is available, SNP loci can be aligned against its sequence and 
+are therefore ordered, thus allowing the exploitation of local linkage disequilibrium (LD).
+However, GBS data may be generated 
+also for species lacking a reference genome assembly. In this case the 
+GBS output is a series of ``floating'' loci not linked to any chromosome:
+alignment is not possible and SNPs are therefore considered unordered. Unordered 
+data add additional complexity to genotype imputation. Exploitation of linkage 
+disequilibrium and haplotype reconstruction 
+are less straightforward, consecutive loci may lie on different chromosomes
+or scaffolds, and overall data are less homogeneous.
+Rutkoski et al.~\cite{rutkoski_imputation_2013}
+considered the application of general data imputation methods 
+to wheat, maize and barley populations, obtaining best case scenarios accuracies 
+as high as 0.84-0.94 (measured as $R^{2}$ between true and imputed genotypes).
+Imputation of missing GBS data without alignment to the reference genome has
+been reported in alfalfa (\emph{Medicago sativa L.}, \cite{Rocher_validation_2015})
+and red raspberry (\emph{Rubus idaeus L.}, \cite{ward_saturated_2013}). These studies
+however do not focus on measuring imputation accuracy and do not compare
+alternative imputation methods.\\
+		Compared to SNP-array data, GBS is more challenging: many more 
+	missing genotypes, high variability between runs, intrinsically noisy data, 
+	reads from different loci that can overlap. For all these reasons, imputation 
+	of missing genotypes with GBS data is still a relatively immature technique, 
+	not yet amenable to produce highly standardised and repeatable results. 
+There is therefore scientific and practical interest in gaining further 
+insights into how genotype imputation with GBS data works, and in 
+developing the best methods and strategies to accurately and efficiently 
+impute such missing data. This would be relevant not only for the scientific 
+community but also for the breeding industry, because of its direct 
+consequences on genomic applications.\\
+In this paper, we imputed missing genotypes from GBS data in two agronomically
+important crop species:
+the cereal crop rice (\emph{Oryza sativa L.}) whose reference genome has been 
+assembled in 2005 \cite{international_rice_genome_sequencing_project_map-based_2005},
+and updated in 2013 \cite{kawahara_improvement_2013},
+and
+the forage crop alfalfa (\emph{Medicago sativa L.}), for 
+which a reference genome is not available yet. Alfalfa genotypes
+were mapped on the close relative \emph{Medicago truncatula L.}, a model species
+for legumes, whose genome is available \cite{young_medicago_2011}.
+The species were chosen as representative of very different scenarios, alfalfa being autotetraploid
+with high heterozygosity and rice being diploid with essentially 100\% homozygozity.
+The present study thus encompasses a wide span of real application cases.\\
+We compared the imputation accuracy of four general imputation methods (Mean
+Value Imputation, K-Nearest Neighbor Imputation, Singular Value Decomposition
+Imputation and Random Forest Imputation) with the performance of two methods specific 
+for genotype imputation (localized haplotype clustering imputation, 
+implemented in the software package Beagle, and the method of based on haplotype
+reconstruction around recombination sites implemented in the FILLIN algorithm
+as part of the Tassel suite). The four general algorithms were chosen as well known 
+imputation strategies implemented in several freely available software libraries.
+The two genotype-specific methods represent the state of the art 
+for genotypes lacking pedigree information.\\
+The relative efficiency of the different imputation methods was assessed in terms of 
+accuracy and computation time. Accuracy was measured as fraction of 
+correctly imputed genotypes, both as a total and within genotype classes 
+(major/minor homozigotes, and heterozigotes, when present).
+
+ 
+\makeatletter{}\section{Materials and methods}
+
+\subsection{Plant material}
+\label{sec:plant_material}
+
+Samples from two autotetraploid alfalfa (\emph{Medicago sativa L.}) and one diploid rice (\emph{Oryza sativa L.}) populations were available (see Table~\ref{tab:descriptive_statistics}).\\
+Alfalfa populations included elite germplasms from the Po Valley (Alfalfa-PV) and Mediterranean-climate environments (Alfalfa-Med). For Alfalfa-PV, 124 parent genotypes were chosen by stratified mass selection for dry matter yield over three harvests. For Alfalfa-Med, 154 parent genotypes were derived from two cycles of free intercrossing among three outstanding populations in a multi-environment study. For further details see \cite{Annicchiarico2015}. \\
+The Rice dataset included 437 plants belonging to 391 accessions (46 duplicates) from the Rice Germplasm Collection maintained at CRA-Rice Research Unit (Vercelli, Italy). The sampled collection comprised accessions from the five main sub-populations of \emph{O. sativa} (274 temperate japonica, 108 tropical japonica, 28 indica, 16 aus and 11 aromatic). All accessions were purified through single seed descent, and were genotypically essentially 100\% homozygous.
+
+\subsection{Genotyping by sequencing}
+\label{sec:overview}
+
+The 715 samples from alfalfa (Alfalfa-Med and Alfalfa-PV) and rice (Rice) populations were genotyped using the genotyping-by-sequencing (GBS) approach \cite{elshire_robust_2011}. Different GBS protocols were used to genotype the alfalfa and rice samples, since genotyping was carried out under different projects.\\
+In alfalfa, DNA was isolated from fresh leaf tissues by the Wizard~\textregistered~Genomic DNA Purification Kit (Promega, A1125) and quantified with a Quant-iT PicoGreen dsDNA assay kit (Life Technologies, P7589). Two libraries were constructed for the two populations, where 100 ng of each DNA was digested with ApeKI (NEB, R0643L) and then ligated to a unique barcoded adapter and a common adapter. For the reference population Alfalfa-Med, 5 nmoles each of the primers and NEB 2X Taq Master Mix (NEB Cat \# M0270S) were included in the PCR reaction according to \cite{elshire_robust_2011} original protocol, while for Alfalfa-PV the KAPA library amplification readymix (Kapa Biosystems Cat \# KK2611) was used instead. Each library was sequenced in two lanes on Illumina HiSeq 2000 at the Genomic Sequencing and Analysis Facility at the University of Texas at Austin, Texas, USA. For both populations post sequencing analysis and SNP calling was carried out using Tassel UNEAK pipeline \cite{lu_switchgrass_2013}.
+
+Alfalfa is an autotetraploid plant species and can therefore present three different heterozygous genotypes: AAAB, AABB and ABBB. Sequencing depth in this study was not sufficient for accurate tetraploid allelic dosage, but following \cite{li_saturated_2014} and \cite{li_genomic_2015} reliable genotype calls based on diploid allelic dosage were obtained considering diploid heterozygotes (i.e. AB), while the two homozygous genotypes (AAAA and BBBB) were considered diploid homozygotes (i.e., AA or BB). A further quality filter, implemented through ad-hoc Python scripts, removed heterozygous loci with less than 4 and homozygous loci with less than 11 aligned reads. A similar filtering was performed in \cite{Rocher_validation_2015} using less restrictive thresholds. 
+
+In rice, DNA was isolated from three-weeks old leaves using the DNeasy Plant Mini Kit (QIAGEN) with a TECAN Freedom EVO150 liquid handling robot (TECAN Group Ltd, Switzerland). DNA digestion was performed on 100 ng samples in 96-well plates using ApeKI, which was shown to cut every 1 kb on average in a in-silico digestion of the Nipponbare reference genome, and 96-plex libraries constructed according to the GBS protocol. The libraries were loaded into Genome Analyzer II (Illumina, Inc., San Diego, CA) for sequencing. Raw sequence data filtering, sequence alignment to the rice reference genome (Os-Nipponbare-Reference-IRGSP-1.0, \cite{kawahara_improvement_2013}), and SNP calling from GBS genotyping were carried out using the Tassel GBS pipeline \cite{glaubitz_tassel-gbs:_2014}.\\
+In total, 32\,706, 40\,734 and 166\,418 SNP markers were called by GBS in Alfalfa-PV, Alfalfa-Med and Rice, respectively (see Table~\ref{tab:descriptive_statistics}). In all datasets SNP variants were renamed so that AA represented the most common homozygote, and BB the least common homozygote.
+
+\makeatletter{}\begin{table}
+\centering
+\caption[Descriptive statistics]{
+Descriptive statistics of alfalfa (\emph{Medicago sativa L.}) 
+and rice (\emph{Oryza sativa L.}) genotyping. MAF is average minor allele frequency; 
+p(AA), p(AB) and p(BB) are the proportions of AA, AB and BB genotypes.}
+\label{tab:descriptive_statistics}
+\begin{tabular}{lccccccc}
+\hline\noalign{\smallskip}
+\noalign{\smallskip}\hline\noalign{\smallskip}
+\textbf{Dataset} & \textbf{No. samples} & \textbf{No. SNPs} & \textbf{Missing Rate} & \textbf{MAF} & \textbf{p(AA)} & \textbf{p(AB)} & \textbf{p(BB)}\\
+\noalign{\smallskip}\Xhline{3\arrayrulewidth}\noalign{\smallskip}
+Alfalfa-PV & 124 & 32\,706 & 0.666 & 0.1724 & 0.690 & 0.274 & 0.035\\
+Alfalfa-Med & 154 & 40\,734 & 0.596 & 0.1702 & 0.691 & 0.276 & 0.032\\
+Rice & 437 & 166\,418 & 0.534 & 0.140 & 0.860 & - & 0.140 \\
+\noalign{\smallskip}\hline
+\end{tabular}
+\end{table}
+ 
+
+\subsection{Imputation methods}
+\label{sec:imputation_methods}
+We considered six imputation methods: Mean Value Imputation (MNI), K-Nearest Neighbors Imputation (KNNI), Random Forest Imputation (RFI), Singular Value Decomposition Imputation (SVDI), Localized Haplotype Clustering Imputation (``Beagle'') and haplotype reconstruction around the recombination sites (FILLIN from Tassel suite). For all algorithms we imputed a $m\times n$ matrix of m individuals and n markers whose data points, defined in the set \{0,1,2,NA\}, represented the three possible genotypes (AA, AB, and BB) and the missing value, respectively. 
+\paragraph{MNI}
+\label{par:MNI}
+: in Mean Value Imputation each missing data point was replaced by the mean of the non-missing values for that marker, then discretized to the closest value in \{0,1,2\}.
+\paragraph{KNNI}
+\label{par:KNNI}
+: in K-Nearest Neighbors Imputation missing data points were imputed based on the weighted average of the K closest markers \cite{troyanskaya_missing_2001} defined by the Simple Matching Coefficient distance function \cite{schwender_statistical_2007}, specifically designed for categorical data. $K=4$ was used in KNNI, and neighbo
+rs values were weighted by the reciprocal of their distance from the data point to be imputed.
+\paragraph{SVDI}
+\label{par:SVDI}
+: Singular Value Decomposition (SVD) imputation was based on the following factorization of the genotype matrix M (n individuals, m markers):
+
+\begin{equation}
+\label{eq:SVDI_general}
+M = U\Sigma V^{T}
+\end{equation}
+
+where U is a $n \times n$ unitary matrix (i.e. $UU^{T}=I$), $\Sigma$ is a $n \times m$ rectangular diagonal matrix of singular values and $V^{T}$ is the $m \times m$ conjugate transpose of the unitary matrix V. The columns of matrix U and matrix V contain the eigenvectors of $MM^{T}_{(n \times n)}$ and $M^{T}M_{(m \times m)}$, respectively, and the corresponding non-zero singular values in $\Sigma$ are equivalent to the square-root of the non-zero eigenvalues of $MM^{T}$ and $M^{T}M$. The first k eigenvectors in U - ordered by decreasing eigenvalue (from $\Sigma$) - capture most of the information in the marker genotype matrix M, and were used to generate linear combinations (principal components) of the original m markers for the imputation of missing data points. The imputation procedure comprised: (i) initial imputation of missing genotypes using MNI, since SVD can only be performed on complete matrices; (ii) SVD to select the most informative k eigenvectors of the marker genotype matrix; (iii) these k eigenvectors were used as predictors in a linear regression model for marker genotypes:
+
+\begin{equation}
+\label{eq:SVDI_regression}
+Y = U^*\beta +\varepsilon 
+\end{equation}
+
+with Y as vector of n genotypes at marker j; $U^*$ the $n \times k$ matrix of the first k eigenvectors; $\beta$ the vector of $k$ regression coefficients; $\varepsilon$ the random error terms; (iv) all eigenvectors (matrix $U^*$) and $\beta$ were used to estimate missing values at marker j. The procedure was repeated (steps (ii) to (iv)) until convergence. The final imputed data points were then discretized to the closer genotype in \{0,1,2\}. A value of $k=4$ for the eigenvectors to be selected in $U^*$ was used in our implementation of SVDI, based on empirical results in the range $3--20$ (data not shown). Additional details on SVDI can be found in \cite{troyanskaya_missing_2001}
+
+\paragraph{RFI}
+\label{par:RFI}
+: in Random Forest (RF) imputation, missing genotypes at marker j were imputed by means of RF multiple regression trees \cite{breiman_random_2001} where all markers other than j were used for the prediction. At each marker j, 100 RF regression trees $\Theta_{1} \ldots \Theta_{100}$ were grown from a bootstrapped sample of the individuals in Y and a random subset of $\sqrt{m-1}$ markers. Missing genotypes were imputed averaging predictions over the 100 RF trees
+
+\begin{equation}
+\label{eq:RFI_regression}
+\hat{Y} = \frac{1}{100}\sum_{i=1}^{100} h(x,\Theta_i)
+\end{equation}
+
+where $h(x,\Theta_i)$ is a function of the $i_{th}$ tree and subset of markers. RFI was repeated until convergence or for maximum 10 iterations. After regression, the imputed data were then discretized to the closer genotype in \{0,1,2\}. 
+
+\paragraph{Beagle}
+\label{par:Beagle}
+: ``localized haplotype clustering imputation'' is a method implemented in the software ``Beagle'' \cite{browning_rapid_2007}. Originally developed for human genetics, Beagle has since found wide application also in animal and plant genetics. Beagle has become so popular that the name of the software is commonly used to refer metonymically to the method it implements, making the two hardly distinguishable. Beagle infers haplotypes and imputes sporadic missing alleles both with known and unknown phase, using a localized haplotype cluster model. This is a class of directed acyclic graphs which empirically models haplotype frequencies on a local scale and therefore adapts to local structure in the data. Beagle makes use of a hidden Markov model to find the most likely haplotype pair for each individual, given the genotype data for that individual and the graphical haplotype frequency model. The method works iteratively using an expectation-maximization (EM) approach. The imputed missing data, probabilities of missing genotypes and inferred haplotypes are calculated from the model that is fitted in the last iteration. For the imputation of missing genotypes in the completely homozygous rice accessions, a likelihood file (with the prior likelihood of each of the three possible SNP genotypes) was defined to specifically exclude the imputation of non-possible heterozygous genotypes (details in \cite{beagle3_manual}).
+
+\paragraph{FILLIN}
+The ``Fast Inbred Line Library ImputatioN'' (``FILLIN'') is an imputation method optimised for inbred populations implemented in the ``Tassel'' programming suite \cite{swarts_novel_2014}. FILLIN is based on haplotype reconstruction around recombination break points. Haplotypes are clustered per genotype similarity using the Hamming distance function. This information is eventually used to impute the target locus in an iterative approach that attemps, through a Markov Chain MonteCarlo (MCMC) process, to maximise the likelihood of the observed SNP calls given the unobserved imputed genotypes. If convergence criteria are not met genotypes are left uninputed. Among the considered algorithms, FILLIN is the only one that can thus produce partially imputed results.
+
+\subsection{Imputation procedure}
+\label{sec:imputation_procedure}
+In order to assess the imputation performance of the different methods, we introduced increasing proportions of artificial missing genotypes in the data sets. These were then imputed with the various algorithms, measuring the resulting imputation accuracy and computation time. We extracted four datasets from the overall data that had a maximum of 10\%, 20\%, 40\% or 70\% missing data per marker. For each of these datasets, we randomly introduced an additional 1\%, 5\%, 10\% or 20\% missing genotypes, on which imputation accuracy could be measured. Table~\ref{tab:missing_rates} reports the number of markers and average missing rate (before introducing artificial missing genotypes) for the four call-rate thresholds. This procedure produced 16 combinations for each population: 4 call rate datasets $\times$ 4 levels of artificial missing markers. On each combination, we applied the 6 described imputation methods. Rice data were analysed as a whole and by each of the 12 chromosomes separately. In absence of alfalfa genome, the \emph{M. Truncatula} genome was used as reference for those algorithms (Beagle and FILLIN) requiring markers positions. 
+
+To further investigate the effect of presence (or absence) of genome information we generated ``reshuffled'' datasets where marker positions were randomly assigned inside each chromosome. This way, the linkage disequilibrium between markers is broken and the relative performance decrease can be directly assessed. The reshuffled datasets were tested only on Beagle and FILLIN.  
+
+\makeatletter{}
+\begin{table}
+\centering
+\caption[Markers counts and missing rates]{
+Total number of markers and resulting average missing rate for the four different allowed missing rate thresholds in alfalfa (two datasets) and rice.}
+\label{tab:missing_rates}
+\begin{tabular}{C{3cm}rccc}
+\hline\noalign{\smallskip}
+\noalign{\smallskip}\hline\noalign{\smallskip}
+\textbf{Allowed missing rate threshold} &  & \textbf{Alfalfa-PV} & \textbf{Alfalfa-Med} & \textbf{Rice}\\
+\noalign{\smallskip}\Xhline{3\arrayrulewidth}\noalign{\smallskip}
+   \multirow{2}{*}{70\%} & Missing rate &  0.325 & 0.29  & 0.364\\
+                           & Markers      & 13\,190  & 19\,986 & 109\,372\\    
+\noalign{\smallskip}\hline
+   \multirow{2}{*}{40\%} & Missing rate &  0.161 & 0.142 & 0.198\\
+                           & Markers      & 7\,790 & 12\,931 & 58\,553\\    
+\noalign{\smallskip}\hline
+   \multirow{2}{*}{20\%} & Missing rate & 0.076 & 0.074 & 0.099\\
+                           & Markers      & 4\,828 & 8\,962 & 29\,872\\
+\noalign{\smallskip}\hline                           
+   \multirow{2}{*}{10\%} & Missing rate & 0.046 & 0.045 & 0.049\\
+                           & Markers      & 3\,405 & 6\,364 & 15\,060 \\
+\noalign{\smallskip}\hline
+\end{tabular}
+\end{table}
+
+
+
+
+
+
+
+ 
+
+\subsection{Imputation accuracy and efficiency assessment}
+\label{sec:imputation_accuracy_and_efficiency_assessment}
+We used the artificial missing genotypes to measure the performance of the six imputation methods. The rice dataset contained only two genotype classes: AA (homozygous for the major allele) and BB (homozygous for the minor allele). Both alfalfa datasets contained also the third genotype classes AB (heterozygous, pooling the three possible heterozygotes AAAB, AABB, ABBB).\\
+For each experiment we measured the overall imputation accuracy and the imputation accuracy within each genotype class. The imputation accuracy was computed as the number of missing data correctly imputed divided by the total number of artificially missing data (proportion of correct imputations):
+
+\begin{equation}
+\label{eq:accuracy}
+accuracy = \frac{1}{n} \sum_{i=1}^{n}{I(g_i = \hat{g_i})}
+\end{equation}
+
+where $I()$ is an indicator function that returns 1 if the imputed ($\hat{g}$) and true ($g$) genotypes are equal, 0 otherwise. We obtained four accuracy measures for alfalfa and three for rice.\\
+For each imputation method, the total computation time needed to complete the analyses was measured as an indicator of their relative performance. The measured time equals the total dedicated CPU time in case of single thread execution, and corresponds to a fraction of it in case of algorithm supporting multi thread execution. In our experiments only RFI implemented parallel execution, and it was configured to use 10 CPUs, thus all the reported times are to be considered as time elapsed while employing ten times more computational resources than the other algorithms.\\
+To ensure consistency in the experimental conditions, all analysis were run on the same computing platform: a multi-node cluster with 64 CPUs AMD Opteron(tm) 2400 MHz and 256GB RAM for each node.
+ 
+\subsection{Software}
+\label{sec:software}
+Data handling, editing and preparation, summary of results and plots were all performed using the open-source environment for statistical programming R \cite{r_core_team_r:_2014}. All imputation methods except Beagle and FILLIN were implemented in R: MNI directly in base R; KNNI using the function \emph{knncatimpute()} from the Scrime package \cite{schwender_scrime:_2013}; SVDI with the R package ``bcv'' \cite{perry_bcv:_2009}; RFI using the ``MissForest'' \cite{stekhoven_missforestnon-parametric_2012} R package (with parameters: ntree=100, maxiter=10, parallelize='variables'). The ``Beagle'' localized haplotype clustering imputation method was implemented with the Beagle software version 3.3.2 \cite{browning_rapid_2007}. The FILLIN algorithm \cite{swarts_novel_2014} is implemented using the Tassel CLI plugin \emph{FILLINFindHaplotypesPlugin} followed by \emph{FILLINImputationPlugin}. The latter allowed accuracy measurements through \emph{-accuracy} and \emph{-propSitesMask} options.\\
+The Bowtie 2 tool \cite{langmead_fast_2012} was used to query the consensus sequence of each alfalfa tag pair containing a SNP against the \emph{M. truncatula} reference genome Version 4.0 using the \emph{-verysensitivelocal} preset. The BWA alignment tool \cite{li2009fast} was used to align rice tags on Rice Genome Annotation Project Release 7.
+
+ 
+\makeatletter{}\section{Results}
+\label{sec:results}
+
+\subsection{Genotypes}
+\label{sec:genotypes}  
+GBS detected 32\,706, 40\,734 and 166\,418 SNP loci in Alfalfa-PV, Alfalfa-Med and Rice, respectively (Table~\ref{tab:descriptive_statistics}). The overall missing rate was $66.6\%$, $59.6\%$ and $53.4\%$ in the three datasets. Supplementary Figure S1 shows the density distribution of missing rate per marker in the complete datasets. The amount of missing marker genotypes varied with the threshold of maximum per-marker missing-rate allowed in the data (10\%, 20\%, 40\% and 70\%) and the proportion of artificial missing genotypes that were introduced (1\%, 5\%, 10\% and 20\%). Missing data point counts ranged from a minimum of 3\,878 in Alfalfa-PV with 10\% allowed and 1\% artificial missing genotypes, to a maximum of 5\,580\,616 in Rice with 70\% allowed and 20\% artificial missing genotypes. Over all datasets and allowed/artificial missing genotypes thresholds, the amount of missing data points to be imputed averaged 249\,405.\\
+Minor Allele Frequency (MAF) was 0.172, 0.170 and 0.140 in Alfalfa-PV, Alfalfa-Med and Rice, respectively. The three datasets were therefore unbalanced with respect to genotype classes: Rice had the lowest MAF, while Alfalfa-PV and Alfalfa-Med had the smallest minor classes (minor homozygotes 3.5\% and 3.2\% of the total genotypes). Figure~\ref{fig:genotype_classes} reports the proportion of genotypes in each class in the complete datasets (100\%) and as a function of the maximum allowed missing rate per marker. The relative proportion of genotype classes remained approximately stable in rice. In contrast, the heterozygous class in alfalfa tended to become smaller with increasing proportion of allowed genotypes. This reflected the different GBS calling criteria for homozygous and heterozygous SNP: heterozygous SNPs required fewer overlapping reads to be called, while the implemented quality filters on alfalfa required a larger number of reads to call a homozygous locus. Therefore homozygous loci tended to have higher missing rates, and to
+be included progressively more frequently with more relaxed thresholds on allowed missing level.
+The average missing-rate and MAF in the 12 rice chromosomes were comparable to the whole-rice dataset.\\
+Alignment on reference genomes assigned a position to 88.66\%, 57.54\% and 57.86\% of Rice, Alfalfa-Med and Alfalfa-PV markers, respectively, reflecting the difference between having a reference genome available for the exact same species (rice) or only for a close one (alfalfa).
+
+dsahe different proportion of unaligned markers directly reflect the .
+
+\begin{figure}
+\includegraphics[width=0.95\textwidth]{Fig01_class_breakdown_all.pdf}
+\caption[Proportions of genotype classes]{​Proportion of genotype classes for the different missing rate thresholds (0.1, 0.2, 0.4, 0.7 and 1 -the complete dataset), in Alfalfa-PV, Alfalfa-Med and Rice (all chromosomes and chromosome 1 only). Red bars represents the most common homozygous (AA), blue bars the least common homozygous (BB) and green bars the heterozygous (AB).}
+\label{fig:genotype_classes}
+\end{figure}
+
+\subsection{Imputation accuracy}
+\label{sec:imputation_accuracy}  
+
+\makeatletter{}\begin{table}
+\centering
+\caption[Accuracy statistics]{Imputation accuracies (as percentages) for the various
+datasets and methods, averaged over all allowed and injected missing thresholds. Rice data are reported averaged by chromosome and on the complete genotypes. Alfalfa data are reported averaged over the two Alfalfa-PV and Alfalfa-Med populations. FILLIN failed to impute alfalfa datasets.}
+\label{tab:accuracy_statistics}
+\begin{tabular}{llcccc}
+\hline\noalign{\smallskip}
+\noalign{\smallskip}\hline\noalign{\smallskip}
+\textbf{Dataset} & \textbf{Method} & \textbf{Total} & \textbf{Minor (BB)} & \textbf{Major (AA)} & \textbf{Heterozygote (AB)}\\
+\noalign{\smallskip}\Xhline{3\arrayrulewidth}\noalign{\smallskip}
+alfalfa & Beagle & 73.14 & 14.27 & 99.37 & 20.77\\
+alfalfa & Beagle (shuffle) & 66.34 & 1.31 & 99.88 & 0.50\\
+alfalfa & kNNI & 82.20 & 14.68 & 90.82 & 66.03\\
+alfalfa & MNI & 78.38 & 0.00 & 88.69 & 58.88\\
+alfalfa & RFI  & 79.50 & 0.01 & 89.05 & 61.75\\
+alfalfa & SVDI & 77.36 & 4.47 & 85.81 & 61.67\\
+alfalfa & FILLIN & * & * & * & *\\
+alfalfa & FILLIN (shuffle)  & * & * & * & *\\
+rice (chr) & Beagle & 99.58 & 97.50 & 99.80 & -\\
+rice (chr) & Beagle (shuffle) & 96.09 & 74.73 & 98.42 & -\\
+rice (chr) & kNNI & 98.10 & 89.12 & 99.04 & -\\
+rice (chr) & MNI & 90.19 & 1.06 & 99.89 & -\\
+rice (chr) & RFI  & 98.81 & 91.51 & 99.58 & -\\
+rice (chr) & SVDI & 97.81 & 85.64 & 99.11 & -\\
+rice (chr) & FILLIN & 86.96 & 63.62 & 90.14 & -\\
+rice (chr) & FILLIN (shuffle)  & 82.19 & 55.86 & 85.81 & -\\
+rice & Beagle & 99.58 & 97.57 & 99.80 & -\\
+rice & Beagle (shuffle) & 93.48 & 55.64 & 97.69 & -\\
+rice & kNNI & 98.30 & 89.80 & 99.19 & -\\
+rice & MNI & 90.21 & 0.61 & 99.89 & -\\
+rice & RFI  & 97.86 & 84.68 & 99.28 & -\\
+rice & SVDI & 95.74 & 70.96 & 98.40 & -\\
+\noalign{\smallskip}\hline
+\end{tabular}
+\end{table}
+
+
+
+ 
+
+Accuracies are reported, averaged, in Table~\ref{tab:accuracy_statistics}. In rice, the average imputation accuracy over all genotype classes was above 80\% for all methods. No significant difference was found between chromosomes. Thus average accuracy over all chromosomes is therefore presented (Figure~\ref{fig:accuracy_rice}). \\
+The overall accuracy for alfalfa, averaged across the two datasets, was 12-25\% lower than rice, ranging between 66\% and 82\%. No significant differences were found between the two datasets. Thus average accuracy over the Alfalfa-Med and Alfalfa-PV is presented (Figure~\ref{fig:accuracy_alfalfa}).
+
+The imputation accuracy varied across the different genotype classes, with the highest accuracy in the most common genotype (averaging 92.27\% and 96.47\% in alfalfa and rice, respectively), while the least common genotype class showed much lower accuracy (averaging 5.79\% and 69.88\% in alfalfa and rice, respectively).
+Alfalfa datasets included heterozygous SNP loci, accounting for an average of 27\% of individuals per locus (Table~\ref{tab:descriptive_statistics}). Heterozygotes had an intermediate imputation accuracy ranging from 0.5\% with Beagle to 66.03\% with KNNI. Results for each individual alfalfa population and the 12 individual rice chromosomes are similar to those discussed here (see Supplementary Figures S2 to S15). \\
+Missing rate did not affect the imputation accuracy substantially, with most algorithms showing a flat or almost flat response to increased missing rate. KNNI showed a decreasing imputation accuracy with increasing missing rate, both in alfalfa and rice.
+
+Beagle outperformed all other imputation methods in rice, making efficient use of marker position (Figure~\ref{fig:accuracy_rice}). When markers were randomly reshuffled (thus offsetting position information), though, general imputation methods (other than MNI) showed a higher imputation accuracy than Beagle. The accuracy loss with shuffled markers is exacerbated in alfalfa datasets, and in particular in heterozygous and minor homozygous genotypes.\\
+Similarly, FILLIN resulted in a 5-8\% accuracy drop when marker positions were shuffled. FILLIN performances were in general lower than other methods due to the fraction of unimputed genotypes, here accounted as imputation errors. On average, FILLIN did not impute 14.6\% of missing data in Rice and practically the entirety of Alfalfa data. Even trying to relax FILLIN parameters, it was impossible to obtain sensible results in alfalfa. Thus, FILLIN accuracy results are not reported in Figure~\ref{fig:accuracy_alfalfa}.
+
+When examining general imputation methods, resulting accuracies highlighted RFI and KNNI as the best ones. The two methods had comparable performances over all experiments. SVDI followed, and MNI ranked last.\\
+In Rice, for 70\% allowed missing rate, the imputation accuracy of RFI was still higher than 90\%, while it dropped towards 85\% for KNNI and SVDI. As expected, MNI had an imputation accuracy of 100\% in the major homozygous class, but dropped to 0\% in the minor homozygous class.\\
+In alfalfa KNNI showed the highest imputation accuracy over all classes (averaging 82.20\%) and in the heterozygous (66.03\%) and minor homozygous (14.68\%) genotype classes (Figure~\ref{fig:accuracy_alfalfa}). RFI and SVDI were second ranking. They did not differ much from MNI in the overall accuracy (MNI: 78.38\%, RFI: 79.50\%, SVDI: 77.36\%) and in the major (MNI: 88.69\%, RFI: 89.05\%, SVDI 85.81\%) homozygous class, but gave higher imputation accuracy in the heterozygous (MNI: 58.88\%, RFI: 61.75\%, SVDI 61.67\%). In the minor homozygous class only SVDI resulted in some sporadic correct imputation, while RFI and MNI did not produce any sensible result (MNI: 0\%, RFI: 0.01\%, SVDI 4.47\%) classes. 
+
+\begin{figure}
+\includegraphics[width=0.95\textwidth]{figure_rice_chrom.pdf}
+\caption[Rice imputation accuracies]{
+imputation accuracies overall, for the major homozygous genotype (AA), and for the minor homozygous genotype (BB) in datasets consisting of 10\%, 20\%, 40\% and 70\% allowed missing data per locus (boxes) with 1\%, 5\%, 10\% and 20\% additional missing values artificially introduced (x-axis) averaged over the 12 rice chromosomes. Lines colors represent the five imputation algorithms: MNI (salmon), KNNI (red), SVDI (blue), RFI (green), Beagle with ordered markers (solid black), Beagle with unordered markers (dashed black), FILLIN with ordered markers (purple) and FILLIN with unordered markers (dashed purple). Y axis scale changes to highlight differences.}
+\label{fig:accuracy_rice}
+\end{figure}
+
+\begin{figure}
+\includegraphics[width=0.95\textwidth]{figure_alfalfa.pdf}
+\caption[Alfalfa imputation accuracies]{
+imputation accuracies overall, for the major homozygous genotype (AA), for heterozygotes (AB), and for the minor homozygous genotype (BB) in datasets consisting of 10\%, 20\%, 40\% and 70\% allowed missing data per locus (boxes) with 1\%, 5\%, 10\% and 20\% additional missing values artificially introduced (x-axis) averaged two alfalfa populations (Alfalfa-Med and Alfalfa-PV). Lines colors represent the five imputation algorithms: MNI (salmon), KNNI (red), SVDI (blue), RFI (green), Beagle with ordered markers (solid black) and Beagle with unordered markers (dashed black). FILLIN was unable to impute alfalfa data and is absent from figure. Y axis scale changes to highlight differences.}
+\label{fig:accuracy_alfalfa}
+\end{figure}
+
+\subsection{Computation time}
+\label{sec:computation_time}  
+The amount of time required to complete the imputation process was recorded for each method. Only the implementation of RFI could leverage a multi-core/multi-thread environment, so that RFI computation times should be evaluated considering 10 CPUs used in parallel, while all other algorithms used only one CPU at a time.\\
+Imputation efficiency (Figure~\ref{fig:time_analysis}) was assessed with respect to the gross dimension of the data set (i.e., number of markers $\times$ number of samples). An alternative analysis relating computation times to the number of missing genotypes brought to the same results (data not shown).\\
+RFI required by far the longest computation times (in spite of parallelization), which grew approximately exponentially ($O(e^N)$) with problem size, and easily required tens of hours for individual rice chromosomes, and hundred of hours (up to 937 hours) for the complete rice dataset. The second slowest algorithm was KNNI, with computation times growing approximately quadratically ($O(N^2)$) with problem complexity (the chosen KNNI implementation contains no heuristic method to prune the all vs. all distance calculation). KNNI was however significantly faster than RFI (on average 16.7 times faster), requiring a time ranging from 20.68 seconds (rice chromosome 7, 10\% allowed, 1\% artificial) to about 28 hours (rice complete dataset, 70\% allowed, 20\% artificial) to complete the imputation task.\\
+All other algorithms were faster, with computation times growing linearly or logarithmically with problem size. Beagle, FILLIN and SVDI resulted in similar execution times. MNI was by far the fastest imputation algorithm, being scarcely affected by the size of the problem (computation times ranging from 0.23 to 31.29 seconds).
+
+\begin{figure}
+\includegraphics[width=0.95\textwidth]{time_vs_size.pdf}
+\caption[Computation times]{computation time as a function of the total size of the imputed dataset.
+Lines colors represent the five imputation algorithms: MNI (salmon), KNNI (red), SVDI (light blue), RFI (green), Beagle (black) and FILLIN (purple).
+Plots include measures on Alfalfa-Med population, Alfalfa-PV population, and rice chromosomes 1 to 12. Complete rice datasets are omitted for readibility.}
+\label{fig:time_analysis}
+\end{figure}
+ 
+\makeatletter{}\section{Discussion}
+\label{sec:discussion}
+
+\subsection{Minor Allele Frequency and data (un)balancedness}
+\label{sec:maf}
+GBS data pose a greater challenge than SNP-array data to imputation algorithms, mainly as a consequence of the much larger quantity of missing genotypes they contain. On our data sets we found missing rates varied from 53\% to 67\%. With larger amounts of missing data the complexity of the imputation problem increases. Imputation errors can have a negative impact on successive analyses (e.g. on genomic predictions \cite{rutkoski_imputation_2013,Annicchiarico2015}).\\
+The imputation of missing SNP genotypes is a special case of the broader family of classification problems: three-class missing genotypes (AA, AB and BB) at any given SNP locus are classified based on known genotypes at all remaining data points. Classification problems are known to be harder when data are unbalanced, i.e. the classes appear at different frequencies in the datasets, with typically one over-represented class
+(see~\cite{kotsiantis_handling_2006}
+and~\cite{sun_classification_2009} for a review). In SNP genotype imputation, data balancedness is directly related to the minor allele frequency (MAF). In the classification of unbalanced observations, it is important to look not only at the total classification accuracy, but also at the per-class accuracy. The total classification accuracy may be misleading, being ``dominated'' by the majority class
+\cite{he_learning_2009}.
+Indeed, we found that for most methods, even when the total classification accuracy was very high, relatively large error rates were present on minority classes. 
+The dependency of imputation results on MAF has already been acknowledged  (e.g.,~\cite{hickey_factors_2012} in maize; \cite{ma_comparison_2013} in cattle; \cite{pei_analyses_2008} in humans). Our per-class dissection of results allowed a deeper insight into the imputation process. Indeed, all imputation algorithms performed considerably better in the majority class rather than in the less frequent classes.
+In alfalfa, KNNI was easily the best imputation method in the heterozygous and minor homozygous classes, while SVDI and RFI performed only slightly better than MNI. In rice, Beagle gave the best imputation results, with accuracy close to 100\% both in the major and minor homozygous classes.
+
+\subsection{Missing rate and the ``curse of dimensionality''}
+\label{sec:missing_rate_curse_dimensionality}
+In general, imputation methods were relatively robust to increasing missing rates. Only KNNI, and to a lesser extent RFI, showed slowly degrading performances at very high missing rates. The divergent response of the different imputation methods to missing rate became apparent only in the most challenging scenarios, when markers with up to 40-70\% missing genotypes were allowed in the data set.\\
+KNNI's decrease in imputation accuracy with increasing missing rates can be interpreted in relation to the phenomenon known as the ``curse of dimensionality'' \cite{bellman_dynamic_1957,marimont_nearest_1979}: with the same amount of data, the increasing number of parameters - the ``dimensions'' of the problem - increases and complicates the identification of k neighbors which are close enough to the data point to be classified/imputed. 
+On average, the side $l$ of the hypercube to include $k$ neighbors is a function of $k$, $n$ (sample size) and $p$ (number of parameters): $l = \left ( \frac{k}{n} \right )^{1/p}$. With $n$ constant, the hypercube in which the $k$ neighbors lie gets bigger as $p$ increases. This holds especially for local learning methods (e.g.,~K-Nearest Neighbors methods, local regression) which rely heavily on the the information content of the neighborhood. RFI - which only partially relies on local structure of the data - suffered marginally from high missingness. SVD and MNI, which build on more general properties of the data, and Beagle - whose learning process is fundamentally different and specific for genotype imputation - were scarcely affected by missing rates.
+
+\subsection{Imputation efficiency: differences in rice vs. alfalfa}
+\label{sec:role_of_species}
+Imputation results were significantly different in rice and alfalfa: all imputation algorithms performed consistently better in rice, where Beagle, RFI and KNNI achieved performances comparable to what is reported in literature for SNP-chip data (e.g.,~\cite{vanraden_genomic_2013} for bovine data;
+\cite{the_1000_genomes_project_consortium_integrated_2012}
+for human data). On the other hand, imputation accuracy in alfalfa data sets was much lower. This can be ascribed to four main factors: \\
+i) the imputation problem was simpler in rice than in alfalfa, since the rice dataset comprised only two genotype classes (AA and BB) instead of alfalfa's three (AA, AB, BB); \\
+ii) rice is natively diploid while alfalfa, autotetraploid, has been rendered diploid ``in silico'' during SNP calling. This semplification step made alfalfa data less adherent to the underlying biology;\\
+iii) rice data have higher marker density (2.4~Kbp/SNP, compared to 24.5~Kbp/SNP for Alfalfa-PV and 19.6~Kbp/SNP for Alfalfa-Med) due to both a higher number of markers and a smaller genome (400~Mb for rice, 800~Mb for Alfalfa). This allowed for higher average values of linkage disequilibrium (LD) among SNP markers, thus facilitating the imputation process;\\
+iv) rice markers were aligned on their native genome, while alfalfa markers were aligned on a different species.
+
+
+There was no population structure in alfalfa \cite{Annicchiarico2015}, while the rice dataset was intrinsically stratified ---being a collection of five subpopulations (\textit{indica}, \textit{temperate japonica} \textit{tropical japonica}, \textit{aus} and \textit{aromatic}). Most imputation methods implicitly exploit population structure (e.g. KNNI computes distances based on genetic relatedness; Beagle reconstructs haplotypes based on genetic similarities), without explicitly modelling it. The imputation of missing genotypes, however, is not an inferential problem such as GWAS (genome-wide association study), where the significance and estimate of SNP effects are known to be inflated if population structure is not included in the model, and the impact on the accuracy of imputation is likely to be small. In cattle from Scandinavian countries, Brondum et al \cite{brondum2012short} actually found higher imputation accuracy when combining populations (cattle breeds) in Beagle (without explicitly modelling the population structure), most likely as a result of the larger sample size. On the other hand, population stratification may help explain why FILLIN performed poorly in our rice dataset, which is a collection of subpopulations, while this algorithm is optimised for homogeneous inbred populations. 
+However, the influence of population structure on the accuracy of imputation was not formally tested in this work, and this remains an interesting topic for further investigation.
+
+
+\subsection{Reference genome assembly and ordered vs unordered markers}
+\label{sec:reference_genome_ordered_vs_unordered}
+When a reference genome is available, marker position can be used in the imputation process. All methods specifically developed for the imputation of missing genotypes have been designed for markers ordered along the genome sequence, and make explicit or implicit use of position information.
+
+In rice, where a reference genome is available, we could assess the effect of using ordered vs. unordered markers for imputation. For alfalfa there is no reference genome sequenced yet. The genome of the close relative diploid \emph{Medicago Truncatula} is available \cite{young_medicago_2011} and can in principle be used. However, while the two genomes show high synteny \cite{li_saturated_2014}, aligning on a different species (and with different ploidity) comes at the price of discarding those markers that do not align. In our case only 57.54\% (Alfalfa-Med) and 57.86\% (Alfalfa-PV) aligned on the \emph{M. Truncatula} genome, compared to the 88.66\% of rice markers aligning on \emph{O. Sativa} genome. This left with 23\,438 and 18\,923 SNPs to be used for analysis with ordered markers. \\
+Among the imputation methods used in this study, Beagle and FILLIN are the only ones that make use of marker information, and were therefore tested with ordered and randomly shuffled markers. In rice dataset with ordered markers Beagle showed astounding resilience to high missingness, with imputation accuracy in the minority class $>$95\% even in the most extreme scenarios (70\% allowed, 20\% artificial missing genotypes).
+Beagle worked substantially worse when the marker position was randomly reshuffled, with imputation accuracy in the minority class ranging from 75\% (10\% allowed, 1\% artificial missing rates) to almost 50\% (70\% allowed, 20\% artificial missing rates). When tested with alfalfa Beagle largerly overestimated the majority class and had very poor performances on the heterozygous class. Shuffling marker positions further worsened Beagle performance in alfalfa, and almost all missing genotypes were assigned to the majority class.\\
+FILLIN performance in rice followed the same pattern and was substantially worse when markers were shuffled. This result confirmed that imputation methods specifically designed for ordered markers are not an option for species lacking a reference genome.
+
+Previous studies, though not detailing a per-class breakdown of the imputation accuracy, provide interesting comparisons. In sugar beet, Biscarini et al.~\cite{biscarini_genome-enabled_2014} used Beagle to impute SNP-chip markers with partial within-chromosome/scaffold alignment, finding global accuracies ranging from 84\% to 80.9\% with 1\% to 20\% missing genotypes. Huang et al.~\cite{huang_efficient_2014} tested several algorithms, including Beagle, on simulated ordered GBS rice data with missing rates in the 30-60\% range and finding Beagle gave imputation accuracy consistently higher (+15-20\%) than KNNI. 
+Finally, Swarts et al.~\cite{swarts_novel_2014} used ordered GBS maize data to compare Beagle with the FSFHap and FILLIN algorithms they developed. They mostly obtained high imputation accuracies in the three genotype classes, providing further evidence of the added value of having a reference genome assembly.
+
+\subsection{Size of the imputation problem}
+\label{sec:size_of_problem}
+Albeit this was not the main objective of the paper, and no formal effort to optimise the implementation of the various imputation methods was done, still the recorded computation times give us some interesting information.
+The size of the problem, besides affecting the accuracy achievable by some imputation methods, is mainly relevant with reference to the required computation resources. RFI was the most demanding algorithm, with computation times growing exponentially both with the total number of marker genotypes (m SNP $\times$ n samples) and with the number of missing genotypes to be imputed. When analyzing the complete rice dataset (all chromosomes together), RFI took a maximum of about 40 days to complete imputation, and became computationally intractable (on the available platform) for the largest missing rate scenarios. This was partially mitigated by parallelization (we used 10 CPUs in our experiments). All other imputation algorithms took much shorter times to complete imputation, even in the most challenging scenarios. Putting together imputation accuracy and computation time, we found that the best performing imputation algorithms were Beagle in rice and KNNI in alfalfa.
+ 
+\makeatletter{}\section{Conclusions}
+\label{sec:conclusions}
+Imputation of missing genotypes can be an effective technique also for GBS data.
+The most accurate imputation methods resulted in a total amount of wrongly imputed genotypes near to zero in rice and slightly over 10\% in alfalfa. 
+The proportion of imputation errors, however, varied dramatically among genotype classes, approaching very high levels with the worst methods on the minor homozygous class.
+The structure of the genome and the maturity of the reference assembly play a role in the imputation efficiency, as indicated by the greater efficiency obtained in rice compared with alfalfa. While Beagle was preferable for rice, general data imputation methods performed significantly better in the absence of a reference genome. In particular, in alfalfa RFI and KNNI showed the lowest imputation errors in all classes, with KNNI to be preferred for computational efficiency. The alignment of markers to closely related species can help, but comes at the price of discarding markers that do not align, and with general methods still performing better.\\
+The imputation accuracy tended to be relatively robust over increasing missing rates. However, KNNI showed a somewhat lower accuracy on high missingness scenarios, probably as a consequence of the ``curse of dimensionality''. In terms of computation requirements, all methods proved to be tractable over all problem complexities with a standard bioinformatics-lab computation infrastructure, except RFI (whose computational requirements increased exponentially with problem size and took up to 40 days with the complete rice dataset and maximum missing rate thresholds).\\
+
+
+The results of this paper showed that high imputation accuracies can be achieved with GBS data, and that general imputation methods are a valid option when the reference genome is not available or the alignment on the genome of a closely related species leads to losing too many markers. Additionally, we highlighted the importance of examining imputation accuracy in the different genotype classes, since the common practice of summarizing performances in a single index can be very misleading when data are unbalanced (i.e. MAF is low).
+Exploring ways to improve imputation accuracy in GBS data is an important research area and can help making genotyping-by-sequencing a very attractive and cost-effective technique for genomic applications in species with and without a reference genome.
+
+
+
+
+ 
+\makeatletter{}\begin{acknowledgements}
+The rice data used in this research paper were produced within the framework of the Italian national project ``RISINNOVA'' (grant n. 2010-2369), financially supported by the AGER Foundation..
+The creation of the alfalfa data sets was funded by the projects ‘Genomic selection in alfalfa (GENALFA)’ funded by the Italian Ministry of Foreign Affairs and International Cooperation in the framework of the Italy-USA scientific cooperation program, the Italian share of the FP7-ArimNet project ‘Resilient, water- and energy-efficient forage and feed crops for Mediterranean agricultural systems (REFORMA)’ funded by the Italian Ministry of Agricultural and Forestry Policies.
+\end{acknowledgements}
+
+
+ 
+
+\bibliographystyle{spmpsci}      
+\bibliography{inputs/nazzicari.bib}   
+
+\end{document}
