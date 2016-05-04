@@ -1,4 +1,72 @@
-\section{Supplementary material}
+\begin{filecontents*}{example.eps}
+gsave
+newpath
+  20 20 moveto
+  20 220 lineto
+  220 220 lineto
+  220 20 lineto
+closepath
+2 setlinewidth
+gsave
+  .4 setgray fill
+grestore
+stroke
+grestore
+\end{filecontents*}
+\RequirePackage{fix-cm}
+\documentclass[smallextended]{svjour3}       \smartqed  
+\usepackage{xfrac}   
+\usepackage{lineno}  
+\usepackage{graphicx}
+\usepackage{color}
+\usepackage{multirow}
+\usepackage{array}
+\usepackage{setspace} 
+\usepackage{makecell}
+\usepackage{amsmath}
+
+\newcolumntype{C}[1]{>{\centering\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+
+\renewcommand{\figurename}{Suppl. Fig.}
+\renewcommand{\tablename}{Suppl. Table}
+
+
+\linenumbers
+\doublespacing 
+\journalname{Molecular Breeding}
+\begin{document}
+
+\title{
+Marker imputation efficiency for Genotyping-By-Sequencing data of crop species with and without a reference genome 
+\thanks{Nelson Nazzicari and Filippo Biscarini contributed equally to the work \\
+Corresponding author: Nelson Nazzicari \email{nelson.nazzicari@crea.gov.it}}
+}
+
+\titlerunning{Imputation efficiency for GBS data with and without the reference genome}        
+
+\author{Nelson Nazzicari \and
+  Filippo Biscarini  \and
+  Paolo Cozzi \and
+  E. Charles Brummer \and
+  Paolo Annicchiarico
+}
+
+\authorrunning{Nazzicari, Biscarini et al.} 
+\institute{
+    N. Nazzicari, P. Annicchiarico \at Council for Agricultural Research and Economics (CREA) Research Centre for Fodder Crops and Dairy Productions, Lodi (Italy)
+\and
+    F. Biscarini, P. Cozzi \at Dipartimento di Bioinformatica, Fondazione Parco Tecnologico Padano, Lodi (Italy)
+\and
+    E.C. Brummer \at University of California, Plant Sciences Department, Davis, CA (USA)
+}
+
+
+\date{Received:  / Accepted:}
+
+\maketitle
+
+\graphicspath{{./figures/}}
+\makeatletter{}\section{Supplementary material}
 \label{sec:supplementary_material}
 
 \subsection{SNP calling thresholds}
@@ -19,7 +87,45 @@ The hypothesis mentioned above greatly simplyfies the real case (e.g. $HOM \righ
 
 \subsection{Supplementary tables}
 \label{sec:supplementary_tables}
-\input{inputs/table_accuracies.tex}
+\makeatletter{}\begin{table}
+\centering
+\caption[Accuracy statistics]{Imputation accuracies (as percentages) for the various
+datasets and methods, averaged over all allowed and injected missing thresholds. Rice data are reported averaged by chromosome and on the complete genotypes. Alfalfa data are reported averaged over the two Alfalfa-PV and Alfalfa-Med populations. FILLIN failed to impute alfalfa datasets.}
+\label{tab:accuracy_statistics}
+\begin{tabular}{llcccc}
+\hline\noalign{\smallskip}
+\noalign{\smallskip}\hline\noalign{\smallskip}
+\textbf{Dataset} & \textbf{Method} & \textbf{Total} & \textbf{Minor (BB)} & \textbf{Major (AA)} & \textbf{Heterozygote (AB)}\\
+\noalign{\smallskip}\Xhline{3\arrayrulewidth}\noalign{\smallskip}
+alfalfa & Beagle & 73.14 & 14.27 & 99.37 & 20.77\\
+alfalfa & Beagle (shuffle) & 66.34 & 1.31 & 99.88 & 0.50\\
+alfalfa & kNNI & 82.20 & 14.68 & 90.82 & 66.03\\
+alfalfa & MNI & 78.38 & 0.00 & 88.69 & 58.88\\
+alfalfa & RFI  & 79.50 & 0.01 & 89.05 & 61.75\\
+alfalfa & SVDI & 77.36 & 4.47 & 85.81 & 61.67\\
+alfalfa & FILLIN & * & * & * & *\\
+alfalfa & FILLIN (shuffle)  & * & * & * & *\\
+rice (chr) & Beagle & 99.58 & 97.50 & 99.80 & -\\
+rice (chr) & Beagle (shuffle) & 96.09 & 74.73 & 98.42 & -\\
+rice (chr) & kNNI & 98.10 & 89.12 & 99.04 & -\\
+rice (chr) & MNI & 90.19 & 1.06 & 99.89 & -\\
+rice (chr) & RFI  & 98.81 & 91.51 & 99.58 & -\\
+rice (chr) & SVDI & 97.81 & 85.64 & 99.11 & -\\
+rice (chr) & FILLIN & 86.96 & 63.62 & 90.14 & -\\
+rice (chr) & FILLIN (shuffle)  & 82.19 & 55.86 & 85.81 & -\\
+rice & Beagle & 99.58 & 97.57 & 99.80 & -\\
+rice & Beagle (shuffle) & 93.48 & 55.64 & 97.69 & -\\
+rice & kNNI & 98.30 & 89.80 & 99.19 & -\\
+rice & MNI & 90.21 & 0.61 & 99.89 & -\\
+rice & RFI  & 97.86 & 84.68 & 99.28 & -\\
+rice & SVDI & 95.74 & 70.96 & 98.40 & -\\
+\noalign{\smallskip}\hline
+\end{tabular}
+\end{table}
+
+
+
+ 
 
 \subsection{Supplementary figures}
 \label{sec:supplementary_figures}
@@ -135,3 +241,8 @@ Lines colors represent the five imputation algorithms: MNI (salmon), KNNI (red),
 
 
 
+ 
+
+\bibliographystyle{spmpsci}      
+
+\end{document}

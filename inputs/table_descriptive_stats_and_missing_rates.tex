@@ -1,0 +1,38 @@
+\newcommand{\specialcell}[2][c]{%
+  \begin{tabular}[#1]{@{}c@{}}#2\end{tabular}}
+
+\begin{table}
+\centering
+\caption[Descriptive statistics, markers counts, and missing rates]{
+Descriptive statistics of alfalfa (\emph{Medicago sativa L.}) 
+and rice (\emph{Oryza sativa L.}) genotyping. MAF is average minor allele frequency; 
+p(AA), p(AB) and p(BB) are the proportions of AA, AB and BB genotypes.
+Total number of markers and resulting average missing rate for all markers
+and for four allowed thresholds of missing rate per markers.}
+\label{tab:missing_rates}
+\begin{tabular}{C{3cm}rccc}
+\hline\noalign{\smallskip}
+\specialcell{\textbf{Allowed missing}\\ \textbf{rate per marker}}  & & \textbf{Alfalfa-PV} & \textbf{Alfalfa-Med} & \textbf{Rice}\\
+\noalign{\smallskip}\Xhline{3\arrayrulewidth}\noalign{\smallskip}
+\multirow{7}{*}{100\%}  & \textbf{No. samples}  & 124     & 154       & 437\\
+                        & \textbf{MAF}          & 0.1724  & 0.1702    & 0.140 \\
+                        & \textbf{p(AA)}        & 0.690   & 0.691     & 0.860\\
+                        & \textbf{p(AB)}        & 0.274   & 0.276     & -\\
+                        & \textbf{p(BB)}        & 0.035   & 0.032     & 0.140\\
+                        & \textbf{Missing rate} & 0.666   & 0.596     & 0.534\\
+                        & \textbf{Markers}      & 32\,706 & 40\,734   & 166\,418\\    
+\noalign{\smallskip}\hline\noalign{\smallskip}
+   \multirow{2}{*}{70\%}   & \textbf{Missing rate} &  0.325 & 0.29  & 0.364\\
+                           & \textbf{Markers}      & 13\,190  & 19\,986 & 109\,372\\    
+\noalign{\smallskip}\hline\noalign{\smallskip}
+   \multirow{2}{*}{40\%}   & \textbf{Missing rate} &  0.161 & 0.142 & 0.198\\
+                           & \textbf{Markers}      & 7\,790 & 12\,931 & 58\,553\\    
+\noalign{\smallskip}\hline\noalign{\smallskip}
+   \multirow{2}{*}{20\%}   & \textbf{Missing rate} & 0.076 & 0.074 & 0.099\\
+                           & \textbf{Markers}      & 4\,828 & 8\,962 & 29\,872\\
+\noalign{\smallskip}\hline\noalign{\smallskip}
+   \multirow{2}{*}{10\%}   & \textbf{Missing rate} & 0.046 & 0.045 & 0.049\\
+                           & \textbf{Markers}      & 3\,405 & 6\,364 & 15\,060 \\
+\noalign{\smallskip}\hline
+\end{tabular}
+\end{table}
