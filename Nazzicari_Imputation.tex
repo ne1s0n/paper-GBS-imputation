@@ -178,7 +178,7 @@ for genotypes lacking pedigree information.\\
 The relative efficiency of the different imputation methods was assessed in terms of 
 accuracy and computation time. Accuracy was measured as fraction of 
 correctly imputed genotypes, both as a total and within genotype classes 
-(major/minor homozigotes, and heterozigotes, when present).
+(major/minor homozygotes, and heterozygotes, when present).
 
  
 \makeatletter{}\section{Materials and methods}
@@ -193,7 +193,7 @@ The Rice dataset included 437 plants belonging to 391 accessions (46 duplicates)
 \subsection{Genotyping by sequencing}
 \label{sec:overview}
 
-The 715 samples from alfalfa (Alfalfa-Med and Alfalfa-PV) and rice (Rice) populations were genotyped using the genotyping-by-sequencing (GBS) approach \cite{elshire_robust_2011}. Different GBS protocols were used to genotype the alfalfa and rice samples, since genotyping was carried out under different projects.\\
+The 715 alfalfa (Alfalfa-Med and Alfalfa-PV) and rice (Rice) samples were genotyped using the genotyping-by-sequencing (GBS) approach \cite{elshire_robust_2011}. Different GBS protocols were used to genotype alfalfa and rice, since genotyping was carried out under different projects.\\
 In alfalfa, DNA was isolated from fresh leaf tissues by the Wizard~\textregistered~Genomic DNA Purification Kit (Promega, A1125) and quantified with a Quant-iT PicoGreen dsDNA assay kit (Life Technologies, P7589). Two libraries were constructed for the two populations, where 100 ng of each DNA was digested with ApeKI (NEB, R0643L) and then ligated to a unique barcoded adapter and a common adapter. For the reference population Alfalfa-Med, 5 nmoles each of the primers and NEB 2X Taq Master Mix (NEB Cat \# M0270S) were included in the PCR reaction according to \cite{elshire_robust_2011} original protocol, while for Alfalfa-PV the KAPA library amplification readymix (Kapa Biosystems Cat \# KK2611) was used instead. Each library was sequenced in two lanes on Illumina HiSeq 2000 at the Genomic Sequencing and Analysis Facility at the University of Texas at Austin, Texas, USA. For both populations post sequencing analysis and SNP calling was carried out using Tassel UNEAK pipeline \cite{lu_switchgrass_2013}.
 
 Alfalfa is an autotetraploid plant species and can therefore present three different heterozygous genotypes: AAAB, AABB and ABBB. Sequencing depth in this study was not sufficient for accurate tetraploid allelic dosage, but following \cite{li_saturated_2014} and \cite{li_genomic_2015} reliable genotype calls based on diploid allelic dosage were obtained considering diploid heterozygotes (i.e. AB), while the two homozygous genotypes (AAAA and BBBB) were considered diploid homozygotes (i.e., AA or BB). A further quality filter, implemented through ad-hoc Python scripts, removed heterozygous loci with less than 4 and homozygous loci with less than 11 aligned reads. A similar filtering was performed in \cite{Rocher_validation_2015} using less restrictive thresholds. 
@@ -223,14 +223,13 @@ Rice & 437 & 166\,418 & 0.534 & 0.140 & 0.860 & - & 0.140 \\
 
 \subsection{Imputation methods}
 \label{sec:imputation_methods}
-We considered six imputation methods: Mean Value Imputation (MNI), K-Nearest Neighbors Imputation (KNNI), Random Forest Imputation (RFI), Singular Value Decomposition Imputation (SVDI), Localized Haplotype Clustering Imputation (``Beagle'') and haplotype reconstruction around the recombination sites (FILLIN from Tassel suite). For all algorithms we imputed a $m\times n$ matrix of m individuals and n markers whose data points, defined in the set \{0,1,2,NA\}, represented the three possible genotypes (AA, AB, and BB) and the missing value, respectively. 
+We considered six imputation methods: Mean Value Imputation (MNI), K-Nearest Neighbors Imputation (KNNI), Random Forest Imputation (RFI), Singular Value Decomposition Imputation (SVDI), Localized Haplotype Clustering Imputation (``Beagle'') and haplotype reconstruction around the recombination sites (FILLIN from Tassel suite). For all algorithms we imputed a $n\times m$ matrix of n individuals and m markers whose data points, defined in the set \{0,1,2,NA\}, represented the three possible genotypes (AA, AB, and BB) and the missing value, respectively. 
 \paragraph{MNI}
 \label{par:MNI}
 : in Mean Value Imputation each missing data point was replaced by the mean of the non-missing values for that marker, then discretized to the closest value in \{0,1,2\}.
 \paragraph{KNNI}
 \label{par:KNNI}
-: in K-Nearest Neighbors Imputation missing data points were imputed based on the weighted average of the K closest markers \cite{troyanskaya_missing_2001} defined by the Simple Matching Coefficient distance function \cite{schwender_statistical_2007}, specifically designed for categorical data. $K=4$ was used in KNNI, and neighbo
-rs values were weighted by the reciprocal of their distance from the data point to be imputed.
+: in K-Nearest Neighbors Imputation missing data points were imputed based on the weighted average of the K closest markers \cite{troyanskaya_missing_2001} defined by the Simple Matching Coefficient distance function \cite{schwender_statistical_2007}, specifically designed for categorical data. $K=4$ was used in KNNI, and neighbors values were weighted by the reciprocal of their distance from the data point to be imputed.
 \paragraph{SVDI}
 \label{par:SVDI}
 : Singular Value Decomposition (SVD) imputation was based on the following factorization of the genotype matrix M (n individuals, m markers):
@@ -247,11 +246,11 @@ where U is a $n \times n$ unitary matrix (i.e. $UU^{T}=I$), $\Sigma$ is a $n \ti
 Y = U^*\beta +\varepsilon 
 \end{equation}
 
-with Y as vector of n genotypes at marker j; $U^*$ the $n \times k$ matrix of the first k eigenvectors; $\beta$ the vector of $k$ regression coefficients; $\varepsilon$ the random error terms; (iv) all eigenvectors (matrix $U^*$) and $\beta$ were used to estimate missing values at marker j. The procedure was repeated (steps (ii) to (iv)) until convergence. The final imputed data points were then discretized to the closer genotype in \{0,1,2\}. A value of $k=4$ for the eigenvectors to be selected in $U^*$ was used in our implementation of SVDI, based on empirical results in the range $3--20$ (data not shown). Additional details on SVDI can be found in \cite{troyanskaya_missing_2001}
+with Y as vector of n genotypes at marker j; $U^*$ the $n \times k$ matrix of the first k eigenvectors; $\beta$ the vector of $k$ regression coefficients; $\varepsilon$ the random error terms; (iv) all eigenvectors (matrix $U^*$) and $\beta$ were used to estimate missing values at marker j. The procedure was repeated (steps (ii) to (iv)) until convergence. The final imputed data points were then discretized to the closer genotype in \{0,1,2\}. A value of $k=4$ for the eigenvectors to be selected in $U^*$ was used in our implementation of SVDI, based on empirical results in the range 3--20 (data not shown). Additional details on SVDI can be found in \cite{troyanskaya_missing_2001}
 
 \paragraph{RFI}
 \label{par:RFI}
-: in Random Forest (RF) imputation, missing genotypes at marker j were imputed by means of RF multiple regression trees \cite{breiman_random_2001} where all markers other than j were used for the prediction. At each marker j, 100 RF regression trees $\Theta_{1} \ldots \Theta_{100}$ were grown from a bootstrapped sample of the individuals in Y and a random subset of $\sqrt{m-1}$ markers. Missing genotypes were imputed averaging predictions over the 100 RF trees
+: in Random Forest (RF) imputation, missing genotypes at marker j were imputed by means of RF multiple regression trees \cite{breiman_random_2001} where all markers other than j were used for the prediction. At each marker j, 100 RF regression trees $\Theta_{1} \ldots \Theta_{100}$ were grown from a bootstrapped sample of the individuals in Y and a random subset $x$ of $\sqrt{m-1}$ markers. Missing genotypes were imputed averaging predictions over the 100 RF trees:
 
 \begin{equation}
 \label{eq:RFI_regression}
@@ -269,7 +268,7 @@ The ``Fast Inbred Line Library ImputatioN'' (``FILLIN'') is an imputation method
 
 \subsection{Imputation procedure}
 \label{sec:imputation_procedure}
-In order to assess the imputation performance of the different methods, we introduced increasing proportions of artificial missing genotypes in the data sets. These were then imputed with the various algorithms, measuring the resulting imputation accuracy and computation time. We extracted four datasets from the overall data that had a maximum of 10\%, 20\%, 40\% or 70\% missing data per marker. For each of these datasets, we randomly introduced an additional 1\%, 5\%, 10\% or 20\% missing genotypes, on which imputation accuracy could be measured. Table~\ref{tab:missing_rates} reports the number of markers and average missing rate (before introducing artificial missing genotypes) for the four call-rate thresholds. This procedure produced 16 combinations for each population: 4 call rate datasets $\times$ 4 levels of artificial missing markers. On each combination, we applied the 6 described imputation methods. Rice data were analysed as a whole and by each of the 12 chromosomes separately. In absence of alfalfa genome, the \emph{M. Truncatula} genome was used as reference for those algorithms (Beagle and FILLIN) requiring markers positions. 
+In order to assess the imputation performance of the different methods, we introduced increasing proportions of artificial missing genotypes in the data sets. These were then imputed with the various algorithms, measuring the resulting imputation accuracy and computation time. From the overall data, we extracted four datasets that had a maximum of 10\%, 20\%, 40\% or 70\% missing data per marker. For each of these datasets, we randomly introduced an additional 1\%, 5\%, 10\% or 20\% missing genotypes, on which imputation accuracy could be measured. Table~\ref{tab:missing_rates} reports the number of markers and average missing rate (before introducing artificial missing genotypes) for the four call-rate thresholds. This procedure produced 16 combinations for each population: 4 call rates $\times$ 4 levels of artificial missing markers. On each combination, we applied the 6 described imputation methods. Rice data were analysed as a whole and by each of the 12 chromosomes separately. In absence of the alfalfa genome, the \emph{M. Truncatula} genome was used as reference for those algorithms (Beagle and FILLIN) requiring marker position. 
 
 To further investigate the effect of presence (or absence) of genome information we generated ``reshuffled'' datasets where marker positions were randomly assigned inside each chromosome. This way, the linkage disequilibrium between markers is broken and the relative performance decrease can be directly assessed. The reshuffled datasets were tested only on Beagle and FILLIN.  
 
@@ -300,16 +299,10 @@ Total number of markers and resulting average missing rate for the four differen
 \end{table}
 
 
-
-
-
-
-
- 
-
 \subsection{Imputation accuracy and efficiency assessment}
 \label{sec:imputation_accuracy_and_efficiency_assessment}
-We used the artificial missing genotypes to measure the performance of the six imputation methods. The rice dataset contained only two genotype classes: AA (homozygous for the major allele) and BB (homozygous for the minor allele). Both alfalfa datasets contained also the third genotype classes AB (heterozygous, pooling the three possible heterozygotes AAAB, AABB, ABBB).\\
+We used the artificial missing genotypes to measure the performance of the six imputation methods. The rice dataset contained only two genotype classes: AA (homozygous for the major allele) and BB (homozygous for the minor allele). Both alfalfa datasets contained also the third genotype classes AB (heterozygous, pooling the three possible heterozygotes AAAB, AABB, ABBB).
+
 For each experiment we measured the overall imputation accuracy and the imputation accuracy within each genotype class. The imputation accuracy was computed as the number of missing data correctly imputed divided by the total number of artificially missing data (proportion of correct imputations):
 
 \begin{equation}
@@ -318,8 +311,9 @@ accuracy = \frac{1}{n} \sum_{i=1}^{n}{I(g_i = \hat{g_i})}
 \end{equation}
 
 where $I()$ is an indicator function that returns 1 if the imputed ($\hat{g}$) and true ($g$) genotypes are equal, 0 otherwise. We obtained four accuracy measures for alfalfa and three for rice.\\
-For each imputation method, the total computation time needed to complete the analyses was measured as an indicator of their relative performance. The measured time equals the total dedicated CPU time in case of single thread execution, and corresponds to a fraction of it in case of algorithm supporting multi thread execution. In our experiments only RFI implemented parallel execution, and it was configured to use 10 CPUs, thus all the reported times are to be considered as time elapsed while employing ten times more computational resources than the other algorithms.\\
-To ensure consistency in the experimental conditions, all analysis were run on the same computing platform: a multi-node cluster with 64 CPUs AMD Opteron(tm) 2400 MHz and 256GB RAM for each node.
+For each imputation method, the total computation time needed to complete the analyses was measured as an indicator of their relative performance. The measured time equals the total dedicated CPU time in case of single thread execution, and corresponds to a fraction of it in case of algorithm supporting multi thread execution. In our experiments only RFI implemented parallel execution, and it was configured to use 10 CPUs: thus, all RFI reported times are to be considered as time elapsed while employing ten times more computational resources compared to the other algorithms.
+
+To ensure consistency in the experimental conditions, all analysis were run on the same computing platform at PTP Science Park (www.ptp.it): a multi-node cluster with 64 CPUs AMD Opteron(tm) 2400 MHz and 256GB RAM for each node.
  
 \subsection{Software}
 \label{sec:software}
