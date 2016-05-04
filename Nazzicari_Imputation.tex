@@ -26,6 +26,8 @@ grestore
 \usepackage[nomarkers]{endfloat}
 
 \newcolumntype{C}[1]{>{\centering\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+\newcommand{\specialcell}[2][c]{%
+  \begin{tabular}[#1]{@{}c@{}}#2\end{tabular}}
 
 \linenumbers
 \doublespacing 
@@ -201,25 +203,41 @@ Alfalfa is an autotetraploid plant species and can therefore present three diffe
 In rice, DNA was isolated from three-weeks old leaves using the DNeasy Plant Mini Kit (QIAGEN) with a TECAN Freedom EVO150 liquid handling robot (TECAN Group Ltd, Switzerland). DNA digestion was performed on 100 ng samples in 96-well plates using ApeKI, which was shown to cut every 1 kb on average in a in-silico digestion of the Nipponbare reference genome, and 96-plex libraries constructed according to the GBS protocol. The libraries were loaded into Genome Analyzer II (Illumina, Inc., San Diego, CA) for sequencing. Raw sequence data filtering, sequence alignment to the rice reference genome (Os-Nipponbare-Reference-IRGSP-1.0, \cite{kawahara_improvement_2013}), and SNP calling from GBS genotyping were carried out using the Tassel GBS pipeline \cite{glaubitz_tassel-gbs:_2014}.\\
 In total, 32\,706, 40\,734 and 166\,418 SNP markers were called by GBS in Alfalfa-PV, Alfalfa-Med and Rice, respectively (see Table~\ref{tab:descriptive_statistics}). In all datasets SNP variants were renamed so that AA represented the most common homozygote, and BB the least common homozygote.
 
-\makeatletter{}\begin{table}
+\begin{table}
 \centering
-\caption[Descriptive statistics]{
+\caption[Descriptive statistics, markers counts, and missing rates]{
 Descriptive statistics of alfalfa (\emph{Medicago sativa L.}) 
 and rice (\emph{Oryza sativa L.}) genotyping. MAF is average minor allele frequency; 
-p(AA), p(AB) and p(BB) are the proportions of AA, AB and BB genotypes.}
-\label{tab:descriptive_statistics}
-\begin{tabular}{lccccccc}
+p(AA), p(AB) and p(BB) are the proportions of AA, AB and BB genotypes.
+Total number of markers and resulting average missing rate for all markers
+and for four allowed thresholds of missing rate per markers.}
+\label{tab:missing_rates}
+\begin{tabular}{C{3cm}rrrr}
 \hline\noalign{\smallskip}
-\noalign{\smallskip}\hline\noalign{\smallskip}
-\textbf{Dataset} & \textbf{No. samples} & \textbf{No. SNPs} & \textbf{Missing Rate} & \textbf{MAF} & \textbf{p(AA)} & \textbf{p(AB)} & \textbf{p(BB)}\\
+\specialcell{\textbf{Allowed missing}\\ \textbf{rate per marker}}  & & \textbf{Alfalfa-PV} & \textbf{Alfalfa-Med} & \textbf{Rice}\\
 \noalign{\smallskip}\Xhline{3\arrayrulewidth}\noalign{\smallskip}
-Alfalfa-PV & 124 & 32\,706 & 0.666 & 0.1724 & 0.690 & 0.274 & 0.035\\
-Alfalfa-Med & 154 & 40\,734 & 0.596 & 0.1702 & 0.691 & 0.276 & 0.032\\
-Rice & 437 & 166\,418 & 0.534 & 0.140 & 0.860 & - & 0.140 \\
+\multirow{7}{*}{100\%}  & \textbf{No. samples}  & 124     & 154       & 437\\
+                        & \textbf{MAF}          & 0.1724  & 0.1702    & 0.140 \\
+                        & \textbf{p(AA)}        & 0.690   & 0.691     & 0.860\\
+                        & \textbf{p(AB)}        & 0.274   & 0.276     & -\\
+                        & \textbf{p(BB)}        & 0.035   & 0.032     & 0.140\\
+                        & \textbf{Missing rate} & 0.666   & 0.596     & 0.534\\
+                        & \textbf{Markers}      & 32\,706 & 40\,734   & 166\,418\\    
+\noalign{\smallskip}\hline\noalign{\smallskip}
+   \multirow{2}{*}{70\%}   & \textbf{Missing rate} &  0.325 & 0.29  & 0.364\\
+                           & \textbf{Markers}      & 13\,190  & 19\,986 & 109\,372\\    
+\noalign{\smallskip}\hline\noalign{\smallskip}
+   \multirow{2}{*}{40\%}   & \textbf{Missing rate} &  0.161 & 0.142 & 0.198\\
+                           & \textbf{Markers}      & 7\,790 & 12\,931 & 58\,553\\    
+\noalign{\smallskip}\hline\noalign{\smallskip}
+   \multirow{2}{*}{20\%}   & \textbf{Missing rate} & 0.076 & 0.074 & 0.099\\
+                           & \textbf{Markers}      & 4\,828 & 8\,962 & 29\,872\\
+\noalign{\smallskip}\hline\noalign{\smallskip}
+   \multirow{2}{*}{10\%}   & \textbf{Missing rate} & 0.046 & 0.045 & 0.049\\
+                           & \textbf{Markers}      & 3\,405 & 6\,364 & 15\,060 \\
 \noalign{\smallskip}\hline
 \end{tabular}
 \end{table}
- 
 
 \subsection{Imputation methods}
 \label{sec:imputation_methods}
@@ -271,32 +289,6 @@ The ``Fast Inbred Line Library ImputatioN'' (``FILLIN'') is an imputation method
 In order to assess the imputation performance of the different methods, we introduced increasing proportions of artificial missing genotypes in the data sets. These were then imputed with the various algorithms, measuring the resulting imputation accuracy and computation time. From the overall data, we extracted four datasets that had a maximum of 10\%, 20\%, 40\% or 70\% missing data per marker. For each of these datasets, we randomly introduced an additional 1\%, 5\%, 10\% or 20\% missing genotypes, on which imputation accuracy could be measured. Table~\ref{tab:missing_rates} reports the number of markers and average missing rate (before introducing artificial missing genotypes) for the four call-rate thresholds. This procedure produced 16 combinations for each population: 4 call rates $\times$ 4 levels of artificial missing markers. On each combination, we applied the 6 described imputation methods. Rice data were analysed as a whole and by each of the 12 chromosomes separately. In absence of the alfalfa genome, the \emph{M. Truncatula} genome was used as reference for those algorithms (Beagle and FILLIN) requiring marker position. 
 
 To further investigate the effect of presence (or absence) of genome information we generated ``reshuffled'' datasets where marker positions were randomly assigned inside each chromosome. This way, the linkage disequilibrium between markers is broken and the relative performance decrease can be directly assessed. The reshuffled datasets were tested only on Beagle and FILLIN.  
-
-\makeatletter{}
-\begin{table}
-\centering
-\caption[Markers counts and missing rates]{
-Total number of markers and resulting average missing rate for the four different allowed missing rate thresholds in alfalfa (two datasets) and rice.}
-\label{tab:missing_rates}
-\begin{tabular}{C{3cm}rccc}
-\hline\noalign{\smallskip}
-\noalign{\smallskip}\hline\noalign{\smallskip}
-\textbf{Allowed missing rate threshold} &  & \textbf{Alfalfa-PV} & \textbf{Alfalfa-Med} & \textbf{Rice}\\
-\noalign{\smallskip}\Xhline{3\arrayrulewidth}\noalign{\smallskip}
-   \multirow{2}{*}{70\%} & Missing rate &  0.325 & 0.29  & 0.364\\
-                           & Markers      & 13\,190  & 19\,986 & 109\,372\\    
-\noalign{\smallskip}\hline
-   \multirow{2}{*}{40\%} & Missing rate &  0.161 & 0.142 & 0.198\\
-                           & Markers      & 7\,790 & 12\,931 & 58\,553\\    
-\noalign{\smallskip}\hline
-   \multirow{2}{*}{20\%} & Missing rate & 0.076 & 0.074 & 0.099\\
-                           & Markers      & 4\,828 & 8\,962 & 29\,872\\
-\noalign{\smallskip}\hline                           
-   \multirow{2}{*}{10\%} & Missing rate & 0.046 & 0.045 & 0.049\\
-                           & Markers      & 3\,405 & 6\,364 & 15\,060 \\
-\noalign{\smallskip}\hline
-\end{tabular}
-\end{table}
 
 
 \subsection{Imputation accuracy and efficiency assessment}
@@ -467,7 +459,7 @@ Among the imputation methods used in this study, Beagle and FILLIN are the only 
 Beagle worked substantially worse when the marker position was randomly reshuffled, with imputation accuracy in the minority class ranging from 75\% (10\% allowed, 1\% artificial missing rates) to almost 50\% (70\% allowed, 20\% artificial missing rates). When tested with alfalfa Beagle largerly overestimated the majority class and had very poor performances on the heterozygous class. Shuffling marker positions further worsened Beagle performance in alfalfa, and almost all missing genotypes were assigned to the majority class.\\
 FILLIN performance in rice followed the same pattern and was substantially worse when markers were shuffled. This result confirmed that imputation methods specifically designed for ordered markers are not an option for species lacking a reference genome.
 
-Previous studies, though not detailing a per-class breakdown of the imputation accuracy, provide interesting comparisons. In sugar beet, Biscarini et al.~\cite{biscarini_genome-enabled_2014} used Beagle to impute SNP-chip markers with partial within-chromosome/scaffold alignment, finding global accuracies ranging from 84\% to 80.9\% with 1\% to 20\% missing genotypes. Huang et al.~\cite{huang_efficient_2014} tested several algorithms, including Beagle, on simulated ordered GBS rice data with missing rates in the 30-60\% range and finding Beagle gave imputation accuracy consistently higher (+15-20\%) than KNNI. 
+Previous studies, though not detailing a per-class breakdown of the imputation accuracy, provide interesting comparisons. In sugar beet, Biscarini et al.~\cite{biscarini_genome-enabled_2014} used Beagle to impute SNP-chip markers with partial within-chromosome/scaffold alignment, finding global accuracies ranging from 84\% to 80.9\% with 1\% to 20\% missing genotypes. Huang et al.~\cite{huang_efficient_2014} tested several algorithms, including Beagle, on simulated ordered GBS rice data with missing rates in the 30-60\% range, and found that Beagle gave imputation accuracy consistently higher (+15-20\%) than KNNI. 
 Finally, Swarts et al.~\cite{swarts_novel_2014} used ordered GBS maize data to compare Beagle with the FSFHap and FILLIN algorithms they developed. They mostly obtained high imputation accuracies in the three genotype classes, providing further evidence of the added value of having a reference genome assembly.
 
 \subsection{Size of the imputation problem}
@@ -481,18 +473,16 @@ Imputation of missing genotypes can be an effective technique also for GBS data.
 The most accurate imputation methods resulted in a total amount of wrongly imputed genotypes near to zero in rice and slightly over 10\% in alfalfa. 
 The proportion of imputation errors, however, varied dramatically among genotype classes, approaching very high levels with the worst methods on the minor homozygous class.
 The structure of the genome and the maturity of the reference assembly play a role in the imputation efficiency, as indicated by the greater efficiency obtained in rice compared with alfalfa. While Beagle was preferable for rice, general data imputation methods performed significantly better in the absence of a reference genome. In particular, in alfalfa RFI and KNNI showed the lowest imputation errors in all classes, with KNNI to be preferred for computational efficiency. The alignment of markers to closely related species can help, but comes at the price of discarding markers that do not align, and with general methods still performing better.\\
-The imputation accuracy tended to be relatively robust over increasing missing rates. However, KNNI showed a somewhat lower accuracy on high missingness scenarios, probably as a consequence of the ``curse of dimensionality''. In terms of computation requirements, all methods proved to be tractable over all problem complexities with a standard bioinformatics-lab computation infrastructure, except RFI (whose computational requirements increased exponentially with problem size and took up to 40 days with the complete rice dataset and maximum missing rate thresholds).\\
-
+The imputation accuracy tended to be relatively robust over increasing missing rates. However, KNNI showed a somewhat lower accuracy on high missingness scenarios, probably as a consequence of the ``curse of dimensionality''. In terms of computation requirements, all methods proved to be tractable over all problem complexities with a standard bioinformatics-lab computation infrastructure, except RFI (whose computational requirements increased exponentially with problem size and took up to 40 days with the complete rice dataset and maximum missing rate thresholds).
 
 The results of this paper showed that high imputation accuracies can be achieved with GBS data, and that general imputation methods are a valid option when the reference genome is not available or the alignment on the genome of a closely related species leads to losing too many markers. Additionally, we highlighted the importance of examining imputation accuracy in the different genotype classes, since the common practice of summarizing performances in a single index can be very misleading when data are unbalanced (i.e. MAF is low).
 Exploring ways to improve imputation accuracy in GBS data is an important research area and can help making genotyping-by-sequencing a very attractive and cost-effective technique for genomic applications in species with and without a reference genome.
 
 
 
-
  
 \makeatletter{}\begin{acknowledgements}
-The rice data used in this research paper were produced within the framework of the Italian national project ``RISINNOVA'' (grant n. 2010-2369), financially supported by the AGER Foundation..
+The rice data used in this research paper were produced within the framework of the Italian national project ``RISINNOVA'' (grant n. 2010-2369), financially supported by the AGER Foundation.
 The creation of the alfalfa data sets was funded by the projects ‘Genomic selection in alfalfa (GENALFA)’ funded by the Italian Ministry of Foreign Affairs and International Cooperation in the framework of the Italy-USA scientific cooperation program, the Italian share of the FP7-ArimNet project ‘Resilient, water- and energy-efficient forage and feed crops for Mediterranean agricultural systems (REFORMA)’ funded by the Italian Ministry of Agricultural and Forestry Policies.
 \end{acknowledgements}
 
